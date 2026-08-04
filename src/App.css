@@ -1,0 +1,49 @@
+.app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 20px 64px;
+}
+
+.app-header {
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 16px;
+  margin-bottom: 32px;
+}
+
+.app-brand {
+  display: inline-block;
+  font-weight: 600;
+  text-decoration: none;
+  margin-bottom: 12px;
+}
+
+.app-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  font-size: 14px;
+}
+
+.app-nav a {
+  text-decoration: none;
+  color: #666;
+}
+
+.app-nav a:hover {
+  color: #16161a;
+}
+
+.app-nav a.active {
+  color: #16161a;
+  font-weight: 600;
+}
+
+.page h1 {
+  font-size: 32px;
+  margin: 0 0 8px;
+}
+
+.page-placeholder {
+  color: #888;
+  margin: 0;
+}
