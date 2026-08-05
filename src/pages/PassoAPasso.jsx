@@ -5,7 +5,7 @@ import FlowBottomBar from '../components/FlowBottomBar.jsx'
 import PassoLogo from '../steps/PassoLogo.jsx'
 import PassoIcone from '../steps/PassoIcone.jsx'
 import PassoPaleta from '../steps/PassoPaleta.jsx'
-import useUploads from '../hooks/useUploads.js'
+import useFluxo from '../hooks/useFluxo.js'
 import { pilares, temas } from '../data/pilares.js'
 import s from './PassoAPasso.module.css'
 
@@ -21,19 +21,25 @@ function FluxoCompleto() {
   const total = pilares.length
   const [passo, setPasso] = useState(1)
   // Um estado só para o fluxo inteiro: ir e voltar entre passos não perde nada.
-  const { uploads, salvar } = useUploads()
+  const { uploads, salvarUpload, paleta, acoesDaPaleta } = useFluxo()
 
   const pilarAtual = pilares[passo - 1]
+  const ehPaleta = pilarAtual.slug === 'paleta-de-cores'
 
-  // Só habilita o "Continuar" quando o arquivo principal do passo existe. As
-  // variações preta e branca são opcionais. Passos ainda sem conteúdo não têm
-  // entrada em uploads, então seguem desabilitados.
-  const temConteudo = Boolean(uploads[pilarAtual.slug]?.principal)
+  // Nos passos de arquivo basta o principal; na paleta, ao menos uma cor. As
+  // variações preta e branca seguem opcionais, e passos ainda sem conteúdo
+  // não têm entrada em uploads, então continuam desabilitados.
+  const temConteudo = ehPaleta
+    ? paleta.length > 0
+    : Boolean(uploads[pilarAtual.slug]?.principal)
+
+  // Com a paleta já preenchida, "Não tenho, pular" sai de cena.
+  const mostrarPular = !(ehPaleta && paleta.length > 0)
 
   const conteudoDoPasso = () => {
     const props = {
       arquivos: uploads[pilarAtual.slug],
-      onSalvar: (tipo, arquivo) => salvar(pilarAtual.slug, tipo, arquivo),
+      onSalvar: (tipo, arquivo) => salvarUpload(pilarAtual.slug, tipo, arquivo),
     }
 
     switch (pilarAtual.slug) {
@@ -42,8 +48,7 @@ function FluxoCompleto() {
       case 'icone':
         return <PassoIcone {...props} />
       case 'paleta-de-cores':
-        // Ainda com dados mockados e estado próprio, sem entrar em uploads.
-        return <PassoPaleta />
+        return <PassoPaleta paleta={paleta} acoes={acoesDaPaleta} />
       default:
         return null
     }
@@ -84,6 +89,7 @@ function FluxoCompleto() {
         passo={passo}
         total={total}
         temConteudo={temConteudo}
+        mostrarPular={mostrarPular}
         onVoltar={voltar}
         onPular={avancar}
         onContinuar={avancar}

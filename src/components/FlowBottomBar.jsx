@@ -5,6 +5,7 @@ export default function FlowBottomBar({
   passo,
   total,
   temConteudo,
+  mostrarPular = true,
   onVoltar,
   onPular,
   onContinuar,
@@ -21,9 +22,13 @@ export default function FlowBottomBar({
         </button>
 
         <div className={s.direita}>
-          <button type="button" className={s.pular} onClick={onPular}>
-            {ultimoPasso ? 'Não tenho, pular e finalizar' : 'Não tenho, pular'}
-          </button>
+          {/* Some quando o passo já tem conteúdo suficiente — não faz sentido
+              oferecer "pular" para quem já preencheu. */}
+          {mostrarPular && (
+            <button type="button" className={s.pular} onClick={onPular}>
+              {ultimoPasso ? 'Não tenho, pular e finalizar' : 'Não tenho, pular'}
+            </button>
+          )}
 
           {/* temConteudo ainda é um placeholder: sem conteúdo por passo, o
               botão fica sempre desabilitado. Entra na lógica do formulário. */}
