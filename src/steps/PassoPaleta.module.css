@@ -1,0 +1,241 @@
+.passo {
+  display: flex;
+  flex-direction: column;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-16);
+  height: 48px;
+}
+
+.tituloGrupo {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-12);
+}
+
+.titulo {
+  margin: 0;
+  font-size: var(--texto-secao);
+  font-weight: var(--peso-semibold);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
+/* 32px de área clicável com -4px de margem: o ícone de 24px fica onde o
+   Figma coloca, e o hover tem folga. */
+.ajuda {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: -4px;
+  padding: 0;
+  border: none;
+  border-radius: var(--raio-pilula);
+  background: transparent;
+  color: var(--cor-texto-auxiliar);
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.ajuda:hover {
+  background: var(--cor-superficie);
+}
+
+.botaoContorno {
+  display: inline-flex;
+  flex: none;
+  gap: var(--espaco-8);
+  align-items: center;
+  height: 48px;
+  padding: var(--espaco-12) var(--espaco-16);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-caixa);
+  background: transparent;
+  color: var(--cor-texto);
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.botaoContorno:hover {
+  background: var(--cor-superficie);
+}
+
+/* Estado vazio: a moldura inteira abre o modal. */
+.vazio {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-16);
+  align-items: center;
+  justify-content: center;
+  height: 169px;
+  margin-top: var(--espaco-16);
+  padding: 0 var(--espaco-16);
+  border: 1px dashed var(--cor-borda-upload);
+  border-radius: var(--raio-caixa);
+  background: var(--cor-superficie);
+  color: var(--cor-texto-auxiliar);
+  cursor: pointer;
+}
+
+.textoVazio {
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-regular);
+  line-height: 20px;
+  letter-spacing: var(--espacamento-letras-secao);
+  text-align: center;
+}
+
+/* Estado preenchido */
+.cartao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-20);
+  margin-top: 40px;
+  padding: var(--espaco-12) 32px var(--espaco-12) var(--espaco-12);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-caixa);
+}
+
+.linha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-16);
+}
+
+.identificacao {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  min-width: 0;
+}
+
+.amostra {
+  position: relative;
+  flex: none;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--raio-caixa);
+}
+
+/* Selo de contraste: não existe no node do Figma, foi desenhado para combinar
+   com o resto. Os valores ainda são mockados. */
+.selo {
+  position: absolute;
+  top: var(--espaco-4);
+  left: var(--espaco-4);
+  display: inline-flex;
+  gap: var(--espaco-4);
+  align-items: center;
+  padding: 2px 6px;
+  border-radius: var(--raio-pilula);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--cor-texto);
+  font-size: 10px;
+  font-weight: var(--peso-semibold);
+  line-height: 1.2;
+}
+
+.seloPonto {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-texto);
+}
+
+.nomes {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  min-width: 0;
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-semibold);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
+.nome {
+  color: var(--cor-texto);
+}
+
+.hex {
+  color: var(--cor-texto-secundario);
+}
+
+.acoes {
+  display: flex;
+  flex: none;
+  gap: var(--espaco-8);
+  align-items: center;
+}
+
+.acao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: var(--raio-pilula);
+  background: transparent;
+  color: var(--cor-icone);
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.acao:hover {
+  background: var(--cor-superficie);
+}
+
+.destrutiva {
+  color: var(--cor-destrutiva);
+}
+
+.tons {
+  display: flex;
+  gap: var(--espaco-8);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.tom {
+  position: relative;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--raio-caixa);
+}
+
+/* Ponto de contraste do tom: também não vem do Figma, e o valor é mockado. */
+.ponto {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-marca);
+}
+
+.pontoClaro {
+  background: var(--cor-fundo);
+}
+
+@media (max-width: 1024px) {
+  .cabecalho {
+    height: auto;
+    flex-wrap: wrap;
+  }
+}

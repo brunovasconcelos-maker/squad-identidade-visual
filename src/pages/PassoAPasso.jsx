@@ -4,6 +4,7 @@ import FlowTopBar from '../components/FlowTopBar.jsx'
 import FlowBottomBar from '../components/FlowBottomBar.jsx'
 import PassoLogo from '../steps/PassoLogo.jsx'
 import PassoIcone from '../steps/PassoIcone.jsx'
+import PassoPaleta from '../steps/PassoPaleta.jsx'
 import useUploads from '../hooks/useUploads.js'
 import { pilares, temas } from '../data/pilares.js'
 import s from './PassoAPasso.module.css'
@@ -40,6 +41,9 @@ function FluxoCompleto() {
         return <PassoLogo {...props} />
       case 'icone':
         return <PassoIcone {...props} />
+      case 'paleta-de-cores':
+        // Ainda com dados mockados e estado próprio, sem entrar em uploads.
+        return <PassoPaleta />
       default:
         return null
     }
