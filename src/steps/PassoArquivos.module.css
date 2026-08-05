@@ -1,0 +1,18 @@
+.passo {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 72px entre a moldura principal e as variações, como no Figma. */
+.par {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--grid-gutter);
+  margin-top: 72px;
+}
+
+@media (max-width: 1024px) {
+  .par {
+    grid-template-columns: 1fr;
+  }
+}
