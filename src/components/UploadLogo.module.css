@@ -100,9 +100,14 @@
   text-align: center;
 }
 
+/* A prévia ocupa a altura da caixa menos 24px em cima e embaixo: logo pequeno
+   cresce até essa altura, logo grande encolhe. Se a largura resultante passar
+   do limite, o max-width segura e o contain mantém a proporção — nunca
+   distorce nem transborda. */
 .previa {
+  width: auto;
+  height: calc(100% - 48px);
   max-width: calc(100% - 48px);
-  max-height: calc(100% - 48px);
   object-fit: contain;
 }
 

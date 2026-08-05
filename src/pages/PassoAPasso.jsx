@@ -26,21 +26,29 @@ function FluxoCompleto() {
   // segue desabilitado. As variações preta e branca são opcionais.
   const temConteudo = pilarAtual.slug === 'logo' && Boolean(logos.principal)
 
-  const irParaHome = () => navigate('/')
+  // Sair do fluxo desmonta este componente, e com ele o estado dos uploads.
+  // É o que faz o X e o "Voltar" do passo 1 descartarem o que foi enviado.
+  const sairDoFluxo = () => navigate('/')
+
+  const concluir = () => {
+    // TODO: salvar o fluxo de verdade quando a etapa final existir. Até lá
+    // concluir apenas sai, e os uploads em memória são descartados.
+    sairDoFluxo()
+  }
 
   const voltar = () => {
-    if (passo === 1) irParaHome()
+    if (passo === 1) sairDoFluxo()
     else setPasso((atual) => atual - 1)
   }
 
   const avancar = () => {
-    if (passo === total) irParaHome()
+    if (passo === total) concluir()
     else setPasso((atual) => atual + 1)
   }
 
   return (
     <div className={s.pagina}>
-      <FlowTopBar titulo="Identidade Visual" onFechar={irParaHome} />
+      <FlowTopBar titulo="Identidade Visual" onFechar={sairDoFluxo} />
 
       {/* Só esta área rola. Os outros seis passos entram aqui depois. */}
       <main className={s.conteudo}>
