@@ -132,6 +132,20 @@ function CartaoDeCor({ cor, acoes, onEditar }) {
               title={`${tom.passo} — #${tom.hex}`}
             >
               <span className={tom.textoClaro ? `${s.ponto} ${s.pontoClaro}` : s.ponto} />
+
+              {/* A âncora é a cor escolhida pela pessoa e não sai daqui. */}
+              {!tom.ancora && (
+                <button
+                  type="button"
+                  className={
+                    tom.textoClaro ? `${s.removerTom} ${s.removerTomClaro}` : s.removerTom
+                  }
+                  onClick={() => acoes.removerTom(cor.id, tom.passo)}
+                  aria-label={`Remover o tom ${tom.passo} de ${cor.nome}`}
+                >
+                  <Icon nome="Close" tamanho={16} />
+                </button>
+              )}
             </div>
           ))}
         </div>

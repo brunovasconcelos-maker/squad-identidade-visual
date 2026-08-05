@@ -100,6 +100,18 @@ export default function useFluxo() {
     )
   }, [])
 
+  // O degrau volta a ficar vago e pode ser repreenchido pelo "Adicionar Tom".
+  // A âncora é a cor escolhida pela pessoa, então não sai por aqui.
+  const removerTom = useCallback((id, passo) => {
+    setPaleta((atual) =>
+      atual.map((cor) =>
+        cor.id === id
+          ? { ...cor, tons: cor.tons.filter((tom) => tom.ancora || tom.passo !== passo) }
+          : cor,
+      ),
+    )
+  }, [])
+
   // Ao sair do fluxo, libera as object URLs criadas.
   useEffect(() => {
     const criadas = urls.current
@@ -119,6 +131,7 @@ export default function useFluxo() {
       remover: removerCor,
       marcarPrincipal,
       adicionarTom,
+      removerTom,
     },
   }
 }

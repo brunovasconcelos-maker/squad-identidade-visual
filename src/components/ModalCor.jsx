@@ -142,33 +142,6 @@ export default function ModalCor({ cor, onCancelar, onSalvar }) {
         </div>
 
         <div className={s.picker}>
-          <div
-            ref={areaRef}
-            className={s.area}
-            style={{ '--cor-base': `#${corDaMatiz}` }}
-            onPointerDown={arrastar(areaRef, moverNaArea)}
-          >
-            <span
-              className={s.alca}
-              style={{
-                left: `${hsv.s * 100}%`,
-                top: `${(1 - hsv.v) * 100}%`,
-                background: `#${hex}`,
-              }}
-            />
-          </div>
-
-          <div
-            ref={matizRef}
-            className={s.matiz}
-            onPointerDown={arrastar(matizRef, moverNaMatiz)}
-          >
-            <span
-              className={s.alca}
-              style={{ left: `${(hsv.h / 360) * 100}%`, top: '50%', background: `#${corDaMatiz}` }}
-            />
-          </div>
-
           <div className={s.campos}>
             <label className={s.campo}>
               <span className={s.rotulo}>Hex</span>
@@ -196,6 +169,34 @@ export default function ModalCor({ cor, onCancelar, onSalvar }) {
               </label>
             ))}
           </div>
+
+          <div
+            ref={areaRef}
+            className={s.area}
+            style={{ '--cor-base': `#${corDaMatiz}` }}
+            onPointerDown={arrastar(areaRef, moverNaArea)}
+          >
+            <span
+              className={s.alca}
+              style={{
+                left: `${hsv.s * 100}%`,
+                top: `${(1 - hsv.v) * 100}%`,
+                background: `#${hex}`,
+              }}
+            />
+          </div>
+
+          <div
+            ref={matizRef}
+            className={s.matiz}
+            onPointerDown={arrastar(matizRef, moverNaMatiz)}
+          >
+            <span
+              className={s.alca}
+              style={{ left: `${(hsv.h / 360) * 100}%`, top: '50%', background: `#${corDaMatiz}` }}
+            />
+          </div>
+
         </div>
 
         <div className={s.acoes}>
