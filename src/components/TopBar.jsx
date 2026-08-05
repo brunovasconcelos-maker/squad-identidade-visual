@@ -7,13 +7,13 @@ export default function TopBar({ titulo }) {
     <div className={s.barra}>
       <div className={s.esquerda}>
         <button type="button" className={s.voltar} aria-label="Voltar">
-          <Icon nome="caret-left" />
+          <Icon nome="Arrow-Left" />
         </button>
         <h1 className={s.titulo}>{titulo}</h1>
       </div>
 
       <button type="button" className={s.opcoes} aria-label="Mais opções">
-        <Icon nome="dots-three-outline-vertical" />
+        <Icon nome="More" />
       </button>
     </div>
   )
