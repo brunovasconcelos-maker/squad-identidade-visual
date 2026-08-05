@@ -1,26 +1,27 @@
 # Imagens
 
-## `tom.svg` — placeholder, precisa ser substituído
+## `Tom-Home.png`
 
-A ilustração do Tom (o mascote em forma de paleta que aparece no banner da Home)
-**não pôde ser extraída do Figma automaticamente**: a política de rede desta
-sessão bloqueia o host `www.figma.com`, então nem o download direto do asset nem
-o `WebFetch` conseguiram baixar os bytes. O que está aqui hoje é um placeholder
-desenhado à mão, com a geometria certa mas sem a arte.
+Ilustração do Tom (o mascote em forma de paleta) usada no banner da Home.
+Exportada do Figma em 4x — 428×512 px para uma caixa de 107×128 px no layout,
+que é a geometria do node `6075:5312`.
 
-Para colocar a arte real:
+`src/components/Banner.module.css` fixa a caixa em 107×128 px, centralizada num
+slot de 80×80 px e transbordando o banner em cima e embaixo, como no Figma.
 
-1. No Figma, abra `Squad | Identidade Visual` e selecione o node `6075:5312`
-   (dentro do banner, `Frame 2147223806`).
-2. Exporte como **PNG 3x** — a arte ocupa 107×128 px no layout.
-3. Salve como `tom.png` nesta pasta.
-4. Em `src/components/Banner.jsx`, troque a linha do import:
+## Sobre extrair assets do Figma
 
-   ```diff
-   -import tom from '../assets/imagens/tom.svg'
-   +import tom from '../assets/imagens/tom.png'
-   ```
+A política de rede das sessões do Claude Code bloqueia o host `www.figma.com`,
+então o agente **não consegue baixar assets** (imagens ou SVGs) do arquivo,
+mesmo tendo acesso ao Figma via MCP para ler layout, medidas e cores.
 
-Não é preciso mexer no CSS: `src/components/Banner.module.css` já fixa a caixa
-em 107×128 px, centralizada no slot de 80×80 px e transbordando o banner, como
-no Figma.
+Na prática: qualquer imagem ou SVG novo precisa ser exportado do Figma e
+commitado à mão. Specs de layout e estilo o agente consegue ler sozinho.
+
+## Demais imagens
+
+Os arquivos `Retrato-*`, `Product-*`, `Life-Style-*`, `Illustration-*`,
+`Ambiente-*`, `3D-*` e os de personalidade (`Minimalista`, `Moderna`,
+`Vibrante`, `Sobria`, `Seria`, `Angulosa`, `Arredondada`, `Classica`,
+`Descontraida`, `Expressiva`) ainda não são usados — são material para as
+páginas de Fotografia e Personalidade.

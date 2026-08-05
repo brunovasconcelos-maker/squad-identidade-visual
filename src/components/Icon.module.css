@@ -3,9 +3,15 @@
   flex: none;
 }
 
-/* Os SVGs do Phosphor têm só viewBox, então definimos o tamanho aqui. */
 .icone > svg {
   display: block;
   width: 100%;
   height: 100%;
+}
+
+/* Os SVGs exportados do Figma trazem fill="black" fixo; os do Phosphor já
+   usam currentColor. Normalizamos aqui para que os dois respeitem a cor do
+   elemento pai, sem precisar editar os arquivos de asset. */
+.icone > svg [fill='black'] {
+  fill: currentColor;
 }
