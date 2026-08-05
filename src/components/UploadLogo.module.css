@@ -1,0 +1,119 @@
+.secao {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Sem altura mínima: a linha tem os 24px do título, para o topo da caixa
+   cair exatamente onde o Figma coloca. O botão de 32px transborda 4px para
+   cada lado, o que é invisível por ser só a área de hover. */
+.cabecalho {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-12);
+  margin-bottom: 32px;
+}
+
+.titulo {
+  margin: 0;
+  font-size: var(--texto-secao);
+  font-weight: var(--peso-semibold);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
+/* 32px de área clicável, mas com -4px de margem o ícone fica exatamente
+   onde o Figma coloca os 24px. */
+.botaoIcone {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: -4px;
+  padding: 0;
+  border: none;
+  border-radius: var(--raio-pilula);
+  background: transparent;
+  color: var(--cor-texto);
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.botaoIcone:hover {
+  background: var(--cor-superficie);
+}
+
+.caixa {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 169px;
+  border-radius: var(--raio-caixa);
+  background: var(--cor-superficie);
+  transition:
+    background-color var(--transicao-padrao),
+    border-color var(--transicao-padrao);
+}
+
+.vazia {
+  border: 1px dashed var(--cor-borda-upload);
+}
+
+.preenchida {
+  border: 1px solid var(--cor-borda);
+}
+
+/* Prévia do logo branco sobre preto, senão ele some no fundo claro. */
+.escura {
+  background: var(--cor-marca);
+}
+
+.arrastando {
+  border-color: var(--cor-texto);
+  background: var(--cor-borda);
+}
+
+.alvo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-16);
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 var(--espaco-16);
+  border: none;
+  border-radius: inherit;
+  background: transparent;
+  color: var(--cor-texto-auxiliar);
+  cursor: pointer;
+}
+
+.instrucao {
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-regular);
+  line-height: 20px;
+  letter-spacing: var(--espacamento-letras-secao);
+  text-align: center;
+}
+
+.previa {
+  max-width: calc(100% - 48px);
+  max-height: calc(100% - 48px);
+  object-fit: contain;
+}
+
+/* O input existe só para abrir o seletor do sistema. */
+.input {
+  display: none;
+}
+
+.erro {
+  margin: var(--espaco-8) 0 0;
+  color: var(--cor-texto-auxiliar);
+  font-size: var(--texto-botao);
+  line-height: var(--altura-linha);
+}

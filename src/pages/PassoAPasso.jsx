@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import FlowTopBar from '../components/FlowTopBar.jsx'
 import FlowBottomBar from '../components/FlowBottomBar.jsx'
+import PassoLogo from '../steps/PassoLogo.jsx'
+import useLogos from '../hooks/useLogos.js'
 import { pilares, temas } from '../data/pilares.js'
 import s from './PassoAPasso.module.css'
 
@@ -16,9 +18,13 @@ function FluxoCompleto() {
   const navigate = useNavigate()
   const total = pilares.length
   const [passo, setPasso] = useState(1)
+  const { logos, salvar } = useLogos()
 
-  // Placeholder até existir conteúdo por passo: mantém "Continuar" desabilitado.
-  const [temConteudo] = useState(false)
+  const pilarAtual = pilares[passo - 1]
+
+  // Só o passo de Logo tem conteúdo por enquanto; nos outros o "Continuar"
+  // segue desabilitado. As variações preta e branca são opcionais.
+  const temConteudo = pilarAtual.slug === 'logo' && Boolean(logos.principal)
 
   const irParaHome = () => navigate('/')
 
@@ -36,8 +42,14 @@ function FluxoCompleto() {
     <div className={s.pagina}>
       <FlowTopBar titulo="Identidade Visual" onFechar={irParaHome} />
 
-      {/* O conteúdo de cada passo entra aqui — só esta área rola. */}
-      <main className={s.conteudo} />
+      {/* Só esta área rola. Os outros seis passos entram aqui depois. */}
+      <main className={s.conteudo}>
+        <div className={s.grade}>
+          <div className={s.centro}>
+            {pilarAtual.slug === 'logo' && <PassoLogo logos={logos} onSalvar={salvar} />}
+          </div>
+        </div>
+      </main>
 
       <FlowBottomBar
         passo={passo}
