@@ -10,3 +10,23 @@
   min-height: 0;
   overflow-y: auto;
 }
+
+/* Mesmo grid da Home: 12 colunas, margem 40px, gutter 20px. O conteúdo
+   do passo ocupa as 6 colunas centrais, alinhado com os cards da Home. */
+.grade {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-colunas), minmax(0, 1fr));
+  column-gap: var(--grid-gutter);
+  padding: 60px var(--grid-margem) 54px;
+}
+
+.centro {
+  grid-column: 4 / span 6;
+}
+
+@media (max-width: 1024px) {
+  .grade {
+    display: block;
+    padding: var(--espaco-24) var(--espaco-24) 48px;
+  }
+}

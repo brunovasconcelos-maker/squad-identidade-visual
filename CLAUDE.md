@@ -25,6 +25,22 @@ de espalhar hex pelo CSS.
 CSS Modules por componente (`Componente.module.css`). Sem biblioteca de UI e
 sem framework de CSS — o design é definido no Figma e traduzido à mão.
 
+## Organização
+
+- `src/pages` — uma página por rota
+- `src/components` — componentes compartilhados
+- `src/steps` — o conteúdo de cada passo do fluxo `/passo-a-passo`
+- `src/hooks` — hooks de estado (ex.: `useLogos`)
+- `src/lib` — acesso a dados do navegador (ex.: `logosDB` no IndexedDB)
+- `src/data` — listas fixas do domínio (ex.: `pilares`)
+
+## Persistência
+
+Arquivos enviados pelo usuário vão para o IndexedDB, não para o localStorage:
+podem passar do limite de tamanho, e o IndexedDB guarda `File`/`Blob` direto.
+É armazenamento local por navegador — não sincroniza entre dispositivos nem vai
+para o repositório.
+
 ## Assets
 
 Ícones em `src/assets/icones`, imagens em `src/assets/imagens`.

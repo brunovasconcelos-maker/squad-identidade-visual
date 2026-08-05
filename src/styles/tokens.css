@@ -19,6 +19,8 @@
   --cor-borda: #e3e6e6;              /* action/stroke — borda do header do fluxo */
   --cor-fundo-desabilitado: #e3e6e6; /* background/disable */
   --cor-texto-desabilitado: #b2b9b9; /* texto-icones/disable */
+  --cor-texto-auxiliar: #525b5b;     /* texto de apoio da área de upload */
+  --cor-borda-upload: #b2b9b9;       /* borda tracejada da área de upload */
 
   /* Tipografia — Inter em todo o site, em todas as páginas.
      Regra fixa do projeto: nada usa outra família. Ver CLAUDE.md.
@@ -28,6 +30,7 @@
   --espacamento-letras: -0.26px;
 
   --texto-titulo-pagina: 28px;
+  --texto-secao: 24px;
   --texto-destaque: 20px;
   --texto-corpo: 16px;
   --texto-botao: 14px;
@@ -36,7 +39,11 @@
   --peso-medio: 500;    /* Figma: 510 */
   --peso-semibold: 600; /* Figma: 590 */
 
+  /* No conteúdo dos passos o Figma usa -0.23px em vez do -0.26px do resto. */
+  --espacamento-letras-secao: -0.23px;
+
   /* Raios */
+  --raio-caixa: 8px;
   --raio-card: 16px;
   --raio-icone: 12px;
   --raio-pilula: 360px;

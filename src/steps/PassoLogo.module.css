@@ -1,0 +1,86 @@
+.passo {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Espaçamentos verticais do Figma: 72px entre as seções de upload e 68px
+   antes da linha de variações, que é mais alta por causa do botão. */
+.par {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--grid-gutter);
+  margin-top: 72px;
+}
+
+.variacoes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-16);
+  margin-top: 68px;
+}
+
+.tituloVariacoes {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-12);
+}
+
+.titulo {
+  margin: 0;
+  font-size: var(--texto-secao);
+  font-weight: var(--peso-semibold);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
+.ajuda {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: -4px;
+  padding: 0;
+  border: none;
+  border-radius: var(--raio-pilula);
+  background: transparent;
+  color: var(--cor-texto);
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.ajuda:hover {
+  background: var(--cor-superficie);
+}
+
+.adicionar {
+  display: inline-flex;
+  flex: none;
+  gap: var(--espaco-8);
+  align-items: center;
+  height: 48px;
+  padding: var(--espaco-12) var(--espaco-16);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-caixa);
+  background: transparent;
+  color: var(--cor-texto);
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+/* Mesmo preenchimento de fundo dos cards da Home. */
+.adicionar:hover {
+  background: var(--cor-superficie);
+}
+
+@media (max-width: 1024px) {
+  .par {
+    grid-template-columns: 1fr;
+  }
+}
