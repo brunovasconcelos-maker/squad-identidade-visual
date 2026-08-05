@@ -29,6 +29,10 @@ jobs:
       - run: npm ci
       - run: npm run build
 
+      # Requer Pages já ligado no repositório com Source: GitHub Actions
+      # (Settings → Pages). O GITHUB_TOKEN do workflow não consegue ligar
+      # sozinho: criar o site do Pages é uma operação de admin, e o
+      # `enablement: true` falha com "Resource not accessible by integration".
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
