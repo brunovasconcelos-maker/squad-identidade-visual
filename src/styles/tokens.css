@@ -1,0 +1,53 @@
+/*
+ * Tokens extraídos do Figma — Squad | Identidade Visual (node 6075:5180).
+ * Os nomes entre parênteses são as variáveis correspondentes no Figma.
+ */
+:root {
+  /* Cores */
+  --cor-fundo: #ffffff;              /* bg/background */
+  --cor-superficie: #f4f5f5;         /* fundo do banner, tile do ícone, hover do card */
+  --cor-borda-sutil: #f4f5f5;        /* borda do botão voltar */
+  --cor-borda-tracejada: #d9d9d9;    /* borda do card no estado vazio */
+  --cor-texto: #000000;              /* texto-icones/default */
+  --cor-texto-secundario: #798282;   /* "Nada adicionado" */
+  --cor-texto-invertido: #ffffff;    /* texto-icones/invert */
+  --cor-marca: #000000;              /* background/marca — fundo do botão */
+
+  /* Tipografia
+     No Figma o texto aparece em SF Pro (fonte de sistema do designer);
+     o design system da Inner AI define DM Sans para app/produto. */
+  --fonte: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --altura-linha: 1.2;
+  --espacamento-letras: -0.26px;
+
+  --texto-titulo-pagina: 28px;
+  --texto-destaque: 20px;
+  --texto-corpo: 16px;
+  --texto-botao: 14px;
+
+  --peso-regular: 400;
+  --peso-medio: 500;    /* Figma: 510 */
+  --peso-semibold: 600; /* Figma: 590 */
+
+  /* Raios */
+  --raio-card: 16px;
+  --raio-icone: 12px;
+  --raio-pilula: 360px;
+
+  /* Espaçamento */
+  --espaco-4: 4px;
+  --espaco-8: 8px;
+  --espaco-12: 12px;
+  --espaco-16: 16px;
+  --espaco-20: 20px;
+  --espaco-24: 24px;
+  --espaco-60: 60px;
+
+  /* Grid: 12 colunas, margem 40px, gutter 20px */
+  --grid-colunas: 12;
+  --grid-margem: 40px;
+  --grid-gutter: 20px;
+
+  /* Movimento */
+  --transicao-padrao: 160ms ease;
+}

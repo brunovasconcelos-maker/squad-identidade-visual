@@ -10,30 +10,8 @@ import Personalidade from './pages/Personalidade.jsx'
 import Elementos from './pages/Elementos.jsx'
 import PassoAPasso from './pages/PassoAPasso.jsx'
 
-// Temas válidos para /passo-a-passo/:tema
-export const temas = [
-  'logo',
-  'icone',
-  'paleta-de-cores',
-  'tipografia',
-  'fotografia',
-  'personalidade',
-  'elementos',
-]
-
-// Usado pela navegação no App.jsx
-export const navLinks = [
-  { path: '/', label: 'Home' },
-  { path: '/logo', label: 'Logo' },
-  { path: '/icone', label: 'Ícone' },
-  { path: '/paleta-de-cores', label: 'Paleta de Cores' },
-  { path: '/tipografia', label: 'Tipografia' },
-  { path: '/fotografia', label: 'Fotografia' },
-  { path: '/personalidade', label: 'Personalidade' },
-  { path: '/elementos', label: 'Elementos' },
-  { path: '/passo-a-passo', label: 'Passo a Passo' },
-]
-
+// Os temas válidos de /passo-a-passo/:tema vêm de src/data/pilares.js, que é
+// a mesma lista usada pelos cards da Home.
 export default function AppRoutes() {
   return (
     <Routes>

@@ -1,0 +1,68 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-20);
+  padding: var(--espaco-24);
+  border-radius: var(--raio-card);
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  text-decoration: none;
+  transition: background-color var(--transicao-padrao);
+}
+
+.vazio {
+  border: 1px dashed var(--cor-borda-tracejada);
+}
+
+/* Ainda não usado — o estado preenchido ganha visual junto com o resto do
+   design. Fica aqui para o card não precisar ser reescrito depois. */
+.preenchido {
+  border: 1px solid var(--cor-borda-tracejada);
+}
+
+.card:hover {
+  background: var(--cor-superficie);
+}
+
+.topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tile {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  border-radius: var(--raio-icone);
+  background: var(--cor-superficie);
+}
+
+.seta {
+  color: var(--cor-texto);
+}
+
+.texto {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-12);
+}
+
+.titulo {
+  margin: 0;
+  font-size: var(--texto-destaque);
+  font-weight: var(--peso-semibold);
+  line-height: var(--altura-linha);
+}
+
+.legenda {
+  margin: 0;
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-regular);
+  line-height: var(--altura-linha);
+}

@@ -1,0 +1,34 @@
+<!--
+  PLACEHOLDER — não é a arte final.
+
+  A ilustração do Tom (mascote paleta) não pôde ser baixada do Figma: a
+  política de rede desta sessão bloqueia o host www.figma.com. Exporte o
+  node 6075:5312 do arquivo "Squad | Identidade Visual" como PNG 3x e
+  substitua este arquivo (ver src/assets/imagens/README.md).
+
+  A caixa é 107x128 para bater com a geometria do Figma.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 107 128" width="107" height="128">
+  <circle
+    cx="53.5"
+    cy="59"
+    r="37"
+    fill="#ffffff"
+    stroke="#d9d9d9"
+    stroke-width="1.5"
+    stroke-dasharray="5 5"
+  />
+  <circle cx="41" cy="50" r="4.5" fill="#d9d9d9" />
+  <circle cx="59" cy="45" r="4.5" fill="#d9d9d9" />
+  <circle cx="68" cy="60" r="4.5" fill="#d9d9d9" />
+  <circle cx="47" cy="68" r="4.5" fill="#d9d9d9" />
+  <text
+    x="53.5"
+    y="112"
+    text-anchor="middle"
+    font-family="'DM Sans', sans-serif"
+    font-size="11"
+    font-weight="500"
+    fill="#798282"
+  >Tom</text>
+</svg>

@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import { temas } from '../routes.jsx'
+import { temas } from '../data/pilares.js'
 
 export default function PassoAPasso() {
   const { tema } = useParams()
