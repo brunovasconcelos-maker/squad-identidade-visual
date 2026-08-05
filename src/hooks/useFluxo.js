@@ -89,9 +89,15 @@ export default function useFluxo() {
     setPaleta((atual) => atual.filter((cor) => cor.id !== id))
   }, [])
 
-  // Só uma cor por vez pode ser a principal.
+  // Só uma cor por vez pode ser a principal, e ela sobe para o topo da lista.
+  // As demais mantêm a ordem relativa que já tinham.
   const marcarPrincipal = useCallback((id) => {
-    setPaleta((atual) => atual.map((cor) => ({ ...cor, principal: cor.id === id })))
+    setPaleta((atual) => {
+      const marcadas = atual.map((cor) => ({ ...cor, principal: cor.id === id }))
+      const principal = marcadas.find((cor) => cor.principal)
+      if (!principal) return marcadas
+      return [principal, ...marcadas.filter((cor) => !cor.principal)]
+    })
   }, [])
 
   const adicionarTom = useCallback((id) => {

@@ -101,6 +101,13 @@
   cursor: pointer;
 }
 
+/* Cheia, a moldura não tem recuo próprio: quem cuida da folga de 24px é a
+   prévia, para a geometria continuar idêntica à de antes. */
+.alvoPreenchido {
+  gap: 0;
+  padding: 0;
+}
+
 .instrucao {
   font-size: var(--texto-corpo);
   font-weight: var(--peso-regular);
