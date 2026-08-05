@@ -44,15 +44,8 @@
   color: var(--cor-texto);
 }
 
-.voltar {
-  transition: background-color var(--transicao-padrao);
-}
-
-.voltar:hover {
-  background: var(--cor-superficie);
-}
-
 /* Estilo de link: no hover só aparece o sublinhado, sem mudar o fundo. */
+.voltar:hover,
 .pular:hover {
   text-decoration: underline;
 }
