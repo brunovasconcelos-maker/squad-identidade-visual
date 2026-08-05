@@ -1,31 +1,21 @@
 import Icon from '../components/Icon.jsx'
-import UploadLogo from '../components/UploadLogo.jsx'
+import PassoArquivos from './PassoArquivos.jsx'
 import s from './PassoLogo.module.css'
 
-export default function PassoLogo({ logos, onSalvar }) {
+const TITULOS = {
+  principal: 'Logo principal',
+  preta: 'Logo cor única (preta)',
+  branca: 'Logo cor única (branca)',
+}
+
+export default function PassoLogo({ arquivos, onSalvar }) {
   return (
-    <div className={s.passo}>
-      <UploadLogo
-        titulo="Logo principal"
-        logo={logos.principal}
-        onArquivo={(arquivo) => onSalvar('principal', arquivo)}
-      />
-
-      <div className={s.par}>
-        <UploadLogo
-          titulo="Logo cor única (preta)"
-          logo={logos.preta}
-          fundo="branco"
-          onArquivo={(arquivo) => onSalvar('preta', arquivo)}
-        />
-        <UploadLogo
-          titulo="Logo cor única (branca)"
-          logo={logos.branca}
-          fundo="preto"
-          onArquivo={(arquivo) => onSalvar('branca', arquivo)}
-        />
-      </div>
-
+    <PassoArquivos
+      titulos={TITULOS}
+      instrucao="Faça upload ou arraste a logo pra cá"
+      arquivos={arquivos}
+      onSalvar={onSalvar}
+    >
       <div className={s.variacoes}>
         <div className={s.tituloVariacoes}>
           <h2 className={s.titulo}>Outras variações</h2>
@@ -40,6 +30,6 @@ export default function PassoLogo({ logos, onSalvar }) {
           <Icon nome="Add" />
         </button>
       </div>
-    </div>
+    </PassoArquivos>
   )
 }

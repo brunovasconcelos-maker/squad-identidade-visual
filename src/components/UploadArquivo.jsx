@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Icon from './Icon.jsx'
 import { normalizarArquivoDeImagem } from '../lib/svg.js'
-import s from './UploadLogo.module.css'
+import s from './UploadArquivo.module.css'
 
 const TIPOS_ACEITOS = ['image/png', 'image/svg+xml']
 const ACCEPT = '.png,.svg,image/png,image/svg+xml'
@@ -12,15 +12,15 @@ function arquivoValido(arquivo) {
 }
 
 /**
- * Área de upload de um logo: clique abre o seletor do sistema, arrastar um
- * arquivo válido também funciona. Preenchida, mostra a prévia e um lápis ao
- * lado do título para trocar o arquivo.
+ * Área de upload de um arquivo (logo, ícone, o que vier): clique abre o
+ * seletor do sistema, arrastar um arquivo válido também funciona. Preenchida,
+ * mostra a prévia e um lápis na borda direita para trocar o arquivo.
  *
  * `fundo` define o fundo da prévia depois de preenchida:
- * 'padrao' (cinza), 'branco' (branco com borda cinza, para o logo preto) ou
- * 'preto' (para o logo branco aparecer).
+ * 'padrao' (cinza), 'branco' (branco com borda cinza, para a versão preta) ou
+ * 'preto' (para a versão branca aparecer).
  */
-export default function UploadLogo({ titulo, logo, fundo = 'padrao', onArquivo }) {
+export default function UploadArquivo({ titulo, instrucao, arquivo: logo, fundo = 'padrao', onArquivo }) {
   const inputRef = useRef(null)
   const [arrastando, setArrastando] = useState(false)
   const [erro, setErro] = useState(null)
@@ -104,7 +104,7 @@ export default function UploadLogo({ titulo, logo, fundo = 'padrao', onArquivo }
           <button type="button" className={s.alvo} onClick={abrirSeletor}>
             <Icon nome="File-Upload" tamanho={40} />
             <span className={s.instrucao}>
-              Faça upload ou arraste a logo pra cá
+              {instrucao}
               <br />
               Você pode adicionar arquivos PNG ou SVG.
             </span>

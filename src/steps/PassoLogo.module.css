@@ -1,17 +1,3 @@
-.passo {
-  display: flex;
-  flex-direction: column;
-}
-
-/* Espaçamentos verticais do Figma: 72px entre as seções de upload e 68px
-   antes da linha de variações, que é mais alta por causa do botão. */
-.par {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--grid-gutter);
-  margin-top: 72px;
-}
-
 .variacoes {
   display: flex;
   align-items: center;
@@ -77,10 +63,4 @@
 /* Mesmo preenchimento de fundo dos cards da Home. */
 .adicionar:hover {
   background: var(--cor-superficie);
-}
-
-@media (max-width: 1024px) {
-  .par {
-    grid-template-columns: 1fr;
-  }
 }

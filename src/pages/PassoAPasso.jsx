@@ -3,7 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import FlowTopBar from '../components/FlowTopBar.jsx'
 import FlowBottomBar from '../components/FlowBottomBar.jsx'
 import PassoLogo from '../steps/PassoLogo.jsx'
-import useLogos from '../hooks/useLogos.js'
+import PassoIcone from '../steps/PassoIcone.jsx'
+import useUploads from '../hooks/useUploads.js'
 import { pilares, temas } from '../data/pilares.js'
 import s from './PassoAPasso.module.css'
 
@@ -18,13 +19,31 @@ function FluxoCompleto() {
   const navigate = useNavigate()
   const total = pilares.length
   const [passo, setPasso] = useState(1)
-  const { logos, salvar } = useLogos()
+  // Um estado só para o fluxo inteiro: ir e voltar entre passos não perde nada.
+  const { uploads, salvar } = useUploads()
 
   const pilarAtual = pilares[passo - 1]
 
-  // Só o passo de Logo tem conteúdo por enquanto; nos outros o "Continuar"
-  // segue desabilitado. As variações preta e branca são opcionais.
-  const temConteudo = pilarAtual.slug === 'logo' && Boolean(logos.principal)
+  // Só habilita o "Continuar" quando o arquivo principal do passo existe. As
+  // variações preta e branca são opcionais. Passos ainda sem conteúdo não têm
+  // entrada em uploads, então seguem desabilitados.
+  const temConteudo = Boolean(uploads[pilarAtual.slug]?.principal)
+
+  const conteudoDoPasso = () => {
+    const props = {
+      arquivos: uploads[pilarAtual.slug],
+      onSalvar: (tipo, arquivo) => salvar(pilarAtual.slug, tipo, arquivo),
+    }
+
+    switch (pilarAtual.slug) {
+      case 'logo':
+        return <PassoLogo {...props} />
+      case 'icone':
+        return <PassoIcone {...props} />
+      default:
+        return null
+    }
+  }
 
   // Sair do fluxo desmonta este componente, e com ele o estado dos uploads.
   // É o que faz o X e o "Voltar" do passo 1 descartarem o que foi enviado.
@@ -50,12 +69,10 @@ function FluxoCompleto() {
     <div className={s.pagina}>
       <FlowTopBar titulo="Identidade Visual" onFechar={sairDoFluxo} />
 
-      {/* Só esta área rola. Os outros seis passos entram aqui depois. */}
+      {/* Só esta área rola. Os passos restantes entram no switch acima. */}
       <main className={s.conteudo}>
         <div className={s.grade}>
-          <div className={s.centro}>
-            {pilarAtual.slug === 'logo' && <PassoLogo logos={logos} onSalvar={salvar} />}
-          </div>
+          <div className={s.centro}>{conteudoDoPasso()}</div>
         </div>
       </main>
 
