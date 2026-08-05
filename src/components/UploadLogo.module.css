@@ -109,16 +109,16 @@
   text-align: center;
 }
 
-/* A prévia ocupa a caixa inteira menos 24px em cima e embaixo, e o contain
-   encaixa o logo dentro dessa área mantendo a proporção: pequeno cresce até
-   encostar na altura, grande encolhe, e largo é limitado pela largura. Vale
-   igual para as três molduras, independente do formato do arquivo. */
+/* A prévia ocupa a caixa inteira menos 24px de cada lado, e o contain encaixa
+   o logo dentro dessa área mantendo a proporção: quem manda é a dimensão mais
+   apertada, então o logo nunca encosta nem transborda — sobra pelo menos 24px
+   em volta. Vale igual para as três molduras, seja qual for o formato. */
 .previa {
   display: block;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  padding: 24px 0;
+  padding: 24px;
   object-fit: contain;
 }
 
