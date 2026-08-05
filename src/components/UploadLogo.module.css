@@ -6,10 +6,12 @@
 
 /* Sem altura mínima: a linha tem os 24px do título, para o topo da caixa
    cair exatamente onde o Figma coloca. O botão de 32px transborda 4px para
-   cada lado, o que é invisível por ser só a área de hover. */
+   cada lado, o que é invisível por ser só a área de hover — e alinha o ícone
+   de 24px exatamente com a borda direita da moldura abaixo. */
 .cabecalho {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: var(--espaco-12);
   margin-bottom: 32px;
 }
@@ -36,7 +38,7 @@
   border: none;
   border-radius: var(--raio-pilula);
   background: transparent;
-  color: var(--cor-texto);
+  color: var(--cor-icone);
   cursor: pointer;
   transition: background-color var(--transicao-padrao);
 }
@@ -66,8 +68,15 @@
   border: 1px solid var(--cor-borda);
 }
 
+/* Prévia do logo preto sobre branco, com borda cinza para a moldura não
+   sumir no fundo da página. */
+.preenchida.branco {
+  background: var(--cor-fundo);
+  border-color: var(--cor-borda-previa);
+}
+
 /* Prévia do logo branco sobre preto, senão ele some no fundo claro. */
-.escura {
+.preenchida.preto {
   background: var(--cor-marca);
 }
 
@@ -100,14 +109,16 @@
   text-align: center;
 }
 
-/* A prévia ocupa a altura da caixa menos 24px em cima e embaixo: logo pequeno
-   cresce até essa altura, logo grande encolhe. Se a largura resultante passar
-   do limite, o max-width segura e o contain mantém a proporção — nunca
-   distorce nem transborda. */
+/* A prévia ocupa a caixa inteira menos 24px em cima e embaixo, e o contain
+   encaixa o logo dentro dessa área mantendo a proporção: pequeno cresce até
+   encostar na altura, grande encolhe, e largo é limitado pela largura. Vale
+   igual para as três molduras, independente do formato do arquivo. */
 .previa {
-  width: auto;
-  height: calc(100% - 48px);
-  max-width: calc(100% - 48px);
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 24px 0;
   object-fit: contain;
 }
 
