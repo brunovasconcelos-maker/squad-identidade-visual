@@ -1,0 +1,96 @@
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* min-height em vez de height: em telas estreitas o texto quebra em duas
+     linhas e o banner precisa crescer em vez de cortar. */
+  min-height: 80px;
+  padding: 0 var(--espaco-16);
+  border-radius: var(--raio-card);
+  background: var(--cor-superficie);
+}
+
+.conteudo {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-20);
+  min-width: 0;
+}
+
+/* O slot tem 80x80, mas a arte (107x128) é maior de propósito: o Tom
+   transborda o banner em cima e embaixo, como no Figma. */
+.slotIlustracao {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+}
+
+.ilustracao {
+  display: block;
+  flex: none;
+  width: 107px;
+  height: 128px;
+  transform-origin: center bottom;
+}
+
+.balancando {
+  animation: balancar 500ms ease-in-out;
+}
+
+@keyframes balancar {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(-6deg);
+  }
+  40% {
+    transform: rotate(5deg);
+  }
+  60% {
+    transform: rotate(-3deg);
+  }
+  80% {
+    transform: rotate(2deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .balancando {
+    animation: none;
+  }
+}
+
+.texto {
+  margin: 0;
+  font-size: var(--texto-destaque);
+  font-weight: var(--peso-semibold);
+  line-height: var(--altura-linha);
+}
+
+.botao {
+  display: inline-flex;
+  flex: none;
+  gap: var(--espaco-8);
+  align-items: center;
+  height: 40px;
+  padding: var(--espaco-12) var(--espaco-16);
+  border: none;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-marca);
+  color: var(--cor-texto-invertido);
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: opacity var(--transicao-padrao);
+}
+
+.botao:hover {
+  opacity: 0.85;
+}

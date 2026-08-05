@@ -1,0 +1,11 @@
+.icone {
+  display: inline-flex;
+  flex: none;
+}
+
+/* Os SVGs do Phosphor têm só viewBox, então definimos o tamanho aqui. */
+.icone > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

@@ -1,0 +1,46 @@
+.barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+}
+
+.esquerda {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-16);
+}
+
+.voltar,
+.opcoes {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: var(--espaco-16);
+  border: none;
+  border-radius: var(--raio-pilula);
+  background: transparent;
+  color: var(--cor-texto);
+  cursor: pointer;
+}
+
+.voltar {
+  border: 1px solid var(--cor-borda-sutil);
+  background: var(--cor-fundo);
+}
+
+.voltar:hover,
+.opcoes:hover {
+  background: var(--cor-superficie);
+}
+
+.titulo {
+  margin: 0;
+  font-size: var(--texto-titulo-pagina);
+  font-weight: var(--peso-semibold);
+  line-height: var(--altura-linha);
+  white-space: nowrap;
+}

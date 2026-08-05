@@ -1,3 +1,8 @@
+@import '@fontsource/dm-sans/400.css';
+@import '@fontsource/dm-sans/500.css';
+@import '@fontsource/dm-sans/600.css';
+@import './styles/tokens.css';
+
 *,
 *::before,
 *::after {
@@ -6,12 +11,19 @@
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  line-height: 1.5;
-  color: #16161a;
-  background: #fff;
+  font-family: var(--fonte);
+  line-height: var(--altura-linha);
+  letter-spacing: var(--espacamento-letras);
+  color: var(--cor-texto);
+  background: var(--cor-fundo);
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
   color: inherit;
+}
+
+button {
+  font: inherit;
+  letter-spacing: inherit;
 }
