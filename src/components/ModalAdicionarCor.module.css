@@ -1,0 +1,227 @@
+.fundo {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--espaco-24);
+  background: var(--cor-scrim);
+}
+
+.painel {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 580px;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: auto;
+  padding: var(--espaco-24);
+  border-radius: var(--raio-card);
+  background: var(--cor-fundo);
+}
+
+.cabecalho {
+  display: flex;
+  gap: var(--espaco-12);
+  align-items: center;
+}
+
+.titulo {
+  flex: 1;
+  margin: 0;
+  font-size: var(--texto-destaque);
+  font-weight: var(--peso-semibold);
+  line-height: var(--altura-linha);
+}
+
+.fechar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  border: none;
+  border-radius: var(--raio-pilula);
+  background: transparent;
+  color: var(--cor-texto);
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.fechar:hover {
+  background: var(--cor-superficie);
+}
+
+.campoNome {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-16);
+}
+
+.entradaNome {
+  width: 100%;
+  padding: var(--espaco-16) 0;
+  border: none;
+  border-bottom: 1px solid var(--cor-borda);
+  border-radius: 0;
+  background: transparent;
+  color: var(--cor-texto);
+  font-size: var(--texto-secao);
+  font-weight: var(--peso-medio);
+  letter-spacing: -0.4px;
+}
+
+.entradaNome::placeholder {
+  color: var(--cor-texto-secundario);
+}
+
+.entradaNome:focus {
+  outline: none;
+  border-bottom-color: var(--cor-texto);
+}
+
+.dica {
+  margin: 0;
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-micro);
+  line-height: var(--altura-linha);
+  letter-spacing: -0.08px;
+}
+
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-24);
+}
+
+/* Quadrado de saturação/brilho: matiz ao fundo, branco à esquerda e preto
+   embaixo. O Figma monta com blend modes; o resultado é o mesmo. */
+.area {
+  position: relative;
+  height: 238px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--raio-caixa);
+  background:
+    linear-gradient(to top, #000, rgba(0, 0, 0, 0)),
+    linear-gradient(to right, #fff, rgba(255, 255, 255, 0)),
+    var(--cor-base);
+}
+
+.matiz {
+  position: relative;
+  height: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 24px;
+  background: linear-gradient(
+    to right,
+    #f00 0%,
+    #ff0 17%,
+    #0f0 33%,
+    #0ff 50%,
+    #00f 67%,
+    #f0f 83%,
+    #f00 100%
+  );
+}
+
+.alcaArea,
+.alcaMatiz {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border: 8px solid var(--cor-fundo);
+  border-radius: var(--raio-pilula);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+.alcaArea {
+  top: 15px;
+  right: 23px;
+}
+
+.alcaMatiz {
+  top: 50%;
+  left: calc(50% + 153.5px);
+  transform: translate(-50%, -50%);
+}
+
+/* 32,5% / 20% / 20% / 20% com 13,3px de gap, como no Figma. */
+.campos {
+  display: grid;
+  grid-template-columns: 32.5fr 20fr 20fr 20fr;
+  gap: 13.3px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.rotulo {
+  padding-left: var(--espaco-4);
+  color: #111111;
+  font-size: var(--texto-micro);
+  font-weight: var(--peso-semibold);
+  line-height: 16px;
+  letter-spacing: 0;
+}
+
+.entrada {
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--espaco-16);
+  border: 1px solid var(--cor-borda-campo);
+  border-radius: var(--raio-caixa);
+  background: var(--cor-fundo);
+  color: #111111;
+  font-size: var(--texto-corpo);
+  line-height: 24px;
+  letter-spacing: 0;
+}
+
+.acoes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.voltar,
+.continuar {
+  display: inline-flex;
+  flex: none;
+  gap: var(--espaco-8);
+  align-items: center;
+  height: 40px;
+  padding: var(--espaco-12) var(--espaco-16);
+  border: none;
+  border-radius: var(--raio-pilula);
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.voltar {
+  background: transparent;
+  color: var(--cor-texto);
+}
+
+.voltar:hover {
+  text-decoration: underline;
+}
+
+.continuar {
+  background: var(--cor-marca);
+  color: var(--cor-texto-invertido);
+  transition: opacity var(--transicao-padrao);
+}
+
+.continuar:hover {
+  opacity: 0.85;
+}

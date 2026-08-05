@@ -22,6 +22,9 @@
   --cor-texto-auxiliar: #525b5b;     /* texto de apoio da área de upload */
   --cor-borda-upload: #b2b9b9;       /* borda tracejada da área de upload */
   --cor-borda-previa: #e5e5e5;       /* borda da prévia em fundo branco */
+  --cor-borda-campo: #e5e8e8;        /* borda dos campos do color picker */
+  --cor-scrim: rgba(0, 0, 0, 0.2);   /* fundo escurecido atrás do modal */
+  --cor-destrutiva: #ce2c31;         /* ações destrutivas, como excluir */
 
   /* Tipografia — Inter em todo o site, em todas as páginas.
      Regra fixa do projeto: nada usa outra família. Ver CLAUDE.md.
@@ -35,6 +38,7 @@
   --texto-destaque: 20px;
   --texto-corpo: 16px;
   --texto-botao: 14px;
+  --texto-micro: 12px;
 
   --peso-regular: 400;
   --peso-medio: 500;    /* Figma: 510 */
