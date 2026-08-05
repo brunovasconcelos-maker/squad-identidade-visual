@@ -31,15 +31,19 @@ sem framework de CSS — o design é definido no Figma e traduzido à mão.
 - `src/components` — componentes compartilhados
 - `src/steps` — o conteúdo de cada passo do fluxo `/passo-a-passo`
 - `src/hooks` — hooks de estado (ex.: `useLogos`)
-- `src/lib` — acesso a dados do navegador (ex.: `logosDB` no IndexedDB)
 - `src/data` — listas fixas do domínio (ex.: `pilares`)
 
 ## Persistência
 
-Arquivos enviados pelo usuário vão para o IndexedDB, não para o localStorage:
-podem passar do limite de tamanho, e o IndexedDB guarda `File`/`Blob` direto.
-É armazenamento local por navegador — não sincroniza entre dispositivos nem vai
-para o repositório.
+**Nada é gravado no navegador durante o fluxo.** Os uploads ficam em memória,
+no estado do componente do fluxo (`useLogos`, chamado em `PassoAPasso`). Isso
+atravessa a navegação entre passos, mas sair pelo X ou pelo "Voltar" do passo 1
+desmonta o componente e descarta tudo — na próxima entrada o fluxo volta vazio,
+que é o comportamento esperado.
+
+A gravação de verdade acontecerá só na etapa final de salvar, que ainda não
+existe. Não reintroduza escrita por passo (IndexedDB, localStorage ou o que
+for) sem que isso seja pedido.
 
 ## Assets
 
