@@ -88,28 +88,36 @@ export default function UploadArquivo({ titulo, instrucao, arquivo: logo, fundo 
         onDragLeave={() => setArrastando(false)}
         onDrop={aoSoltar}
       >
-        {preenchido && previaFalhou ? (
-          // Sem isso o browser desenharia o ícone de imagem quebrada aqui.
-          <p className={s.falhaPrevia}>
-            Não foi possível exibir este arquivo. Tente outro PNG ou SVG.
-          </p>
-        ) : preenchido ? (
-          <img
-            src={logo.url}
-            alt={`Prévia — ${titulo}`}
-            className={s.previa}
-            onError={() => setPreviaFalhou(true)}
-          />
-        ) : (
-          <button type="button" className={s.alvo} onClick={abrirSeletor}>
-            <Icon nome="File-Upload" tamanho={40} />
-            <span className={s.instrucao}>
-              {instrucao}
-              <br />
-              Você pode adicionar arquivos PNG ou SVG.
-            </span>
-          </button>
-        )}
+        {/* A moldura inteira abre o seletor, cheia ou vazia. */}
+        <button
+          type="button"
+          className={preenchido ? `${s.alvo} ${s.alvoPreenchido}` : s.alvo}
+          onClick={abrirSeletor}
+          aria-label={preenchido ? `Trocar ${titulo}` : `Enviar ${titulo}`}
+        >
+          {preenchido && previaFalhou ? (
+            // Sem isso o browser desenharia o ícone de imagem quebrada aqui.
+            <p className={s.falhaPrevia}>
+              Não foi possível exibir este arquivo. Tente outro PNG ou SVG.
+            </p>
+          ) : preenchido ? (
+            <img
+              src={logo.url}
+              alt=""
+              className={s.previa}
+              onError={() => setPreviaFalhou(true)}
+            />
+          ) : (
+            <>
+              <Icon nome="File-Upload" tamanho={40} />
+              <span className={s.instrucao}>
+                {instrucao}
+                <br />
+                Você pode adicionar arquivos PNG ou SVG.
+              </span>
+            </>
+          )}
+        </button>
 
         <input
           ref={inputRef}

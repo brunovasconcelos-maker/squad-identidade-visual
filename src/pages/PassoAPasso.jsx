@@ -76,7 +76,8 @@ function FluxoCompleto() {
 
   return (
     <div className={s.pagina}>
-      <FlowTopBar titulo="Identidade Visual" onFechar={sairDoFluxo} />
+      {/* O topo mostra o tema do passo atual, não o nome do pilar. */}
+      <FlowTopBar titulo={pilarAtual.titulo} onFechar={sairDoFluxo} />
 
       {/* Só esta área rola. Os passos restantes entram no switch acima. */}
       <main className={s.conteudo}>
