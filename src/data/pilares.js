@@ -3,12 +3,12 @@
 // arquivo em src/assets/icones.
 export const pilares = [
   { slug: 'logo', titulo: 'Logo', icone: 'Logo' },
-  { slug: 'icone', titulo: 'Ícone', icone: 'smiley' },
-  { slug: 'paleta-de-cores', titulo: 'Paleta de Cores', icone: 'palette' },
-  { slug: 'tipografia', titulo: 'Tipografia', icone: 'text-aa' },
-  { slug: 'fotografia', titulo: 'Fotografia', icone: 'camera' },
-  { slug: 'personalidade', titulo: 'Personalidade', icone: 'user-sound' },
-  { slug: 'elementos', titulo: 'Elementos', icone: 'file' },
+  { slug: 'icone', titulo: 'Ícone', icone: 'Icone' },
+  { slug: 'paleta-de-cores', titulo: 'Paleta de Cores', icone: 'Paleta' },
+  { slug: 'tipografia', titulo: 'Tipografia', icone: 'Tipografia' },
+  { slug: 'fotografia', titulo: 'Fotografia', icone: 'Fotografia' },
+  { slug: 'personalidade', titulo: 'Personalidade', icone: 'Personalidade' },
+  { slug: 'elementos', titulo: 'Elementos', icone: 'Elementos' },
 ]
 
 export const temas = pilares.map((pilar) => pilar.slug)

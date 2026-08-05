@@ -21,7 +21,7 @@ export default function PillarCard({ slug, titulo, icone, estado = 'vazio', chil
         <span className={s.tile}>
           <Icon nome={icone} />
         </span>
-        <Icon nome="arrow-up-right" className={s.seta} />
+        <Icon nome="Arrow-Up" className={s.seta} />
       </div>
 
       <div className={s.texto}>
