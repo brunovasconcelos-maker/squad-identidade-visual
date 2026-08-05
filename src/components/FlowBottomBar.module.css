@@ -1,0 +1,75 @@
+.barra {
+  position: relative;
+  flex: none;
+  height: 80px;
+  padding: var(--espaco-24) var(--grid-margem) var(--espaco-16);
+  background: var(--cor-fundo);
+}
+
+.acoes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+}
+
+.direita {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-12);
+}
+
+/* Base dos três botões: 40px de altura, pílula, texto 14/500. */
+.voltar,
+.pular,
+.continuar {
+  display: inline-flex;
+  flex: none;
+  gap: var(--espaco-8);
+  align-items: center;
+  height: 40px;
+  padding: var(--espaco-12) var(--espaco-16);
+  border: none;
+  border-radius: var(--raio-pilula);
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.voltar,
+.pular {
+  background: transparent;
+  color: var(--cor-texto);
+}
+
+.voltar {
+  transition: background-color var(--transicao-padrao);
+}
+
+.voltar:hover {
+  background: var(--cor-superficie);
+}
+
+/* Estilo de link: no hover só aparece o sublinhado, sem mudar o fundo. */
+.pular:hover {
+  text-decoration: underline;
+}
+
+.continuar {
+  background: var(--cor-marca);
+  color: var(--cor-texto-invertido);
+  transition: opacity var(--transicao-padrao);
+}
+
+.continuar:not(:disabled):hover {
+  opacity: 0.85;
+}
+
+/* Desabilitado não tem hover nenhum. */
+.continuar:disabled {
+  background: var(--cor-fundo-desabilitado);
+  color: var(--cor-texto-desabilitado);
+  cursor: default;
+}
