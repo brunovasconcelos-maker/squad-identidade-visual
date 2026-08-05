@@ -1,5 +1,6 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Icon from './Icon.jsx'
+import { normalizarArquivoDeImagem } from '../lib/svg.js'
 import s from './UploadLogo.module.css'
 
 const TIPOS_ACEITOS = ['image/png', 'image/svg+xml']
@@ -23,12 +24,18 @@ export default function UploadLogo({ titulo, logo, fundo = 'padrao', onArquivo }
   const inputRef = useRef(null)
   const [arrastando, setArrastando] = useState(false)
   const [erro, setErro] = useState(null)
+  const [previaFalhou, setPreviaFalhou] = useState(false)
 
   const preenchido = Boolean(logo)
 
+  // Cada arquivo novo merece uma chance de aparecer.
+  useEffect(() => {
+    setPreviaFalhou(false)
+  }, [logo?.url])
+
   const abrirSeletor = () => inputRef.current?.click()
 
-  const receber = (arquivo) => {
+  const receber = async (arquivo) => {
     if (!arquivo) return
 
     if (!arquivoValido(arquivo)) {
@@ -37,7 +44,7 @@ export default function UploadLogo({ titulo, logo, fundo = 'padrao', onArquivo }
     }
 
     setErro(null)
-    onArquivo(arquivo)
+    onArquivo(await normalizarArquivoDeImagem(arquivo))
   }
 
   const aoSoltar = (evento) => {
@@ -81,8 +88,18 @@ export default function UploadLogo({ titulo, logo, fundo = 'padrao', onArquivo }
         onDragLeave={() => setArrastando(false)}
         onDrop={aoSoltar}
       >
-        {preenchido ? (
-          <img src={logo.url} alt={`Prévia — ${titulo}`} className={s.previa} />
+        {preenchido && previaFalhou ? (
+          // Sem isso o browser desenharia o ícone de imagem quebrada aqui.
+          <p className={s.falhaPrevia}>
+            Não foi possível exibir este arquivo. Tente outro PNG ou SVG.
+          </p>
+        ) : preenchido ? (
+          <img
+            src={logo.url}
+            alt={`Prévia — ${titulo}`}
+            className={s.previa}
+            onError={() => setPreviaFalhou(true)}
+          />
         ) : (
           <button type="button" className={s.alvo} onClick={abrirSeletor}>
             <Icon nome="File-Upload" tamanho={40} />

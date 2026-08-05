@@ -127,6 +127,16 @@
   display: none;
 }
 
+.falhaPrevia {
+  margin: 0;
+  padding: 0 var(--espaco-24);
+  color: var(--cor-texto-auxiliar);
+  font-size: var(--texto-corpo);
+  line-height: 20px;
+  letter-spacing: var(--espacamento-letras-secao);
+  text-align: center;
+}
+
 .erro {
   margin: var(--espaco-8) 0 0;
   color: var(--cor-texto-auxiliar);
