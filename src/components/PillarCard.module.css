@@ -40,10 +40,17 @@
   padding: 8px;
   border-radius: var(--raio-icone);
   background: var(--cor-superficie);
+  color: var(--cor-icone);
+  transition: background-color var(--transicao-padrao);
+}
+
+/* No hover o card fica cinza; o tile vira branco para não se fundir com ele. */
+.card:hover .tile {
+  background: var(--cor-fundo);
 }
 
 .seta {
-  color: var(--cor-texto);
+  color: var(--cor-icone);
 }
 
 .texto {

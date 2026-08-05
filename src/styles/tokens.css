@@ -10,13 +10,17 @@
   --cor-borda-tracejada: #d9d9d9;    /* borda do card no estado vazio */
   --cor-texto: #000000;              /* texto-icones/default */
   --cor-texto-secundario: #798282;   /* "Nada adicionado" */
+  /* Ícones dos cards e a seta: cinza, não preto. O hex exato não pôde ser
+     extraído do Figma (o host dos assets está bloqueado), então usamos o
+     mesmo cinza do texto secundário do próprio arquivo. */
+  --cor-icone: #798282;
   --cor-texto-invertido: #ffffff;    /* texto-icones/invert */
   --cor-marca: #000000;              /* background/marca — fundo do botão */
 
-  /* Tipografia
-     No Figma o texto aparece em SF Pro (fonte de sistema do designer);
-     o design system da Inner AI define DM Sans para app/produto. */
-  --fonte: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* Tipografia — Inter em todo o site, em todas as páginas.
+     Regra fixa do projeto: nada usa outra família. Ver CLAUDE.md.
+     Servida localmente por @fontsource/inter (sem CDN). */
+  --fonte: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --altura-linha: 1.2;
   --espacamento-letras: -0.26px;
 

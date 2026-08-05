@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import tom from '../assets/imagens/tom.svg'
+import tom from '../assets/imagens/Tom-Home.png'
 import s from './Banner.module.css'
 
 export default function Banner() {
