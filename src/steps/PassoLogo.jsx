@@ -15,12 +15,13 @@ export default function PassoLogo({ logos, onSalvar }) {
         <UploadLogo
           titulo="Logo cor única (preta)"
           logo={logos.preta}
+          fundo="branco"
           onArquivo={(arquivo) => onSalvar('preta', arquivo)}
         />
         <UploadLogo
           titulo="Logo cor única (branca)"
           logo={logos.branca}
-          fundo="escuro"
+          fundo="preto"
           onArquivo={(arquivo) => onSalvar('branca', arquivo)}
         />
       </div>

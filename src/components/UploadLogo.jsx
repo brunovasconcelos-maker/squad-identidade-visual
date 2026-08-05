@@ -15,10 +15,11 @@ function arquivoValido(arquivo) {
  * arquivo válido também funciona. Preenchida, mostra a prévia e um lápis ao
  * lado do título para trocar o arquivo.
  *
- * `fundo="escuro"` deixa a prévia sobre preto — o logo branco precisa disso
- * para aparecer.
+ * `fundo` define o fundo da prévia depois de preenchida:
+ * 'padrao' (cinza), 'branco' (branco com borda cinza, para o logo preto) ou
+ * 'preto' (para o logo branco aparecer).
  */
-export default function UploadLogo({ titulo, logo, fundo = 'claro', onArquivo }) {
+export default function UploadLogo({ titulo, logo, fundo = 'padrao', onArquivo }) {
   const inputRef = useRef(null)
   const [arrastando, setArrastando] = useState(false)
   const [erro, setErro] = useState(null)
@@ -48,7 +49,7 @@ export default function UploadLogo({ titulo, logo, fundo = 'claro', onArquivo })
   const classesCaixa = [
     s.caixa,
     preenchido ? s.preenchida : s.vazia,
-    preenchido && fundo === 'escuro' && s.escura,
+    preenchido && s[fundo],
     arrastando && s.arrastando,
   ]
     .filter(Boolean)

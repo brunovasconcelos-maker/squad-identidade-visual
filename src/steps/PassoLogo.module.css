@@ -46,7 +46,7 @@
   border: none;
   border-radius: var(--raio-pilula);
   background: transparent;
-  color: var(--cor-texto);
+  color: var(--cor-texto-auxiliar);
   cursor: pointer;
   transition: background-color var(--transicao-padrao);
 }
