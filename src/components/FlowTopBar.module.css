@@ -1,0 +1,37 @@
+.barra {
+  display: flex;
+  flex: none;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 96px;
+  padding: 0 var(--grid-margem) var(--espaco-16);
+  border-bottom: 1px solid var(--cor-borda);
+  background: var(--cor-fundo);
+}
+
+.titulo {
+  margin: 0;
+  font-size: var(--texto-destaque);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+}
+
+.fechar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  border: none;
+  border-radius: var(--raio-pilula);
+  background: transparent;
+  color: var(--cor-texto);
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.fechar:hover {
+  background: var(--cor-superficie);
+}

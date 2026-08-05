@@ -1,0 +1,12 @@
+/* Topo e rodapé fixos; só o miolo rola. */
+.pagina {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+
+.conteudo {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}

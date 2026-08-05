@@ -16,6 +16,9 @@
   --cor-icone: #798282;
   --cor-texto-invertido: #ffffff;    /* texto-icones/invert */
   --cor-marca: #000000;              /* background/marca — fundo do botão */
+  --cor-borda: #e3e6e6;              /* action/stroke — borda do header do fluxo */
+  --cor-fundo-desabilitado: #e3e6e6; /* background/disable */
+  --cor-texto-desabilitado: #b2b9b9; /* texto-icones/disable */
 
   /* Tipografia — Inter em todo o site, em todas as páginas.
      Regra fixa do projeto: nada usa outra família. Ver CLAUDE.md.
