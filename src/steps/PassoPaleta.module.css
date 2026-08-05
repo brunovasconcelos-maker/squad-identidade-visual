@@ -97,11 +97,17 @@
 }
 
 /* Estado preenchido */
-.cartao {
+.lista {
   display: flex;
   flex-direction: column;
   gap: var(--espaco-20);
   margin-top: 40px;
+}
+
+.cartao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-20);
   padding: var(--espaco-12) 32px var(--espaco-12) var(--espaco-12);
   border: 1px solid var(--cor-borda);
   border-radius: var(--raio-caixa);
@@ -130,7 +136,7 @@
 }
 
 /* Selo de contraste: não existe no node do Figma, foi desenhado para combinar
-   com o resto. Os valores ainda são mockados. */
+   com o resto. O nível vem do cálculo WCAG. */
 .selo {
   position: absolute;
   top: var(--espaco-4);
@@ -203,6 +209,11 @@
   color: var(--cor-destrutiva);
 }
 
+/* Cor principal: a estrela preenchida ganha a cor do texto. */
+.marcada {
+  color: var(--cor-texto);
+}
+
 .tons {
   display: flex;
   gap: var(--espaco-8);
@@ -218,7 +229,8 @@
   border-radius: var(--raio-caixa);
 }
 
-/* Ponto de contraste do tom: também não vem do Figma, e o valor é mockado. */
+/* Ponto de contraste do tom: também não vem do Figma. Preto ou branco,
+   conforme qual dos dois lê melhor sobre o tom. */
 .ponto {
   position: absolute;
   top: 6px;

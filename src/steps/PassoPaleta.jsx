@@ -1,26 +1,39 @@
 import { useState } from 'react'
 import Icon from '../components/Icon.jsx'
-import ModalAdicionarCor from '../components/ModalAdicionarCor.jsx'
-import { corDeExemplo } from '../data/paletaMock.js'
+import ModalCor from '../components/ModalCor.jsx'
+import { escalaCompleta, nivelDeContraste } from '../lib/cor.js'
 import s from './PassoPaleta.module.css'
 
 /**
- * Passo de Paleta de Cores — só interface, com dados mockados.
+ * Passo de Paleta de Cores.
  *
- * Três estados: vazio, modal de "Adicionar cor" e preenchido. O modal não lê
- * cor nenhuma ainda: "Continuar" apenas leva ao estado preenchido usando a cor
- * de exemplo. Escolher cor de verdade, gerar tons e calcular contraste vem
- * depois.
+ * O modal serve tanto para adicionar quanto para editar: `emEdicao` guarda a
+ * cor sendo editada, ou null quando é uma cor nova. Toda a paleta vem do
+ * estado do fluxo, então sobrevive à navegação entre passos.
  */
-export default function PassoPaleta() {
+export default function PassoPaleta({ paleta, acoes }) {
   const [modalAberto, setModalAberto] = useState(false)
-  const [cores, setCores] = useState([])
+  const [emEdicao, setEmEdicao] = useState(null)
 
-  const preenchido = cores.length > 0
+  const abrirNova = () => {
+    setEmEdicao(null)
+    setModalAberto(true)
+  }
 
-  const confirmarCor = () => {
-    setCores([corDeExemplo])
+  const abrirEdicao = (cor) => {
+    setEmEdicao(cor)
+    setModalAberto(true)
+  }
+
+  const fechar = () => {
     setModalAberto(false)
+    setEmEdicao(null)
+  }
+
+  const salvar = ({ nome, hex }) => {
+    if (emEdicao) acoes.atualizar(emEdicao.id, { nome, hex })
+    else acoes.adicionar({ nome, hex })
+    fechar()
   }
 
   return (
@@ -34,29 +47,33 @@ export default function PassoPaleta() {
           </button>
         </div>
 
-        <button type="button" className={s.botaoContorno} onClick={() => setModalAberto(true)}>
+        <button type="button" className={s.botaoContorno} onClick={abrirNova}>
           Adicionar Cor
           <Icon nome="Add" />
         </button>
       </div>
 
-      {preenchido ? (
-        cores.map((cor) => <CartaoDeCor key={cor.hex} cor={cor} />)
+      {paleta.length > 0 ? (
+        <div className={s.lista}>
+          {paleta.map((cor) => (
+            <CartaoDeCor key={cor.id} cor={cor} acoes={acoes} onEditar={() => abrirEdicao(cor)} />
+          ))}
+        </div>
       ) : (
-        <button type="button" className={s.vazio} onClick={() => setModalAberto(true)}>
+        <button type="button" className={s.vazio} onClick={abrirNova}>
           <Icon nome="Paleta" tamanho={40} />
           <span className={s.textoVazio}>Adicione as cores da sua marca</span>
         </button>
       )}
 
-      {modalAberto && (
-        <ModalAdicionarCor onFechar={() => setModalAberto(false)} onContinuar={confirmarCor} />
-      )}
+      {modalAberto && <ModalCor cor={emEdicao} onCancelar={fechar} onSalvar={salvar} />}
     </div>
   )
 }
 
-function CartaoDeCor({ cor }) {
+function CartaoDeCor({ cor, acoes, onEditar }) {
+  const completa = escalaCompleta(cor.tons)
+
   return (
     <div className={s.cartao}>
       <div className={s.linha}>
@@ -64,7 +81,7 @@ function CartaoDeCor({ cor }) {
           <div className={s.amostra} style={{ background: `#${cor.hex}` }}>
             <span className={s.selo}>
               <span className={s.seloPonto} />
-              {cor.contraste}
+              {nivelDeContraste(cor.hex)}
             </span>
           </div>
 
@@ -74,17 +91,30 @@ function CartaoDeCor({ cor }) {
           </div>
         </div>
 
-        {/* Nenhuma das três ainda faz nada. */}
         <div className={s.acoes}>
-          <button type="button" className={s.acao} aria-label={`Editar ${cor.nome}`}>
+          <button
+            type="button"
+            className={s.acao}
+            onClick={onEditar}
+            aria-label={`Editar ${cor.nome}`}
+          >
             <Icon nome="Edit" />
           </button>
-          <button type="button" className={s.acao} aria-label={`Favoritar ${cor.nome}`}>
-            <Icon nome="Star" />
+
+          <button
+            type="button"
+            className={cor.principal ? `${s.acao} ${s.marcada}` : s.acao}
+            onClick={() => acoes.marcarPrincipal(cor.id)}
+            aria-pressed={cor.principal}
+            aria-label={`Definir ${cor.nome} como cor principal`}
+          >
+            <Icon nome={cor.principal ? 'Star-Filled' : 'Star'} />
           </button>
+
           <button
             type="button"
             className={`${s.acao} ${s.destrutiva}`}
+            onClick={() => acoes.remover(cor.id)}
             aria-label={`Excluir ${cor.nome}`}
           >
             <Icon nome="Delete" />
@@ -95,15 +125,27 @@ function CartaoDeCor({ cor }) {
       <div className={s.linha}>
         <div className={s.tons}>
           {cor.tons.map((tom) => (
-            <div key={tom.hex} className={s.tom} style={{ background: `#${tom.hex}` }}>
-              <span className={tom.pontoClaro ? `${s.ponto} ${s.pontoClaro}` : s.ponto} />
+            <div
+              key={tom.passo}
+              className={s.tom}
+              style={{ background: `#${tom.hex}` }}
+              title={`${tom.passo} — #${tom.hex}`}
+            >
+              <span className={tom.textoClaro ? `${s.ponto} ${s.pontoClaro}` : s.ponto} />
             </div>
           ))}
         </div>
 
-        <button type="button" className={s.botaoContorno}>
-          Adicionar Tom
-        </button>
+        {/* Some quando os dez degraus estão ocupados. */}
+        {!completa && (
+          <button
+            type="button"
+            className={s.botaoContorno}
+            onClick={() => acoes.adicionarTom(cor.id)}
+          >
+            Adicionar Tom
+          </button>
+        )}
       </div>
     </div>
   )

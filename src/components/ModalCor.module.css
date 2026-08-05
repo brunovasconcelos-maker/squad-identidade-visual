@@ -103,6 +103,8 @@
 .area {
   position: relative;
   height: 238px;
+  touch-action: none;
+  cursor: crosshair;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: var(--raio-caixa);
   background:
@@ -114,6 +116,8 @@
 .matiz {
   position: relative;
   height: 12px;
+  touch-action: none;
+  cursor: ew-resize;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 24px;
   background: linear-gradient(
@@ -128,25 +132,16 @@
   );
 }
 
-.alcaArea,
-.alcaMatiz {
+/* A alça é posicionada por porcentagem a partir do HSV. */
+.alca {
   position: absolute;
   width: 32px;
   height: 32px;
   border: 8px solid var(--cor-fundo);
   border-radius: var(--raio-pilula);
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
-}
-
-.alcaArea {
-  top: 15px;
-  right: 23px;
-}
-
-.alcaMatiz {
-  top: 50%;
-  left: calc(50% + 153.5px);
   transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
 /* 32,5% / 20% / 20% / 20% com 13,3px de gap, como no Figma. */
@@ -169,6 +164,10 @@
   font-weight: var(--peso-semibold);
   line-height: 16px;
   letter-spacing: 0;
+}
+
+.entrada[aria-invalid='true'] {
+  border-color: var(--cor-destrutiva);
 }
 
 .entrada {
