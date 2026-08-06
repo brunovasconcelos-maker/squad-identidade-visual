@@ -10,14 +10,19 @@ permissions:
   pages: write
   id-token: write
 
-# Um deploy por vez, sem cancelar o que já está rodando.
+# Um deploy por vez. Um push novo cancela o que ainda estiver rodando ou na
+# fila, em vez de entrar atrás dele: com `cancel-in-progress: false`, um run
+# travado segurava o grupo e todos os seguintes ficavam "pending" sem prazo.
+# O que vale é sempre o último commit da main, então cancelar é o certo aqui.
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Um job que não consegue runner falha rápido em vez de ficar pendurado.
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
@@ -41,6 +46,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
