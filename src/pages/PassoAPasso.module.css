@@ -24,6 +24,15 @@
   grid-column: 4 / span 6;
 }
 
+/* A Fotografia foge das 6 colunas: no Figma a grade 3x3 tem 808px (3 x 256 +
+   2 x 20 de gap), centrados na página. Ocupa a faixa toda e se centraliza. */
+.centroLargo {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 100%;
+  max-width: 808px;
+}
+
 @media (max-width: 1024px) {
   .grade {
     display: block;
