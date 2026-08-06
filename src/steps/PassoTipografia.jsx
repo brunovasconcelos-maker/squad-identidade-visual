@@ -24,7 +24,12 @@ const ROTULO_VAZIO = 'Selecionar a font da sua marca'
  */
 export default function PassoTipografia({ tipografia, acoes }) {
   const { primaria, secundarias } = tipografia
-  const podeAdicionar = secundarias.length < MAXIMO_SECUNDARIAS
+
+  // O "Adicionar" some ao chegar em três secundárias e fica desabilitado
+  // enquanto uma vaga ainda espera escolha — sem isso dá para empilhar vários
+  // cards de busca vazios.
+  const noLimite = secundarias.length >= MAXIMO_SECUNDARIAS
+  const temVagaVazia = secundarias.some((vaga) => !vaga.fonte)
 
   return (
     <div className={s.passo}>
@@ -37,11 +42,7 @@ export default function PassoTipografia({ tipografia, acoes }) {
           </button>
         </div>
 
-        {/* Upload de fonte própria entra depois. */}
-        <button type="button" className={s.botaoContorno} disabled>
-          Adicionar minha font
-          <Icon nome="File-Upload" />
-        </button>
+        <BotaoMinhaFont />
       </div>
 
       <div className={s.cartaoPrincipal}>
@@ -56,9 +57,14 @@ export default function PassoTipografia({ tipografia, acoes }) {
           </button>
         </div>
 
-        {/* Some ao chegar em três secundárias; excluir uma libera a vaga. */}
-        {podeAdicionar && (
-          <button type="button" className={s.botaoContorno} onClick={acoes.adicionarSecundaria}>
+        {/* Excluir uma secundária libera a vaga e o botão volta. */}
+        {!noLimite && (
+          <button
+            type="button"
+            className={s.botaoContorno}
+            disabled={temVagaVazia}
+            onClick={acoes.adicionarSecundaria}
+          >
             Adicionar
             <Icon nome="Add" />
           </button>
@@ -69,7 +75,14 @@ export default function PassoTipografia({ tipografia, acoes }) {
         <div className={s.listaSecundarias}>
           {secundarias.map((vaga) => (
             <div key={vaga.id} className={s.cartao}>
-              <CartaoDeFonte alvo={vaga.id} fonte={vaga.fonte} acoes={acoes} />
+              {/* Nas secundárias o upload da fonte própria fica no próprio
+                  card: o lugar dele no cabeçalho já é do "Adicionar". */}
+              <CartaoDeFonte
+                alvo={vaga.id}
+                fonte={vaga.fonte}
+                acoes={acoes}
+                comBotaoDeUpload
+              />
             </div>
           ))}
         </div>
@@ -83,7 +96,7 @@ export default function PassoTipografia({ tipografia, acoes }) {
  * busca com o nome atual preenchido; a lixeira chama `removerFonte`, que na
  * primária esvazia o card e na secundária tira o card da lista.
  */
-function CartaoDeFonte({ alvo, fonte, acoes }) {
+function CartaoDeFonte({ alvo, fonte, acoes, comBotaoDeUpload = false }) {
   const [buscando, setBuscando] = useState(false)
 
   // Recarrega sozinho quando um peso é marcado ou desmarcado: a URL muda junto.
@@ -93,6 +106,7 @@ function CartaoDeFonte({ alvo, fonte, acoes }) {
     return (
       <BuscaDeFonte
         inicial={fonte?.familia ?? ''}
+        comBotaoDeUpload={comBotaoDeUpload}
         onEscolher={(familia) => {
           acoes.definirFonte(alvo, criarFonte(familia))
           setBuscando(false)
@@ -104,13 +118,16 @@ function CartaoDeFonte({ alvo, fonte, acoes }) {
 
   if (!fonte) {
     return (
-      <button type="button" className={s.linhaVazia} onClick={() => setBuscando(true)}>
-        <span className={s.grupoFonte}>
-          <span className={s.previa}>Aa</span>
-          <span className={s.rotuloVazio}>{ROTULO_VAZIO}</span>
-        </span>
-        <Icon nome="Search" />
-      </button>
+      <div className={s.linhaVaziaGrupo}>
+        <button type="button" className={s.linhaVazia} onClick={() => setBuscando(true)}>
+          <span className={s.grupoFonte}>
+            <span className={s.previa}>Aa</span>
+            <span className={s.rotuloVazio}>{ROTULO_VAZIO}</span>
+          </span>
+          <Icon nome="Search" />
+        </button>
+        {comBotaoDeUpload && <BotaoMinhaFont />}
+      </div>
     )
   }
 
@@ -174,8 +191,18 @@ function CartaoDeFonte({ alvo, fonte, acoes }) {
   )
 }
 
+/** O upload de fonte própria, que ainda não faz nada. Visível e desabilitado. */
+function BotaoMinhaFont() {
+  return (
+    <button type="button" className={s.botaoContorno} disabled>
+      Adicionar minha font
+      <Icon nome="File-Upload" />
+    </button>
+  )
+}
+
 /** Campo de busca no lugar do rótulo, com a lista de resultados logo abaixo. */
-function BuscaDeFonte({ inicial, onEscolher, onCancelar }) {
+function BuscaDeFonte({ inicial, comBotaoDeUpload, onEscolher, onCancelar }) {
   const [texto, setTexto] = useState(inicial)
   const [ativo, setAtivo] = useState(0)
   const campo = useRef(null)
@@ -235,7 +262,12 @@ function BuscaDeFonte({ inicial, onEscolher, onCancelar }) {
           onKeyDown={aoTeclar}
           onBlur={onCancelar}
         />
-        <Icon nome="Search" />
+        {/* A lupa e o upload andam juntos para o gap de 40px da linha ficar
+            entre o campo e o par, não entre os dois. */}
+        <span className={s.acoesDaBusca}>
+          <Icon nome="Search" />
+          {comBotaoDeUpload && <BotaoMinhaFont />}
+        </span>
       </div>
 
       <ul
