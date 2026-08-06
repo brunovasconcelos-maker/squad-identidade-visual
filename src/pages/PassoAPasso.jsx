@@ -5,6 +5,7 @@ import FlowBottomBar from '../components/FlowBottomBar.jsx'
 import PassoLogo from '../steps/PassoLogo.jsx'
 import PassoIcone from '../steps/PassoIcone.jsx'
 import PassoPaleta from '../steps/PassoPaleta.jsx'
+import PassoTipografia from '../steps/PassoTipografia.jsx'
 import useFluxo from '../hooks/useFluxo.js'
 import { pilares, temas } from '../data/pilares.js'
 import s from './PassoAPasso.module.css'
@@ -49,6 +50,9 @@ function FluxoCompleto() {
         return <PassoIcone {...props} />
       case 'paleta-de-cores':
         return <PassoPaleta paleta={paleta} acoes={acoesDaPaleta} />
+      case 'tipografia':
+        // Ainda com dados mockados e estado próprio, como a paleta começou.
+        return <PassoTipografia />
       default:
         return null
     }
