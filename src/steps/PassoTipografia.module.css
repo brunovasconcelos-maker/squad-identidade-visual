@@ -171,6 +171,102 @@
   color: var(--cor-texto-secundario);
 }
 
+/* Busca */
+
+/* Âncora da lista de resultados, que flutua sobre o conteúdo abaixo. */
+.busca {
+  position: relative;
+}
+
+/* Mesmo gap de 40px do .grupoFonte, para o campo cair no lugar exato do
+   rótulo que ele substitui. O campo cresce, então a lupa fica na borda. */
+.linhaBusca {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  min-height: 64px;
+  color: var(--cor-icone);
+}
+
+.campo {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--cor-texto);
+  font-family: inherit;
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-semibold);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
+.campo:focus {
+  outline: none;
+}
+
+.campo::placeholder {
+  color: var(--cor-texto-secundario);
+}
+
+.lista {
+  position: absolute;
+  z-index: 2;
+  top: calc(100% + var(--espaco-8));
+  right: 0;
+  left: 0;
+  max-height: 320px;
+  margin: 0;
+  padding: var(--espaco-8);
+  overflow-y: auto;
+  list-style: none;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-caixa);
+  background: var(--cor-fundo);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.opcao {
+  display: flex;
+  gap: var(--espaco-16);
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--espaco-12);
+  border-radius: var(--espaco-4);
+  color: var(--cor-texto);
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-medio);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+  cursor: pointer;
+}
+
+/* Uma marcação só, usada tanto pelo teclado quanto pelo mouse. */
+.opcaoAtiva {
+  background: var(--cor-superficie);
+}
+
+.nomeOpcao {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.categoriaOpcao {
+  flex: none;
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-regular);
+}
+
+.semResultado {
+  padding: var(--espaco-12);
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-corpo);
+  line-height: 1;
+}
+
 .acoes {
   display: flex;
   flex: none;

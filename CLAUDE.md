@@ -13,6 +13,28 @@ A fonte é servida localmente por `@fontsource/inter` (sem CDN), importada em
 `src/index.css`, e exposta como `--fonte` em `src/styles/tokens.css`. Use
 sempre o token — nunca escreva `font-family` com um nome de fonte solto.
 
+A única exceção é o passo de Tipografia do fluxo, onde a pessoa escolhe a fonte
+da marca dela: ali as prévias usam a fonte escolhida. Isso é conteúdo, não
+interface — a interface em volta continua toda em Inter.
+
+## Fontes do Google (passo de Tipografia)
+
+O catálogo da busca é local: `src/data/googleFonts.json`, com nome, variantes e
+categoria de cada família. É gerado por `scripts/gerar-fontes.mjs` a partir do
+pacote `google-font-metadata` (devDependency, ~55 MB) e versionado já compacto,
+para o navegador não baixar o pacote inteiro e o build não depender de gerá-lo.
+Para atualizar quando o Google publicar fontes novas:
+
+```
+npm run fontes:atualizar
+```
+
+O carregamento usa o embed público do Google Fonts (`fonts.googleapis.com/css2`),
+que dispensa chave de API: `src/lib/googleFonts.js` monta a URL com os pesos
+marcados e `src/hooks/useFonteDoGoogle.js` injeta o `<link>`. Quem baixa a fonte
+é o navegador de quem visita o site — a rede da sessão do Claude Code não
+interfere nisso.
+
 ## Design tokens
 
 Cores, tamanhos de texto, pesos, raios e espaçamentos ficam em
@@ -30,13 +52,16 @@ sem framework de CSS — o design é definido no Figma e traduzido à mão.
 - `src/pages` — uma página por rota
 - `src/components` — componentes compartilhados
 - `src/steps` — o conteúdo de cada passo do fluxo `/passo-a-passo`
-- `src/hooks` — hooks de estado (ex.: `useLogos`)
-- `src/data` — listas fixas do domínio (ex.: `pilares`)
+- `src/hooks` — hooks de estado (ex.: `useFluxo`)
+- `src/lib` — lógica sem React (ex.: `cor`, `googleFonts`)
+- `src/data` — listas fixas do domínio (ex.: `pilares`, `googleFonts.json`)
+- `scripts` — geradores rodados à mão, nunca no build
 
 ## Persistência
 
-**Nada é gravado no navegador durante o fluxo.** Os uploads ficam em memória,
-no estado do componente do fluxo (`useLogos`, chamado em `PassoAPasso`). Isso
+**Nada é gravado no navegador durante o fluxo.** Uploads, paleta e tipografia
+ficam em memória, no estado do componente do fluxo (`useFluxo`, chamado em
+`PassoAPasso`). Isso
 atravessa a navegação entre passos, mas sair pelo X ou pelo "Voltar" do passo 1
 desmonta o componente e descarta tudo — na próxima entrada o fluxo volta vazio,
 que é o comportamento esperado.

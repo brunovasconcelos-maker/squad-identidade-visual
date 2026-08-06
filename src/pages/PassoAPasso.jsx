@@ -22,17 +22,22 @@ function FluxoCompleto() {
   const total = pilares.length
   const [passo, setPasso] = useState(1)
   // Um estado só para o fluxo inteiro: ir e voltar entre passos não perde nada.
-  const { uploads, salvarUpload, paleta, acoesDaPaleta } = useFluxo()
+  const { uploads, salvarUpload, paleta, acoesDaPaleta, tipografia, acoesDaTipografia } = useFluxo()
 
   const pilarAtual = pilares[passo - 1]
   const ehPaleta = pilarAtual.slug === 'paleta-de-cores'
 
-  // Nos passos de arquivo basta o principal; na paleta, ao menos uma cor. As
-  // variações preta e branca seguem opcionais, e passos ainda sem conteúdo
-  // não têm entrada em uploads, então continuam desabilitados.
-  const temConteudo = ehPaleta
-    ? paleta.length > 0
-    : Boolean(uploads[pilarAtual.slug]?.principal)
+  // Nos passos de arquivo basta o principal; na paleta, ao menos uma cor; na
+  // tipografia, a fonte primária — as secundárias são opcionais. As variações
+  // preta e branca seguem opcionais, e passos ainda sem conteúdo não têm
+  // entrada em uploads, então continuam desabilitados.
+  const conteudoDoPilar = {
+    'paleta-de-cores': () => paleta.length > 0,
+    tipografia: () => Boolean(tipografia.primaria),
+  }
+
+  const temConteudo =
+    conteudoDoPilar[pilarAtual.slug]?.() ?? Boolean(uploads[pilarAtual.slug]?.principal)
 
   // Com a paleta já preenchida, "Não tenho, pular" sai de cena.
   const mostrarPular = !(ehPaleta && paleta.length > 0)
@@ -51,8 +56,7 @@ function FluxoCompleto() {
       case 'paleta-de-cores':
         return <PassoPaleta paleta={paleta} acoes={acoesDaPaleta} />
       case 'tipografia':
-        // Ainda com dados mockados e estado próprio, como a paleta começou.
-        return <PassoTipografia />
+        return <PassoTipografia tipografia={tipografia} acoes={acoesDaTipografia} />
       default:
         return null
     }
