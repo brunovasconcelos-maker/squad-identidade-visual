@@ -153,9 +153,11 @@ export default function useFluxo() {
     )
   }, [])
 
+  // Uma vaga por vez: só entra outra depois que a atual recebeu uma fonte.
   const adicionarSecundaria = useCallback(() => {
     setTipografia((atual) =>
-      atual.secundarias.length >= MAXIMO_SECUNDARIAS
+      atual.secundarias.length >= MAXIMO_SECUNDARIAS ||
+      atual.secundarias.some((vaga) => !vaga.fonte)
         ? atual
         : {
             ...atual,

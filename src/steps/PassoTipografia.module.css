@@ -113,9 +113,18 @@
   min-height: 64px;
 }
 
+/* Nas secundárias o "Adicionar minha font" fica ao lado da lupa, fora da área
+   clicável — daí o agrupador. Sem ele, é um filho só e o gap não faz nada. */
+.linhaVaziaGrupo {
+  display: flex;
+  gap: var(--espaco-20);
+  align-items: center;
+}
+
 /* O card vazio inteiro abre a seleção. */
 .linhaVazia {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   padding: 0;
   border: none;
   background: transparent;
@@ -204,6 +213,13 @@
 
 .campo:focus {
   outline: none;
+}
+
+.acoesDaBusca {
+  display: flex;
+  flex: none;
+  gap: var(--espaco-20);
+  align-items: center;
 }
 
 .campo::placeholder {
