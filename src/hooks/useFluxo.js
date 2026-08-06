@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { comTomAdicional, gerarTons, normalizarHex } from '../lib/cor.js'
+import { comVarianteAlternada, MAXIMO_SECUNDARIAS } from '../lib/googleFonts.js'
 
 export const TIPOS_ARQUIVO = ['principal', 'preta', 'branca']
 
@@ -13,6 +14,10 @@ function uploadsVazios() {
       Object.fromEntries(TIPOS_ARQUIVO.map((tipo) => [tipo, null])),
     ]),
   )
+}
+
+function tipografiaVazia() {
+  return { primaria: null, secundarias: [] }
 }
 
 function criarCor({ nome, hex }) {
@@ -32,7 +37,11 @@ function criarCor({ nome, hex }) {
  * Estado do fluxo inteiro, só em memória: uploads dos passos de arquivo e a
  * paleta de cores, num objeto só.
  *
- *   { uploads: { logo: {...}, icone: {...} }, paleta: [ ...cores ] }
+ *   {
+ *     uploads: { logo: {...}, icone: {...} },
+ *     paleta: [ ...cores ],
+ *     tipografia: { primaria, secundarias: [ { id, fonte } ] },
+ *   }
  *
  * Nada é gravado no navegador. Ir e voltar entre passos preserva tudo, porque
  * o estado vive no componente do fluxo; sair pelo X ou pelo "Voltar" do passo 1
@@ -43,6 +52,7 @@ function criarCor({ nome, hex }) {
 export default function useFluxo() {
   const [uploads, setUploads] = useState(uploadsVazios)
   const [paleta, setPaleta] = useState([])
+  const [tipografia, setTipografia] = useState(tipografiaVazia)
   const urls = useRef(new Set())
 
   const salvarUpload = useCallback((passo, tipo, arquivo) => {
@@ -118,6 +128,55 @@ export default function useFluxo() {
     )
   }, [])
 
+  // Tipografia. O card primário é único; os secundários são vagas numeradas,
+  // até três. `alvo` é 'primaria' ou o id da vaga secundária.
+  const definirFonte = useCallback((alvo, fonte) => {
+    setTipografia((atual) =>
+      alvo === 'primaria'
+        ? { ...atual, primaria: fonte }
+        : {
+            ...atual,
+            secundarias: atual.secundarias.map((vaga) =>
+              vaga.id === alvo ? { ...vaga, fonte } : vaga,
+            ),
+          },
+    )
+  }, [])
+
+  // A lixeira: na primária volta ao estado vazio, na secundária tira o card e
+  // libera a vaga para o "Adicionar".
+  const removerFonte = useCallback((alvo) => {
+    setTipografia((atual) =>
+      alvo === 'primaria'
+        ? { ...atual, primaria: null }
+        : { ...atual, secundarias: atual.secundarias.filter((vaga) => vaga.id !== alvo) },
+    )
+  }, [])
+
+  const adicionarSecundaria = useCallback(() => {
+    setTipografia((atual) =>
+      atual.secundarias.length >= MAXIMO_SECUNDARIAS
+        ? atual
+        : {
+            ...atual,
+            secundarias: [...atual.secundarias, { id: crypto.randomUUID(), fonte: null }],
+          },
+    )
+  }, [])
+
+  const alternarVariante = useCallback((alvo, chave) => {
+    setTipografia((atual) =>
+      alvo === 'primaria'
+        ? { ...atual, primaria: comVarianteAlternada(atual.primaria, chave) }
+        : {
+            ...atual,
+            secundarias: atual.secundarias.map((vaga) =>
+              vaga.id === alvo ? { ...vaga, fonte: comVarianteAlternada(vaga.fonte, chave) } : vaga,
+            ),
+          },
+    )
+  }, [])
+
   // Ao sair do fluxo, libera as object URLs criadas.
   useEffect(() => {
     const criadas = urls.current
@@ -138,6 +197,13 @@ export default function useFluxo() {
       marcarPrincipal,
       adicionarTom,
       removerTom,
+    },
+    tipografia,
+    acoesDaTipografia: {
+      definirFonte,
+      removerFonte,
+      adicionarSecundaria,
+      alternarVariante,
     },
   }
 }
