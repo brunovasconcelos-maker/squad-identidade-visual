@@ -70,6 +70,17 @@ A gravação de verdade acontecerá só na etapa final de salvar, que ainda não
 existe. Não reintroduza escrita por passo (IndexedDB, localStorage ou o que
 for) sem que isso seja pedido.
 
+## Barra inferior — regra fixa
+
+**"Não tenho, pular" e "Continuar" nunca ficam ativos ao mesmo tempo.** Com o
+passo vazio, "Continuar" está desabilitado e o pular aparece; assim que o passo
+tem conteúdo, o pular **some da tela** — não fica desabilitado, some. Vale para
+todos os passos, inclusive os que ainda serão criados.
+
+Na prática é `mostrarPular = !temConteudo` em `PassoAPasso`: uma expressão só,
+nunca caso a caso por passo. Passo novo só precisa declarar o que conta como
+conteúdo dele em `conteudoDoPilar`, e a regra vem junto.
+
 ## Passos com mais de uma tela
 
 Um passo do fluxo pode ter telas internas. A Fotografia tem duas (seleção e
