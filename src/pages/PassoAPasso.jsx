@@ -36,7 +36,6 @@ function FluxoCompleto() {
   } = useFluxo()
 
   const pilarAtual = pilares[passo - 1]
-  const ehPaleta = pilarAtual.slug === 'paleta-de-cores'
 
   // A Fotografia tem duas telas dentro do mesmo passo: a barra de progresso
   // não anda ao passar da seleção para o resumo, só no "Continuar" do resumo.
@@ -57,12 +56,11 @@ function FluxoCompleto() {
   const temConteudo =
     conteudoDoPilar[pilarAtual.slug]?.() ?? Boolean(uploads[pilarAtual.slug]?.principal)
 
-  // Com a paleta já preenchida, "Não tenho, pular" sai de cena. Na Fotografia
-  // ele só faz sentido na seleção e sem nenhuma foto: no resumo há sempre ao
-  // menos uma escolha, então não há o que pular.
-  const mostrarPular = ehFotografia
-    ? !noResumoDaFotografia && fotosEscolhidas === 0
-    : !(ehPaleta && paleta.length > 0)
+  // Regra do fluxo inteiro: "Não tenho, pular" e "Continuar" nunca aparecem
+  // habilitados ao mesmo tempo. Assim que o passo tem conteúdo, o pular some
+  // de vez — não fica desabilitado. Vale para todos os passos, inclusive os
+  // que ainda serão construídos, então é uma expressão só e não caso a caso.
+  const mostrarPular = !temConteudo
 
   const conteudoDoPasso = () => {
     const props = {
