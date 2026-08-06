@@ -1,0 +1,262 @@
+.passo {
+  display: flex;
+  flex-direction: column;
+}
+
+.cabecalho,
+.cabecalhoSecundarias {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-16);
+  min-height: 48px;
+}
+
+/* 56px entre o card primário e a seção de secundárias, como no Figma. */
+.cabecalhoSecundarias {
+  margin-top: 56px;
+}
+
+.tituloGrupo {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-12);
+}
+
+.titulo {
+  margin: 0;
+  font-size: var(--texto-secao);
+  font-weight: var(--peso-semibold);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
+/* 32px de área clicável com -4px de margem: o ícone de 24px fica onde o
+   Figma coloca, e o hover tem folga. */
+.ajuda {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: -4px;
+  padding: 0;
+  border: none;
+  border-radius: var(--raio-pilula);
+  background: transparent;
+  color: var(--cor-texto-auxiliar);
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.ajuda:hover {
+  background: var(--cor-superficie);
+}
+
+.botaoContorno {
+  display: inline-flex;
+  flex: none;
+  gap: var(--espaco-8);
+  align-items: center;
+  height: 48px;
+  padding: var(--espaco-12) var(--espaco-16);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-caixa);
+  background: transparent;
+  color: var(--cor-texto);
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.botaoContorno:hover:not(:disabled) {
+  background: var(--cor-superficie);
+}
+
+.botaoContorno:disabled {
+  color: var(--cor-texto-desabilitado);
+  cursor: default;
+}
+
+/* Cards */
+.cartao,
+.cartaoPrincipal {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: var(--espaco-12) 32px var(--espaco-12) var(--espaco-12);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-caixa);
+}
+
+.cartaoPrincipal {
+  margin-top: 40px;
+}
+
+.listaSecundarias {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.linha,
+.linhaVazia {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-16);
+  min-height: 64px;
+}
+
+/* O card vazio inteiro abre a seleção. */
+.linhaVazia {
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--cor-icone);
+  text-align: left;
+  cursor: pointer;
+}
+
+.grupoFonte {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  min-width: 0;
+}
+
+.previa {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--raio-caixa);
+  background: var(--cor-superficie);
+  color: var(--cor-texto);
+  font-size: 32px;
+  font-weight: var(--peso-semibold);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
+.rotuloVazio,
+.nomes {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  min-width: 0;
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-semibold);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
+.rotuloVazio {
+  color: var(--cor-texto-secundario);
+}
+
+.nome {
+  color: var(--cor-texto);
+}
+
+.origem {
+  color: var(--cor-texto-secundario);
+}
+
+.acoes {
+  display: flex;
+  flex: none;
+  gap: var(--espaco-20);
+  align-items: center;
+}
+
+.acao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: -4px;
+  padding: 0;
+  border: none;
+  border-radius: var(--raio-pilula);
+  background: transparent;
+  color: var(--cor-icone);
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.acao:hover {
+  background: var(--cor-superficie);
+}
+
+.destrutiva {
+  color: var(--cor-destrutiva);
+}
+
+/* Variantes: colunas preenchidas de cima para baixo, 40px entre elas. */
+.variantes {
+  display: flex;
+  gap: 40px;
+}
+
+.colunaVariantes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-16);
+  padding: var(--espaco-12) var(--espaco-16);
+}
+
+.variante {
+  display: flex;
+  gap: var(--espaco-12);
+  align-items: center;
+  color: var(--cor-texto);
+  cursor: pointer;
+}
+
+.rotuloVariante {
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-medio);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+  white-space: nowrap;
+}
+
+/* O input existe pela semântica; quem aparece é o ícone. */
+.caixaNativa {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.caixaNativa:focus-visible + span {
+  outline: 2px solid var(--cor-texto);
+  outline-offset: 2px;
+  border-radius: var(--espaco-4);
+}
+
+@media (max-width: 1024px) {
+  .cabecalho,
+  .cabecalhoSecundarias {
+    flex-wrap: wrap;
+  }
+
+  .variantes {
+    flex-wrap: wrap;
+    gap: var(--espaco-16);
+  }
+}
