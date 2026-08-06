@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { comTomAdicional, gerarTons, normalizarHex } from '../lib/cor.js'
 import { comVarianteAlternada, MAXIMO_SECUNDARIAS } from '../lib/googleFonts.js'
+import { MAXIMO_POR_CATEGORIA, totalDeFotos } from '../data/fotografia.js'
 
 export const TIPOS_ARQUIVO = ['principal', 'preta', 'branca']
 
@@ -18,6 +19,12 @@ function uploadsVazios() {
 
 function tipografiaVazia() {
   return { primaria: null, secundarias: [] }
+}
+
+// `tela` também é estado do fluxo, não da tela: voltando do passo seguinte, a
+// Fotografia precisa reabrir no resumo se era ali que a pessoa estava.
+function fotografiaVazia() {
+  return { selecoes: {}, tela: 'selecao' }
 }
 
 function criarCor({ nome, hex }) {
@@ -53,6 +60,7 @@ export default function useFluxo() {
   const [uploads, setUploads] = useState(uploadsVazios)
   const [paleta, setPaleta] = useState([])
   const [tipografia, setTipografia] = useState(tipografiaVazia)
+  const [fotografia, setFotografia] = useState(fotografiaVazia)
   const urls = useRef(new Set())
 
   const salvarUpload = useCallback((passo, tipo, arquivo) => {
@@ -179,6 +187,34 @@ export default function useFluxo() {
     )
   }, [])
 
+  // Fotografia. As escolhas ficam por categoria, e trocar de aba não mexe nas
+  // outras — cada categoria guarda a sua própria lista.
+  const alternarFoto = useCallback((categoria, numero) => {
+    setFotografia((atual) => {
+      const escolhidas = atual.selecoes[categoria] ?? []
+      const jaEscolhida = escolhidas.includes(numero)
+
+      // Cheia: clicar numa quarta foto não faz nada. Devolver o mesmo objeto
+      // evita a re-renderização.
+      if (!jaEscolhida && escolhidas.length >= MAXIMO_POR_CATEGORIA) return atual
+
+      const proximas = jaEscolhida
+        ? escolhidas.filter((n) => n !== numero)
+        : [...escolhidas, numero]
+
+      const selecoes = { ...atual.selecoes, [categoria]: proximas }
+
+      // Tirando a última foto pelo resumo não sobra o que resumir.
+      const tela = atual.tela === 'resumo' && totalDeFotos(selecoes) === 0 ? 'selecao' : atual.tela
+
+      return { selecoes, tela }
+    })
+  }, [])
+
+  const irParaTelaDaFotografia = useCallback((tela) => {
+    setFotografia((atual) => (atual.tela === tela ? atual : { ...atual, tela }))
+  }, [])
+
   // Ao sair do fluxo, libera as object URLs criadas.
   useEffect(() => {
     const criadas = urls.current
@@ -206,6 +242,11 @@ export default function useFluxo() {
       removerFonte,
       adicionarSecundaria,
       alternarVariante,
+    },
+    fotografia,
+    acoesDaFotografia: {
+      alternarFoto,
+      irParaTela: irParaTelaDaFotografia,
     },
   }
 }

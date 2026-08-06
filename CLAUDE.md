@@ -59,9 +59,9 @@ sem framework de CSS — o design é definido no Figma e traduzido à mão.
 
 ## Persistência
 
-**Nada é gravado no navegador durante o fluxo.** Uploads, paleta e tipografia
-ficam em memória, no estado do componente do fluxo (`useFluxo`, chamado em
-`PassoAPasso`). Isso
+**Nada é gravado no navegador durante o fluxo.** Uploads, paleta, tipografia e
+fotografia ficam em memória, no estado do componente do fluxo (`useFluxo`,
+chamado em `PassoAPasso`). Isso
 atravessa a navegação entre passos, mas sair pelo X ou pelo "Voltar" do passo 1
 desmonta o componente e descarta tudo — na próxima entrada o fluxo volta vazio,
 que é o comportamento esperado.
@@ -69,6 +69,13 @@ que é o comportamento esperado.
 A gravação de verdade acontecerá só na etapa final de salvar, que ainda não
 existe. Não reintroduza escrita por passo (IndexedDB, localStorage ou o que
 for) sem que isso seja pedido.
+
+## Passos com mais de uma tela
+
+Um passo do fluxo pode ter telas internas. A Fotografia tem duas (seleção e
+resumo): a tela atual vive no estado do fluxo, não no componente, porque voltar
+do passo seguinte precisa cair de novo onde a pessoa estava. A barra de
+progresso só anda quando `passo` muda — trocar de tela interna não mexe nela.
 
 ## Assets
 
