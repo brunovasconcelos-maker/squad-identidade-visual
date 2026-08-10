@@ -20,7 +20,14 @@ function arquivoValido(arquivo) {
  * 'padrao' (cinza), 'branco' (branco com borda cinza, para a versão preta) ou
  * 'preto' (para a versão branca aparecer).
  */
-export default function UploadArquivo({ titulo, instrucao, arquivo: logo, fundo = 'padrao', onArquivo }) {
+export default function UploadArquivo({
+  titulo,
+  instrucao,
+  arquivo: logo,
+  fundo = 'padrao',
+  onArquivo,
+  onRemover,
+}) {
   const inputRef = useRef(null)
   const [arrastando, setArrastando] = useState(false)
   const [erro, setErro] = useState(null)
@@ -68,14 +75,29 @@ export default function UploadArquivo({ titulo, instrucao, arquivo: logo, fundo 
         <h2 className={s.titulo}>{titulo}</h2>
 
         {preenchido && (
-          <button
-            type="button"
-            className={s.botaoIcone}
-            onClick={abrirSeletor}
-            aria-label={`Trocar ${titulo}`}
-          >
-            <Icon nome="Edit" />
-          </button>
+          <div className={s.acoes}>
+            <button
+              type="button"
+              className={s.botaoIcone}
+              onClick={abrirSeletor}
+              aria-label={`Trocar ${titulo}`}
+            >
+              <Icon nome="Edit" />
+            </button>
+            {/* Esvazia só esta moldura; as outras duas seguem como estão. */}
+            <button
+              type="button"
+              className={`${s.botaoIcone} ${s.destrutiva}`}
+              onClick={() => {
+                setErro(null)
+                setPreviaFalhou(false)
+                onRemover()
+              }}
+              aria-label={`Excluir ${titulo}`}
+            >
+              <Icon nome="Delete" />
+            </button>
+          </div>
         )}
       </div>
 

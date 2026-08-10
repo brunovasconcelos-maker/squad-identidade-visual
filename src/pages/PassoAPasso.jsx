@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import Carregando from '../components/Carregando.jsx'
+import Carregando, { DURACAO_TOTAL } from '../components/Carregando.jsx'
 import FalhaAoSalvar from '../components/FalhaAoSalvar.jsx'
 import FlowTopBar from '../components/FlowTopBar.jsx'
 import FlowBottomBar from '../components/FlowBottomBar.jsx'
@@ -13,16 +13,16 @@ import PassoPersonalidade from '../steps/PassoPersonalidade.jsx'
 import PassoElementos from '../steps/PassoElementos.jsx'
 import useFluxo from '../hooks/useFluxo.js'
 import { pilares, temas } from '../data/pilares.js'
-import { totalDeFotos } from '../data/fotografia.js'
+import { CATEGORIAS, totalDeFotos } from '../data/fotografia.js'
 import s from './PassoAPasso.module.css'
 
 // No Figma esses passos têm 808px de conteúdo, mais que as 6 colunas centrais
 // (670px) usadas pelos demais. Ver .centroLargo no CSS.
 const PASSOS_LARGOS = ['fotografia', 'personalidade', 'elementos']
 
-// Tempo mínimo da tela de espera ao finalizar. Sem ele a gravação termina
-// antes do primeiro quadro e a tela nem chega a aparecer.
-const ESPERA_MINIMA = 700
+// A tela de espera fica até as cinco mensagens passarem, mesmo que a gravação
+// termine antes — que é o normal, ela leva milissegundos.
+const ESPERA_MINIMA = DURACAO_TOTAL
 
 export default function PassoAPasso() {
   const { tema } = useParams()
@@ -48,6 +48,7 @@ function FluxoCompleto() {
   const {
     uploads,
     salvarUpload,
+    removerUpload,
     paleta,
     acoesDaPaleta,
     tipografia,
@@ -69,6 +70,10 @@ function FluxoCompleto() {
   const ehFotografia = pilarAtual.slug === 'fotografia'
   const fotosEscolhidas = totalDeFotos(fotografia.selecoes)
   const noResumoDaFotografia = ehFotografia && fotografia.tela === 'resumo'
+  // Na seleção, "Continuar" caminha pelas categorias em ordem antes de sair do
+  // passo — passar por todas é o que se pede, escolher foto não.
+  const indiceDaAba = CATEGORIAS.findIndex((c) => c.id === fotografia.aba)
+  const naUltimaCategoria = indiceDaAba === CATEGORIAS.length - 1
 
   // Nos passos de arquivo basta o principal; na paleta, ao menos uma cor; na
   // tipografia, a fonte primária — as secundárias são opcionais. As variações
@@ -77,7 +82,9 @@ function FluxoCompleto() {
   const conteudoDoPilar = {
     'paleta-de-cores': () => paleta.length > 0,
     tipografia: () => Boolean(tipografia.primaria),
-    fotografia: () => fotosEscolhidas > 0,
+    // Sempre habilitado: percorrer as categorias não exige escolher nada, e
+    // com isso o "pular" some daqui pela regra geral.
+    fotografia: () => true,
     // Os eixos já nascem no meio, então este passo nunca está vazio.
     personalidade: () => true,
     elementos: () => elementos.length > 0,
@@ -96,6 +103,7 @@ function FluxoCompleto() {
     const props = {
       arquivos: uploads[pilarAtual.slug],
       onSalvar: (tipo, arquivo) => salvarUpload(pilarAtual.slug, tipo, arquivo),
+      onRemover: (tipo) => removerUpload(pilarAtual.slug, tipo),
     }
 
     switch (pilarAtual.slug) {
@@ -152,10 +160,14 @@ function FluxoCompleto() {
   }
 
   const voltar = () => {
-    // Do resumo da Fotografia se volta para a seleção, não para o passo
-    // anterior — as escolhas ficam onde estão.
-    if (noResumoDaFotografia) acoesDaFotografia.irParaTela('selecao')
-    else if (passo === 1) sairDoFluxo()
+    // Do resumo da Fotografia se volta para a seleção, na última categoria.
+    if (noResumoDaFotografia) {
+      acoesDaFotografia.irParaTela('selecao')
+      acoesDaFotografia.irParaAba(CATEGORIAS[CATEGORIAS.length - 1].id)
+    } else if (ehFotografia && indiceDaAba > 0) {
+      // Na seleção, volta uma categoria antes de sair do passo.
+      acoesDaFotografia.irParaAba(CATEGORIAS[indiceDaAba - 1].id)
+    } else if (passo === 1) sairDoFluxo()
     else setPasso((atual) => atual - 1)
   }
 
@@ -165,9 +177,20 @@ function FluxoCompleto() {
   }
 
   const avancar = () => {
-    // Na seleção da Fotografia, "Continuar" abre o resumo: é transição interna
-    // do passo, então o progresso não muda.
-    if (ehFotografia && !noResumoDaFotografia) acoesDaFotografia.irParaTela('resumo')
+    if (!ehFotografia || noResumoDaFotografia) {
+      proximoPasso()
+      return
+    }
+
+    // Ainda há categoria pela frente: só troca de aba, sem mexer no progresso.
+    if (!naUltimaCategoria) {
+      acoesDaFotografia.irParaAba(CATEGORIAS[indiceDaAba + 1].id)
+      return
+    }
+
+    // Última categoria: com fotos vai para o resumo, sem nenhuma não há o que
+    // resumir e o passo termina aqui.
+    if (fotosEscolhidas > 0) acoesDaFotografia.irParaTela('resumo')
     else proximoPasso()
   }
 
@@ -177,8 +200,8 @@ function FluxoCompleto() {
 
   // Enquanto lê o que já foi salvo, e enquanto grava no fim, a tela de espera
   // ocupa o lugar do fluxo.
-  if (carregando) return <Carregando mensagem="Abrindo seu manual…" />
-  if (salvando) return <Carregando mensagem="Salvando seu manual…" />
+  if (carregando) return <Carregando mensagens={['Abrindo seu manual...']} />
+  if (salvando) return <Carregando />
   if (erroAoSalvar) {
     return (
       <FalhaAoSalvar

@@ -10,8 +10,8 @@ import s from './Carregando.module.css'
 export default function FalhaAoSalvar({ erro, onTentarDeNovo, onDescartar }) {
   return (
     <div className={s.tela} role="alert">
-      <p className={s.titulo}>Não foi possível salvar seu manual.</p>
-      <p className={s.mensagem}>
+      <p className={s.tituloDaFalha}>Não foi possível salvar seu manual.</p>
+      <p className={s.detalhe}>
         O que você preencheu continua aqui. Se sair agora, ele será perdido.
       </p>
       {erro?.message && <p className={s.detalhe}>{erro.message}</p>}

@@ -37,6 +37,12 @@ export default function PassoPersonalidade({ personalidade, acoes }) {
   )
 }
 
+// 3 é o centro; a distância até ele, em quartos da faixa útil, é a largura.
+function estiloDoPreenchimento(valor) {
+  const largura = `calc(${Math.abs(valor - 3) / 4} * (100% - 18px))`
+  return valor >= 3 ? { left: '50%', width: largura } : { right: '50%', width: largura }
+}
+
 function Eixo({ eixo, valor, onMudar }) {
   return (
     <div className={s.eixo}>
@@ -56,6 +62,12 @@ function Eixo({ eixo, valor, onMudar }) {
               style={{ left: `calc((100% - 18px) * ${i} / 4)` }}
             />
           ))}
+
+          {/* Depois das bolinhas e antes do input: assim a faixa cobre as
+              bolinhas que ficaram para trás e o cursor continua por cima.
+              Nasce no centro e cresce para o lado escolhido, em vez de vir de
+              uma das pontas — no 3 tem largura zero e sobra só o cursor. */}
+          <span className={s.preenchimento} style={estiloDoPreenchimento(valor)} />
 
           {/* O range nativo já dá o arrasto com encaixe, o clique direto na
               bolinha e as setas do teclado. O cursor dele é a bolinha preta,

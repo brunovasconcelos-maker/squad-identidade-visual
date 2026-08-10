@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { comTomAdicional, gerarTons, normalizarHex } from '../lib/cor.js'
 import { comVarianteAlternada, MAXIMO_SECUNDARIAS } from '../lib/googleFonts.js'
-import { MAXIMO_POR_CATEGORIA, totalDeFotos } from '../data/fotografia.js'
+import { CATEGORIAS, MAXIMO_POR_CATEGORIA, totalDeFotos } from '../data/fotografia.js'
 import { posicoesPadrao } from '../data/personalidade.js'
 import { TIPOS_ARQUIVO, PASSOS_COM_UPLOAD } from '../data/uploads.js'
 import { lerManual, salvarManual } from '../lib/armazenamento.js'
@@ -27,7 +27,7 @@ function tipografiaVazia() {
 // `tela` também é estado do fluxo, não da tela: voltando do passo seguinte, a
 // Fotografia precisa reabrir no resumo se era ali que a pessoa estava.
 function fotografiaVazia() {
-  return { selecoes: {}, tela: 'selecao' }
+  return { selecoes: {}, tela: 'selecao', aba: CATEGORIAS[0].id }
 }
 
 function criarCor({ nome, hex }) {
@@ -90,6 +90,18 @@ export default function useFluxo() {
       }
 
       return { ...atual, [passo]: { ...atual[passo], [tipo]: registro } }
+    })
+  }, [])
+
+  // Esvazia uma moldura só, sem tocar nas outras duas do passo.
+  const removerUpload = useCallback((passo, tipo) => {
+    setUploads((atual) => {
+      const anterior = atual[passo]?.[tipo]?.url
+      if (anterior) {
+        URL.revokeObjectURL(anterior)
+        urls.current.delete(anterior)
+      }
+      return { ...atual, [passo]: { ...atual[passo], [tipo]: null } }
     })
   }, [])
 
@@ -219,12 +231,20 @@ export default function useFluxo() {
       // Tirando a última foto pelo resumo não sobra o que resumir.
       const tela = atual.tela === 'resumo' && totalDeFotos(selecoes) === 0 ? 'selecao' : atual.tela
 
-      return { selecoes, tela }
+      // Espalhar o atual, e não montar um objeto novo: senão a aba aberta se
+      // perde a cada foto escolhida e o passo volta para a primeira categoria.
+      return { ...atual, selecoes, tela }
     })
   }, [])
 
   const irParaTelaDaFotografia = useCallback((tela) => {
     setFotografia((atual) => (atual.tela === tela ? atual : { ...atual, tela }))
+  }, [])
+
+  // A aba aberta é passo de navegação: o "Continuar" da barra inferior anda por
+  // ela, então precisa estar aqui e não dentro do componente.
+  const irParaAba = useCallback((aba) => {
+    setFotografia((atual) => (atual.aba === aba ? atual : { ...atual, aba }))
   }, [])
 
   const definirPosicao = useCallback((eixo, valor) => {
@@ -304,7 +324,7 @@ export default function useFluxo() {
         setUploads(manual.uploads)
         setPaleta(manual.paleta)
         setTipografia(manual.tipografia)
-        setFotografia(manual.fotografia)
+        setFotografia({ ...fotografiaVazia(), ...manual.fotografia })
         // Um manual antigo pode não ter todos os eixos: o padrão completa.
         setPersonalidade({ ...posicoesPadrao(), ...manual.personalidade })
         setElementos(manual.elementos)
@@ -342,6 +362,7 @@ export default function useFluxo() {
   return {
     uploads,
     salvarUpload,
+    removerUpload,
     paleta,
     acoesDaPaleta: {
       adicionar: adicionarCor,
@@ -362,6 +383,7 @@ export default function useFluxo() {
     acoesDaFotografia: {
       alternarFoto,
       irParaTela: irParaTelaDaFotografia,
+      irParaAba,
     },
     personalidade,
     acoesDaPersonalidade: { definirPosicao },

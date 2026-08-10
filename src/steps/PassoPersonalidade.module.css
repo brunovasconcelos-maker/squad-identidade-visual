@@ -110,6 +110,17 @@
   margin: 3px;
 }
 
+/* Faixa cheia entre o centro e o cursor. Fica sob as bolinhas e sob o cursor,
+   então a bolinha da posição atual continua coberta pelo cursor preto. */
+.preenchimento {
+  position: absolute;
+  top: 50%;
+  height: 8px;
+  transform: translateY(-50%);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-marca);
+}
+
 .ponto {
   position: absolute;
   top: 0;

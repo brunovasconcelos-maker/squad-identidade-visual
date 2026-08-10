@@ -1,3 +1,94 @@
+.pagina {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: var(--cor-fundo);
+}
+
+/* Mesmo topo do fluxo: 96px, conteúdo alinhado embaixo com 16px de folga. */
+.topo {
+  display: flex;
+  flex: none;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 96px;
+  padding: 0 var(--grid-margem) var(--espaco-16);
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.tituloDoTopo {
+  margin: 0;
+  font-size: var(--texto-destaque);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+  letter-spacing: var(--espacamento-letras);
+}
+
+.fechar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: -8px;
+  color: var(--cor-texto);
+}
+
+/* No Figma o bloco começa em 278px; aqui ele fica centrado na área livre, o
+   que dá quase o mesmo lugar e se comporta melhor em telas mais baixas. */
+.centro {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 37px;
+  align-items: center;
+  justify-content: center;
+  padding: var(--espaco-60) var(--grid-margem);
+}
+
+.titulo {
+  margin: 0;
+  font-size: var(--texto-secao);
+  font-weight: var(--peso-semibold);
+  line-height: var(--altura-linha);
+  letter-spacing: var(--espacamento-letras-secao);
+  text-align: center;
+}
+
+.ilustracao {
+  width: 197px;
+  height: 242px;
+  object-fit: contain;
+}
+
+.mensagem {
+  max-width: 520px;
+  margin: 0;
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+  letter-spacing: var(--espacamento-letras-secao);
+  text-align: center;
+  animation: aparecer 400ms ease;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mensagem {
+    animation: none;
+  }
+}
+
+/* Estado de falha ao salvar, na mesma moldura centrada da espera. */
 .tela {
   display: flex;
   flex-direction: column;
@@ -8,37 +99,7 @@
   background: var(--cor-fundo);
 }
 
-.roda {
-  width: 40px;
-  height: 40px;
-  border: 3px solid var(--cor-borda);
-  border-top-color: var(--cor-marca);
-  border-radius: 50%;
-  animation: girar 800ms linear infinite;
-}
-
-@keyframes girar {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.mensagem {
-  margin: 0;
-  color: var(--cor-texto-auxiliar);
-  font-size: var(--texto-corpo);
-  line-height: var(--altura-linha);
-}
-
-/* Sem a rotação, o texto ainda diz que algo está acontecendo. */
-@media (prefers-reduced-motion: reduce) {
-  .roda {
-    animation: none;
-  }
-}
-
-/* Estado de falha ao salvar, na mesma moldura centrada da espera. */
-.titulo {
+.tituloDaFalha {
   margin: 0;
   color: var(--cor-texto);
   font-size: var(--texto-destaque);

@@ -8,13 +8,14 @@ const TITULOS = {
   branca: 'Logo cor única (branca)',
 }
 
-export default function PassoLogo({ arquivos, onSalvar }) {
+export default function PassoLogo({ arquivos, onSalvar, onRemover }) {
   return (
     <PassoArquivos
       titulos={TITULOS}
       instrucao="Faça upload ou arraste a logo pra cá"
       arquivos={arquivos}
       onSalvar={onSalvar}
+      onRemover={onRemover}
     >
       <div className={s.variacoes}>
         <div className={s.tituloVariacoes}>
