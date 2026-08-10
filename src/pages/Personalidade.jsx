@@ -1,5 +1,5 @@
-import TemaEmBreve from '../components/TemaEmBreve.jsx'
+import TemaSalvo from '../components/TemaSalvo.jsx'
 
 export default function Personalidade() {
-  return <TemaEmBreve titulo="Personalidade" slug="personalidade" />
+  return <TemaSalvo titulo="Personalidade" slug="personalidade" />
 }

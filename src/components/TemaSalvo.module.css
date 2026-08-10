@@ -1,0 +1,243 @@
+/* Visão de leitura, propositalmente simples: o desenho vem depois. */
+.pagina {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.topo {
+  display: flex;
+  gap: var(--espaco-16);
+  align-items: center;
+  height: 96px;
+  padding: 0 var(--grid-margem);
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.voltar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--cor-borda-sutil);
+  border-radius: var(--raio-pilula);
+  color: var(--cor-texto);
+}
+
+.titulo {
+  flex: 1;
+  margin: 0;
+  font-size: var(--texto-destaque);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+  letter-spacing: var(--espacamento-letras);
+}
+
+.editar {
+  flex: none;
+  color: var(--cor-texto);
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+}
+
+.conteudo {
+  flex: 1;
+  padding: var(--espaco-60) var(--grid-margem);
+}
+
+.vazio {
+  margin: 0;
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-corpo);
+  line-height: var(--altura-linha);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  max-width: 808px;
+}
+
+.bloco {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-16);
+}
+
+.subtitulo {
+  margin: 0;
+  font-size: var(--texto-destaque);
+  font-weight: var(--peso-semibold);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
+/* Arquivos (Logo e Ícone) */
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--espaco-24);
+  max-width: 808px;
+}
+
+.arquivo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-12);
+  margin: 0;
+}
+
+.moldura {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 3 / 2;
+  padding: var(--espaco-24);
+  border: 1px solid var(--cor-borda-previa);
+  border-radius: var(--raio-caixa);
+  background: var(--cor-fundo);
+}
+
+/* A versão branca precisa de fundo escuro para aparecer. */
+.molduraEscura {
+  border-color: var(--cor-marca);
+  background: var(--cor-marca);
+}
+
+.imagem {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.legenda {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-4);
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+}
+
+/* Paleta */
+.corTopo {
+  display: flex;
+  gap: var(--espaco-12);
+  align-items: center;
+}
+
+.amostra {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-caixa);
+}
+
+.nome {
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-semibold);
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
+.secundario {
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-regular);
+}
+
+.etiqueta {
+  padding: var(--espaco-4) var(--espaco-8);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-superficie);
+  color: var(--cor-texto-auxiliar);
+  font-size: var(--texto-micro);
+  font-weight: var(--peso-medio);
+}
+
+.tons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-8);
+}
+
+.tom {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-4);
+  align-items: center;
+}
+
+.amostraTom {
+  width: 56px;
+  height: 40px;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--espaco-4);
+}
+
+.micro {
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-micro);
+}
+
+/* Tipografia */
+.pesos {
+  margin: 0;
+  color: var(--cor-texto-auxiliar);
+  font-size: var(--texto-corpo);
+  line-height: 20px;
+}
+
+/* Fotografia */
+.fotos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--espaco-16);
+}
+
+.foto {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--raio-caixa);
+  object-fit: cover;
+}
+
+/* Personalidade */
+.eixo {
+  display: flex;
+  gap: var(--espaco-16);
+  align-items: center;
+}
+
+.pontaEsquerda,
+.pontaDireita {
+  flex: none;
+  width: 120px;
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+}
+
+.pontaDireita {
+  text-align: left;
+}
+
+.pontaEsquerda {
+  text-align: right;
+}
+
+.controle {
+  flex: 1;
+  max-width: 320px;
+  accent-color: var(--cor-marca);
+}
+
+/* Elementos */
+.elemento {
+  display: flex;
+  gap: var(--espaco-16);
+  align-items: center;
+  padding: var(--espaco-12);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-caixa);
+}

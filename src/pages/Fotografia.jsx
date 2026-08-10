@@ -1,5 +1,5 @@
-import TemaEmBreve from '../components/TemaEmBreve.jsx'
+import TemaSalvo from '../components/TemaSalvo.jsx'
 
 export default function Fotografia() {
-  return <TemaEmBreve titulo="Fotografia" slug="fotografia" />
+  return <TemaSalvo titulo="Fotografia" slug="fotografia" />
 }

@@ -1,5 +1,5 @@
-import TemaEmBreve from '../components/TemaEmBreve.jsx'
+import TemaSalvo from '../components/TemaSalvo.jsx'
 
 export default function Elementos() {
-  return <TemaEmBreve titulo="Elementos" slug="elementos" />
+  return <TemaSalvo titulo="Elementos" slug="elementos" />
 }
