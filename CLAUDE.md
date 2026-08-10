@@ -59,8 +59,8 @@ sem framework de CSS — o design é definido no Figma e traduzido à mão.
 
 ## Persistência
 
-**Nada é gravado no navegador durante o fluxo.** Uploads, paleta, tipografia e
-fotografia ficam em memória, no estado do componente do fluxo (`useFluxo`,
+**Nada é gravado no navegador durante o fluxo.** Uploads, paleta, tipografia,
+fotografia e personalidade ficam em memória, no estado do componente do fluxo (`useFluxo`,
 chamado em `PassoAPasso`). Isso
 atravessa a navegação entre passos, mas sair pelo X ou pelo "Voltar" do passo 1
 desmonta o componente e descarta tudo — na próxima entrada o fluxo volta vazio,

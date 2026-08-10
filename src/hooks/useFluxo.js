@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { comTomAdicional, gerarTons, normalizarHex } from '../lib/cor.js'
 import { comVarianteAlternada, MAXIMO_SECUNDARIAS } from '../lib/googleFonts.js'
 import { MAXIMO_POR_CATEGORIA, totalDeFotos } from '../data/fotografia.js'
+import { posicoesPadrao } from '../data/personalidade.js'
 
 export const TIPOS_ARQUIVO = ['principal', 'preta', 'branca']
 
@@ -61,6 +62,8 @@ export default function useFluxo() {
   const [paleta, setPaleta] = useState([])
   const [tipografia, setTipografia] = useState(tipografiaVazia)
   const [fotografia, setFotografia] = useState(fotografiaVazia)
+  // Nasce preenchida: os cinco eixos já começam no meio.
+  const [personalidade, setPersonalidade] = useState(posicoesPadrao)
   const urls = useRef(new Set())
 
   const salvarUpload = useCallback((passo, tipo, arquivo) => {
@@ -215,6 +218,10 @@ export default function useFluxo() {
     setFotografia((atual) => (atual.tela === tela ? atual : { ...atual, tela }))
   }, [])
 
+  const definirPosicao = useCallback((eixo, valor) => {
+    setPersonalidade((atual) => (atual[eixo] === valor ? atual : { ...atual, [eixo]: valor }))
+  }, [])
+
   // Ao sair do fluxo, libera as object URLs criadas.
   useEffect(() => {
     const criadas = urls.current
@@ -248,5 +255,7 @@ export default function useFluxo() {
       alternarFoto,
       irParaTela: irParaTelaDaFotografia,
     },
+    personalidade,
+    acoesDaPersonalidade: { definirPosicao },
   }
 }

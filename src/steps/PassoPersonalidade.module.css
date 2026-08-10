@@ -1,0 +1,191 @@
+.passo {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mesmo cabeçalho dos outros passos: título 24px com o (?) ao lado. */
+.cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-16);
+  min-height: 48px;
+}
+
+.tituloGrupo {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-12);
+}
+
+.titulo {
+  margin: 0;
+  font-size: var(--texto-secao);
+  font-weight: var(--peso-semibold);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
+/* 32px de área clicável com -4px de margem: o ícone de 24px fica onde o
+   Figma coloca, e o hover tem folga. */
+.ajuda {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: -4px;
+  padding: 0;
+  border: none;
+  border-radius: var(--raio-pilula);
+  background: transparent;
+  color: var(--cor-texto-auxiliar);
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.ajuda:hover {
+  background: var(--cor-superficie);
+}
+
+.eixos {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  margin-top: 40px;
+}
+
+/* Alinhado pelo topo, não pelo centro: o trilho tem que ficar na altura do
+   meio da imagem, não do meio da coluna (que ainda tem o rótulo embaixo). */
+.eixo {
+  display: flex;
+  gap: var(--espaco-20);
+  align-items: flex-start;
+}
+
+.extremo {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: var(--espaco-20);
+  align-items: center;
+  width: 118px;
+}
+
+/* 118x66.836 e raio 3.688 vêm de um componente escalado no Figma; os valores
+   quebrados são os de lá mesmo. O fundo aparece enquanto a imagem carrega. */
+.imagem {
+  display: block;
+  width: 118px;
+  height: 66.836px;
+  object-fit: cover;
+  border-radius: 3.688px;
+  background: var(--cor-borda-tracejada);
+}
+
+.rotulo {
+  color: var(--cor-texto);
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-semibold);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+  text-align: center;
+}
+
+/* 22px do topo alinha o centro do trilho com o centro da imagem. */
+.trilho {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 24px;
+  margin-top: 22px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-superficie);
+}
+
+.pontos {
+  position: relative;
+  height: 18px;
+  margin: 3px;
+}
+
+.ponto {
+  position: absolute;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--cor-borda-tracejada);
+}
+
+/* O input cobre a altura inteira do trilho (daí o -3px), mas mantém a largura
+   da área das bolinhas, que é o que faz o cursor cair em cima delas. */
+.controle {
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 100%;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.controle::-webkit-slider-runnable-track {
+  height: 24px;
+  border: none;
+  background: transparent;
+}
+
+.controle::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  /* Centra as 18px do cursor na pista de 24px. */
+  margin-top: 3px;
+  border: none;
+  border-radius: 50%;
+  background: var(--cor-marca);
+  cursor: pointer;
+}
+
+.controle::-moz-range-track {
+  height: 24px;
+  border: none;
+  background: transparent;
+}
+
+.controle::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 50%;
+  background: var(--cor-marca);
+  cursor: pointer;
+}
+
+.controle:focus {
+  outline: none;
+}
+
+.controle:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--cor-texto);
+  outline-offset: 2px;
+}
+
+.controle:focus-visible::-moz-range-thumb {
+  outline: 2px solid var(--cor-texto);
+  outline-offset: 2px;
+}
+
+@media (max-width: 1024px) {
+  .eixos {
+    gap: var(--espaco-60);
+  }
+}
