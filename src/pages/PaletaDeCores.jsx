@@ -1,5 +1,5 @@
-import TemaEmBreve from '../components/TemaEmBreve.jsx'
+import TemaSalvo from '../components/TemaSalvo.jsx'
 
 export default function PaletaDeCores() {
-  return <TemaEmBreve titulo="Paleta de Cores" slug="paleta-de-cores" />
+  return <TemaSalvo titulo="Paleta de Cores" slug="paleta-de-cores" />
 }

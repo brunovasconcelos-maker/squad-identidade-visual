@@ -1,5 +1,5 @@
-import TemaEmBreve from '../components/TemaEmBreve.jsx'
+import TemaSalvo from '../components/TemaSalvo.jsx'
 
 export default function Tipografia() {
-  return <TemaEmBreve titulo="Tipografia" slug="tipografia" />
+  return <TemaSalvo titulo="Tipografia" slug="tipografia" />
 }

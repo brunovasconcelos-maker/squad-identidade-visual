@@ -1,5 +1,5 @@
-import TemaEmBreve from '../components/TemaEmBreve.jsx'
+import TemaSalvo from '../components/TemaSalvo.jsx'
 
 export default function Icone() {
-  return <TemaEmBreve titulo="Ícone" slug="icone" />
+  return <TemaSalvo titulo="Ícone" slug="icone" />
 }

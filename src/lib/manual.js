@@ -11,11 +11,52 @@ import { totalDeFotos } from '../data/fotografia.js'
 import { EIXOS } from '../data/personalidade.js'
 import { TIPOS_ARQUIVO, PASSOS_COM_UPLOAD } from '../data/uploads.js'
 
-const semUrl = (registro) =>
-  registro ? { nome: registro.nome, tipo: registro.tipo, arquivo: registro.arquivo } : null
+/*
+ * Um arquivo guardado é { nome, tipo, tamanho, bytes }, com `bytes` sendo um
+ * ArrayBuffer — não um File nem um Blob.
+ *
+ * O motivo é duplo. Guardar File/Blob no IndexedDB não é confiável em todos os
+ * navegadores (o Safari tem buracos antigos nisso), enquanto ArrayBuffer é
+ * clonável e gravável em qualquer um. E ler os bytes na hora do upload, em vez
+ * de segurar a referência do arquivo até o fim do fluxo, tira a dependência de
+ * o arquivo continuar legível no disco minutos depois — se falhar, falha na
+ * hora de escolher, onde dá para tentar de novo, e não na finalização, onde
+ * custa tudo.
+ */
+export async function lerArquivo(arquivo) {
+  return {
+    nome: arquivo.name,
+    tipo: arquivo.type,
+    tamanho: arquivo.size,
+    bytes: await arquivo.arrayBuffer(),
+  }
+}
 
-const comUrl = (registro) =>
-  registro?.arquivo ? { ...registro, url: URL.createObjectURL(registro.arquivo) } : null
+const semUrl = (registro) =>
+  registro
+    ? {
+        nome: registro.nome,
+        tipo: registro.tipo,
+        tamanho: registro.tamanho,
+        bytes: registro.bytes,
+      }
+    : null
+
+/**
+ * Recria a object URL a partir dos bytes. Aceita também o formato antigo, que
+ * guardava um Blob em `arquivo`, para um manual salvo antes desta mudança
+ * continuar abrindo.
+ */
+export function comUrl(registro) {
+  if (!registro) return null
+
+  const blob = registro.bytes
+    ? new Blob([registro.bytes], { type: registro.tipo || '' })
+    : registro.arquivo
+
+  if (!blob) return null
+  return { ...registro, url: URL.createObjectURL(blob) }
+}
 
 export function paraArmazenamento(fluxo) {
   return {

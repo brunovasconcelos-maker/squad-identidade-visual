@@ -1,5 +1,5 @@
-import TemaEmBreve from '../components/TemaEmBreve.jsx'
+import TemaSalvo from '../components/TemaSalvo.jsx'
 
 export default function Logo() {
-  return <TemaEmBreve titulo="Logo" slug="logo" />
+  return <TemaSalvo titulo="Logo" slug="logo" />
 }

@@ -5,7 +5,7 @@ import { MAXIMO_POR_CATEGORIA, totalDeFotos } from '../data/fotografia.js'
 import { posicoesPadrao } from '../data/personalidade.js'
 import { TIPOS_ARQUIVO, PASSOS_COM_UPLOAD } from '../data/uploads.js'
 import { lerManual, salvarManual } from '../lib/armazenamento.js'
-import { deArmazenamento, paraArmazenamento } from '../lib/manual.js'
+import { comUrl, deArmazenamento, lerArquivo, paraArmazenamento } from '../lib/manual.js'
 
 export { TIPOS_ARQUIVO, PASSOS_COM_UPLOAD }
 
@@ -75,11 +75,12 @@ export default function useFluxo() {
   const [carregando, setCarregando] = useState(true)
   const urls = useRef(new Set())
 
-  // O File fica guardado junto com a URL: a prévia usa a URL, mas quem vai
-  // para o IndexedDB na finalização é o arquivo em si.
-  const salvarUpload = useCallback((passo, tipo, arquivo) => {
-    const url = URL.createObjectURL(arquivo)
-    urls.current.add(url)
+  // Os bytes são lidos aqui, na escolha do arquivo, e não na finalização: é o
+  // que garante que a gravação no fim não dependa de o arquivo continuar
+  // legível no disco. Se a leitura falhar, falha agora, onde dá para repetir.
+  const salvarUpload = useCallback(async (passo, tipo, arquivo) => {
+    const registro = comUrl(await lerArquivo(arquivo))
+    urls.current.add(registro.url)
 
     setUploads((atual) => {
       const anterior = atual[passo]?.[tipo]?.url
@@ -88,13 +89,7 @@ export default function useFluxo() {
         urls.current.delete(anterior)
       }
 
-      return {
-        ...atual,
-        [passo]: {
-          ...atual[passo],
-          [tipo]: { url, nome: arquivo.name, tipo: arquivo.type, arquivo },
-        },
-      }
+      return { ...atual, [passo]: { ...atual[passo], [tipo]: registro } }
     })
   }, [])
 
@@ -237,18 +232,19 @@ export default function useFluxo() {
   }, [])
 
   // Elementos. Cada um é um nome dado pela pessoa mais um arquivo.
-  const registrarArquivo = useCallback((arquivo) => {
-    const url = URL.createObjectURL(arquivo)
-    urls.current.add(url)
-    return { url, nome: arquivo.name, tipo: arquivo.type, arquivo }
+  const registrarArquivo = useCallback(async (arquivo) => {
+    const registro = comUrl(await lerArquivo(arquivo))
+    urls.current.add(registro.url)
+    return registro
   }, [])
 
   const adicionarElemento = useCallback(
-    (nome, arquivo) => {
+    async (nome, arquivo) => {
+      const registro = await registrarArquivo(arquivo)
       setElementos((atual) =>
         atual.length >= MAXIMO_DE_ELEMENTOS
           ? atual
-          : [...atual, { id: crypto.randomUUID(), nome, arquivo: registrarArquivo(arquivo) }],
+          : [...atual, { id: crypto.randomUUID(), nome, arquivo: registro }],
       )
     },
     [registrarArquivo],
@@ -256,17 +252,19 @@ export default function useFluxo() {
 
   // `arquivo` só vem quando a pessoa trocou o arquivo; senão só o nome muda.
   const atualizarElemento = useCallback(
-    (id, nome, arquivo) => {
+    async (id, nome, arquivo) => {
+      const registro = arquivo ? await registrarArquivo(arquivo) : null
+
       setElementos((atual) =>
         atual.map((elemento) => {
           if (elemento.id !== id) return elemento
-          if (!arquivo) return { ...elemento, nome }
+          if (!registro) return { ...elemento, nome }
 
           if (elemento.arquivo?.url) {
             URL.revokeObjectURL(elemento.arquivo.url)
             urls.current.delete(elemento.arquivo.url)
           }
-          return { ...elemento, nome, arquivo: registrarArquivo(arquivo) }
+          return { ...elemento, nome, arquivo: registro }
         }),
       )
     },
