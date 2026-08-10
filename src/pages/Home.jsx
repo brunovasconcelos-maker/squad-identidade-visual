@@ -31,7 +31,13 @@ export default function Home() {
   return (
     <div className={s.pagina}>
       <div className={s.faixaLarga}>
-        <TopBar titulo="Identidade Visual" onReiniciar={confirmarReinicio} />
+        {/* `percentual` é o mesmo valor que decide o texto do banner, para os
+            dois não discordarem sobre o manual estar vazio. */}
+        <TopBar
+          titulo="Identidade Visual"
+          onReiniciar={confirmarReinicio}
+          manualVazio={percentual === 0}
+        />
       </div>
 
       <div className={s.faixaLarga}>

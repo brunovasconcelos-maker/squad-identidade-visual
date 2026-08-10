@@ -130,6 +130,12 @@
   background: var(--cor-borda-tracejada);
 }
 
+/* Do centro até o cursor, inclusive as duas pontas. A faixa de 8px sozinha
+   cruzava só o meio das bolinhas de 18px, e elas continuavam cinza. */
+.pontoNoCaminho {
+  background: var(--cor-marca);
+}
+
 /* O input cobre a altura inteira do trilho (daí o -3px), mas mantém a largura
    da área das bolinhas, que é o que faz o cursor cair em cima delas. */
 .controle {
