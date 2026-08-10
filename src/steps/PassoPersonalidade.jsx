@@ -37,6 +37,17 @@ export default function PassoPersonalidade({ personalidade, acoes }) {
   )
 }
 
+/**
+ * A bolinha faz parte do caminho preenchido?
+ *
+ * Precisa estar do mesmo lado do centro que o cursor (daí o produto dos sinais
+ * não ser negativo) e não passar dele (daí a comparação das distâncias). No 3
+ * só o próprio centro entra.
+ */
+function noCaminho(posicao, valor) {
+  return (posicao - 3) * (valor - 3) >= 0 && Math.abs(posicao - 3) <= Math.abs(valor - 3)
+}
+
 // 3 é o centro; a distância até ele, em quartos da faixa útil, é a largura.
 function estiloDoPreenchimento(valor) {
   const largura = `calc(${Math.abs(valor - 3) / 4} * (100% - 18px))`
@@ -56,7 +67,7 @@ function Eixo({ eixo, valor, onMudar }) {
           {POSICOES.map((posicao, i) => (
             <span
               key={posicao}
-              className={s.ponto}
+              className={noCaminho(posicao, valor) ? `${s.ponto} ${s.pontoNoCaminho}` : s.ponto}
               // Mesmo cálculo que o navegador usa para o cursor do range, então
               // os dois coincidem em qualquer largura.
               style={{ left: `calc((100% - 18px) * ${i} / 4)` }}

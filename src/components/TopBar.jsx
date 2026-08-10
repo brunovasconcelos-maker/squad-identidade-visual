@@ -3,7 +3,7 @@ import Icon from './Icon.jsx'
 import s from './TopBar.module.css'
 
 // O "Voltar" ainda não faz nada; o menu de opções já tem o reiniciar.
-export default function TopBar({ titulo, onReiniciar }) {
+export default function TopBar({ titulo, onReiniciar, manualVazio = true }) {
   const [aberto, setAberto] = useState(false)
   const menuRef = useRef(null)
 
@@ -58,7 +58,9 @@ export default function TopBar({ titulo, onReiniciar }) {
                 onReiniciar?.()
               }}
             >
-              Reiniciar manual da marca
+              {/* Sem nada salvo não há o que "re"fazer. Mesma ação nos dois
+                  casos; muda só o rótulo. */}
+              {manualVazio ? 'Iniciar' : 'Reiniciar'} manual da marca
             </button>
           </div>
         )}
