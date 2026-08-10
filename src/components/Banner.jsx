@@ -22,10 +22,10 @@ export default function Banner({ percentual = 0, proximo = null }) {
   const mensagem = !comecado
     ? 'Você ainda não começou a preencher seu manual de marca.'
     : completo
-      ? 'Você preencheu 100% do seu Manual de Identidade Visual.'
-      : `Você preencheu ${percentual}% do seu Manual de Identidade Visual.`
+      ? 'Você preencheu 100% do seu Manual de Identidade Visual'
+      : `Você preencheu ${percentual}% do seu Manual de Identidade Visual`
 
-  const rotulo = !comecado ? 'Começar' : completo ? 'Revisar' : 'Continuar'
+  const rotulo = !comecado ? 'Começar' : 'Continuar'
 
   // Retoma no primeiro tema que falta; sem nenhum, abre o fluxo do início.
   const destino = proximo ? `/passo-a-passo?passo=${proximo.passo}` : '/passo-a-passo'
@@ -45,17 +45,32 @@ export default function Banner({ percentual = 0, proximo = null }) {
         <p className={s.texto}>{mensagem}</p>
       </div>
 
-      <button
-        type="button"
-        className={s.botao}
-        onClick={() => navigate(destino)}
-        onMouseEnter={ativar}
-        onMouseLeave={desativar}
-        onFocus={ativar}
-        onBlur={desativar}
-      >
-        {rotulo}
-      </button>
+      {/* Com o manual completo o botão vira o Download. Ainda não baixa nada:
+          entra só o visual, e o comportamento vem depois. */}
+      {completo ? (
+        <button
+          type="button"
+          className={s.botao}
+          onMouseEnter={ativar}
+          onMouseLeave={desativar}
+          onFocus={ativar}
+          onBlur={desativar}
+        >
+          Download
+        </button>
+      ) : (
+        <button
+          type="button"
+          className={s.botao}
+          onClick={() => navigate(destino)}
+          onMouseEnter={ativar}
+          onMouseLeave={desativar}
+          onFocus={ativar}
+          onBlur={desativar}
+        >
+          {rotulo}
+        </button>
+      )}
     </div>
   )
 }
