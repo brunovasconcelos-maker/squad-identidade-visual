@@ -6,7 +6,14 @@ import s from './PassoArquivos.module.css'
  * variações de cor única lado a lado. Logo e Ícone só mudam a cópia; o que for
  * exclusivo de um passo entra como `children`, abaixo das molduras.
  */
-export default function PassoArquivos({ titulos, instrucao, arquivos, onSalvar, children }) {
+export default function PassoArquivos({
+  titulos,
+  instrucao,
+  arquivos,
+  onSalvar,
+  onRemover,
+  children,
+}) {
   return (
     <div className={s.passo}>
       <UploadArquivo
@@ -14,6 +21,7 @@ export default function PassoArquivos({ titulos, instrucao, arquivos, onSalvar, 
         instrucao={instrucao}
         arquivo={arquivos.principal}
         onArquivo={(arquivo) => onSalvar('principal', arquivo)}
+        onRemover={() => onRemover('principal')}
       />
 
       <div className={s.par}>
@@ -23,6 +31,7 @@ export default function PassoArquivos({ titulos, instrucao, arquivos, onSalvar, 
           arquivo={arquivos.preta}
           fundo="branco"
           onArquivo={(arquivo) => onSalvar('preta', arquivo)}
+          onRemover={() => onRemover('preta')}
         />
         <UploadArquivo
           titulo={titulos.branca}
@@ -30,6 +39,7 @@ export default function PassoArquivos({ titulos, instrucao, arquivos, onSalvar, 
           arquivo={arquivos.branca}
           fundo="preto"
           onArquivo={(arquivo) => onSalvar('branca', arquivo)}
+          onRemover={() => onRemover('branca')}
         />
       </div>
 

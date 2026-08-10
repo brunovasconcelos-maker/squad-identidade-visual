@@ -16,7 +16,7 @@ export default function Home() {
   const { manual, carregando, reiniciar } = useManual()
 
   // Sem isso a Home pisca no estado vazio antes de mostrar o que foi salvo.
-  if (carregando) return <Carregando />
+  if (carregando) return <Carregando mensagens={['Abrindo seu manual...']} />
 
   const percentual = percentualPreenchido(manual)
   const proximo = primeiroTemaIncompleto(manual)

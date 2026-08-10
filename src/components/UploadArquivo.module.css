@@ -150,3 +150,15 @@
   font-size: var(--texto-botao);
   line-height: var(--altura-linha);
 }
+
+/* Lápis e lixeira lado a lado, no canto do cabeçalho da moldura. */
+.acoes {
+  display: flex;
+  flex: none;
+  gap: var(--espaco-20);
+  align-items: center;
+}
+
+.destrutiva {
+  color: var(--cor-destrutiva);
+}

@@ -26,7 +26,7 @@ const ROTULO_DO_ARQUIVO = {
 export default function TemaSalvo({ titulo, slug }) {
   const { manual, carregando } = useManual()
 
-  if (carregando) return <Carregando />
+  if (carregando) return <Carregando mensagens={['Abrindo seu manual...']} />
 
   const temAlgo = temaCompleto(manual, slug)
 

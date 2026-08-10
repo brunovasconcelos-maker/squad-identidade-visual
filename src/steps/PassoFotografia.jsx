@@ -17,12 +17,12 @@ import s from './PassoFotografia.module.css'
  * estava. A barra de progresso só anda no "Continuar" do resumo, e quem cuida
  * disso é o PassoAPasso.
  *
- * A aba aberta é estado local de propósito: é escolha de navegação, não
- * conteúdo, e vale só enquanto o passo está montado.
+ * A aba aberta também vive no estado do fluxo: o "Continuar" da barra inferior
+ * caminha por elas em ordem, então quem manda na aba está fora deste
+ * componente. Clicar direto numa aba continua funcionando.
  */
 export default function PassoFotografia({ fotografia, acoes }) {
-  const [aba, setAba] = useState(CATEGORIAS[0].id)
-  const { selecoes, tela } = fotografia
+  const { selecoes, tela, aba } = fotografia
 
   return (
     <div className={s.passo}>
@@ -42,7 +42,7 @@ export default function PassoFotografia({ fotografia, acoes }) {
         <Selecao
           selecoes={selecoes}
           aba={aba}
-          onTrocarAba={setAba}
+          onTrocarAba={acoes.irParaAba}
           onAlternar={acoes.alternarFoto}
         />
       )}
