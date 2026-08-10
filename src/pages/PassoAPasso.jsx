@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import Carregando from '../components/Carregando.jsx'
+import FalhaAoSalvar from '../components/FalhaAoSalvar.jsx'
 import FlowTopBar from '../components/FlowTopBar.jsx'
 import FlowBottomBar from '../components/FlowBottomBar.jsx'
 import PassoLogo from '../steps/PassoLogo.jsx'
@@ -18,6 +19,10 @@ import s from './PassoAPasso.module.css'
 // No Figma esses passos têm 808px de conteúdo, mais que as 6 colunas centrais
 // (670px) usadas pelos demais. Ver .centroLargo no CSS.
 const PASSOS_LARGOS = ['fotografia', 'personalidade', 'elementos']
+
+// Tempo mínimo da tela de espera ao finalizar. Sem ele a gravação termina
+// antes do primeiro quadro e a tela nem chega a aparecer.
+const ESPERA_MINIMA = 700
 
 export default function PassoAPasso() {
   const { tema } = useParams()
@@ -38,6 +43,7 @@ function FluxoCompleto() {
       : 1,
   )
   const [salvando, setSalvando] = useState(false)
+  const [erroAoSalvar, setErroAoSalvar] = useState(null)
   // Um estado só para o fluxo inteiro: ir e voltar entre passos não perde nada.
   const {
     uploads,
@@ -120,13 +126,28 @@ function FluxoCompleto() {
 
   // A única gravação do fluxo. Enquanto grava, a tela de espera fica no lugar
   // do passo; depois a Home já lê o que acabou de ser salvo.
+  //
+  // Gravar costuma levar poucos milissegundos, rápido demais para a tela de
+  // espera chegar a ser pintada — daí o tempo mínimo, senão a transição parece
+  // que não aconteceu.
   const concluir = async () => {
+    setErroAoSalvar(null)
     setSalvando(true)
+    const comecou = Date.now()
+
     try {
       await finalizar()
     } catch (erro) {
       console.error('Não foi possível salvar o manual.', erro)
+      // Navegar mesmo assim mostraria uma Home vazia, indistinguível de um
+      // salvamento que deu certo. Melhor ficar e dizer o que aconteceu.
+      setSalvando(false)
+      setErroAoSalvar(erro)
+      return
     }
+
+    const restante = ESPERA_MINIMA - (Date.now() - comecou)
+    if (restante > 0) await new Promise((pronto) => setTimeout(pronto, restante))
     navigate('/')
   }
 
@@ -158,6 +179,15 @@ function FluxoCompleto() {
   // ocupa o lugar do fluxo.
   if (carregando) return <Carregando mensagem="Abrindo seu manual…" />
   if (salvando) return <Carregando mensagem="Salvando seu manual…" />
+  if (erroAoSalvar) {
+    return (
+      <FalhaAoSalvar
+        erro={erroAoSalvar}
+        onTentarDeNovo={concluir}
+        onDescartar={sairDoFluxo}
+      />
+    )
+  }
 
   return (
     <div className={s.pagina}>

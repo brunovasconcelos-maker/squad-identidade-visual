@@ -36,3 +36,61 @@
     animation: none;
   }
 }
+
+/* Estado de falha ao salvar, na mesma moldura centrada da espera. */
+.titulo {
+  margin: 0;
+  color: var(--cor-texto);
+  font-size: var(--texto-destaque);
+  font-weight: var(--peso-semibold);
+  line-height: var(--altura-linha);
+  letter-spacing: var(--espacamento-letras);
+  text-align: center;
+}
+
+.detalhe {
+  max-width: 480px;
+  margin: 0;
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-micro);
+  line-height: var(--altura-linha);
+  text-align: center;
+}
+
+.acoes {
+  display: flex;
+  gap: var(--espaco-16);
+  align-items: center;
+}
+
+.principal,
+.secundario {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: var(--espaco-12) var(--espaco-16);
+  border: none;
+  border-radius: var(--raio-pilula);
+  font-family: inherit;
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+  cursor: pointer;
+}
+
+.principal {
+  background: var(--cor-marca);
+  color: var(--cor-texto-invertido);
+}
+
+.secundario {
+  background: transparent;
+  color: var(--cor-texto);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color var(--transicao-padrao);
+}
+
+.secundario:hover {
+  text-decoration-color: currentColor;
+}
