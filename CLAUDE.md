@@ -59,16 +59,24 @@ sem framework de CSS — o design é definido no Figma e traduzido à mão.
 
 ## Persistência
 
-**Nada é gravado no navegador durante o fluxo.** Uploads, paleta, tipografia,
-fotografia e personalidade ficam em memória, no estado do componente do fluxo (`useFluxo`,
-chamado em `PassoAPasso`). Isso
-atravessa a navegação entre passos, mas sair pelo X ou pelo "Voltar" do passo 1
-desmonta o componente e descarta tudo — na próxima entrada o fluxo volta vazio,
-que é o comportamento esperado.
+**Existe uma gravação só, no fim.** Durante o fluxo tudo vive em memória, no
+estado de `useFluxo` (chamado em `PassoAPasso`): uploads, paleta, tipografia,
+fotografia, personalidade e elementos. Isso atravessa a navegação entre passos,
+mas sair pelo X ou pelo "Voltar" do passo 1 descarta o que ainda não foi
+finalizado.
 
-A gravação de verdade acontecerá só na etapa final de salvar, que ainda não
-existe. Não reintroduza escrita por passo (IndexedDB, localStorage ou o que
-for) sem que isso seja pedido.
+O "Finalizar" do passo 7 grava o manual inteiro no IndexedDB de uma vez
+(`src/lib/armazenamento.js`, um registro só, sobrescrito a cada finalização).
+**Não reintroduza escrita por passo** — nem IndexedDB, nem localStorage — sem
+que isso seja pedido.
+
+Ao entrar, o fluxo **lê** o manual salvo e hidrata o estado com ele. Sem isso,
+continuar de onde parou apagaria os temas já preenchidos na finalização
+seguinte, porque a gravação substitui o registro inteiro.
+
+O que vai para o disco são os Blobs dos arquivos, nunca as object URLs: elas
+morrem com a aba. `src/lib/manual.js` converte entre as duas formas e recria as
+URLs na leitura; quem lê é responsável por liberá-las.
 
 ## Barra inferior — regra fixa
 

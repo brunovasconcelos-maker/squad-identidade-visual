@@ -1,0 +1,245 @@
+.fundo {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--espaco-24);
+  background: var(--cor-scrim);
+}
+
+.painel {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 580px;
+  max-width: 100%;
+  max-height: 100%;
+  padding: var(--espaco-24);
+  overflow-y: auto;
+  border-radius: var(--raio-card);
+  background: var(--cor-fundo);
+}
+
+.cabecalho {
+  display: flex;
+  gap: var(--espaco-12);
+  align-items: center;
+}
+
+.titulo {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: var(--texto-destaque);
+  font-weight: var(--peso-semibold);
+  line-height: var(--altura-linha);
+  letter-spacing: var(--espacamento-letras);
+}
+
+.fechar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: var(--raio-pilula);
+  background: transparent;
+  color: var(--cor-texto);
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.fechar:hover {
+  background: var(--cor-superficie);
+}
+
+/* Campo do nome */
+.campoNome {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-16);
+}
+
+.linhaCampo {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  padding: var(--espaco-16) 0;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.entrada {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--cor-texto);
+  font-family: inherit;
+  font-size: var(--texto-secao);
+  font-weight: var(--peso-medio);
+  line-height: normal;
+  letter-spacing: -0.4px;
+}
+
+.entrada:focus {
+  outline: none;
+}
+
+.entrada::placeholder {
+  color: var(--cor-texto-desabilitado);
+}
+
+.lapisDoCampo {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--cor-icone);
+  cursor: pointer;
+}
+
+.dica {
+  margin: 0;
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-micro);
+  font-weight: var(--peso-regular);
+  line-height: var(--altura-linha);
+  letter-spacing: -0.08px;
+}
+
+/* Linha do arquivo anexado */
+.anexo {
+  display: flex;
+  gap: var(--espaco-16);
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--espaco-12);
+  padding-right: 28px;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-caixa);
+}
+
+.grupoAnexo {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  min-width: 0;
+}
+
+.miniatura {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+  border-radius: var(--raio-caixa);
+  background: var(--cor-superficie);
+  color: var(--cor-texto);
+}
+
+.previa {
+  width: 100%;
+  height: 100%;
+  padding: var(--espaco-12);
+  object-fit: contain;
+}
+
+.nomeDoArquivo {
+  overflow: hidden;
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-semibold);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.acoesDoAnexo {
+  display: flex;
+  flex: none;
+  gap: var(--espaco-20);
+  align-items: center;
+}
+
+.acao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: -4px;
+  padding: 0;
+  border: none;
+  border-radius: var(--raio-pilula);
+  background: transparent;
+  color: var(--cor-icone);
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.acao:hover {
+  background: var(--cor-superficie);
+}
+
+.destrutiva {
+  color: var(--cor-destrutiva);
+}
+
+/* Rodapé */
+.rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.voltar,
+.continuar {
+  display: inline-flex;
+  gap: var(--espaco-8);
+  align-items: center;
+  height: 40px;
+  padding: var(--espaco-12) var(--espaco-16);
+  border: none;
+  border-radius: var(--raio-pilula);
+  font-family: inherit;
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+  cursor: pointer;
+}
+
+.voltar {
+  background: transparent;
+  color: var(--cor-texto);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color var(--transicao-padrao);
+}
+
+.voltar:hover {
+  text-decoration-color: currentColor;
+}
+
+.continuar {
+  background: var(--cor-marca);
+  color: var(--cor-texto-invertido);
+  transition: opacity var(--transicao-padrao);
+}
+
+.continuar:disabled {
+  background: var(--cor-fundo-desabilitado);
+  color: var(--cor-texto-desabilitado);
+  cursor: default;
+}

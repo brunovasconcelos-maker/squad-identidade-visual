@@ -5,16 +5,16 @@ import s from './PillarCard.module.css'
 /**
  * Card de um pilar da identidade visual.
  *
- * `estado` controla a aparência: hoje só existe 'vazio', mas a estrutura já
- * está pronta para 'preenchido' — nesse caso o conteúdo do preview entra em
- * `children`, no lugar do "Nada adicionado", sem mexer no layout.
+ * Vazio, o card leva para o fluxo naquele tema; preenchido, leva para a
+ * página do tema, onde depois entra a visualização do que foi salvo. No
+ * preenchido o resumo vem em `children`, no lugar do "Nada adicionado".
  */
 export default function PillarCard({ slug, titulo, icone, estado = 'vazio', children }) {
   const vazio = estado === 'vazio'
 
   return (
     <Link
-      to={`/passo-a-passo/${slug}`}
+      to={vazio ? `/passo-a-passo/${slug}` : `/${slug}`}
       className={[s.card, vazio ? s.vazio : s.preenchido].join(' ')}
     >
       <div className={s.topo}>

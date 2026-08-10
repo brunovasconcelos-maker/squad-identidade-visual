@@ -30,15 +30,14 @@ export default function FlowBottomBar({
             </button>
           )}
 
-          {/* temConteudo ainda é um placeholder: sem conteúdo por passo, o
-              botão fica sempre desabilitado. Entra na lógica do formulário. */}
+          {/* No último passo o botão finaliza o manual, não avança. */}
           <button
             type="button"
             className={s.continuar}
             onClick={onContinuar}
             disabled={!temConteudo}
           >
-            Continuar
+            {ultimoPasso ? 'Finalizar' : 'Continuar'}
           </button>
         </div>
       </div>
