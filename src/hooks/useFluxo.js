@@ -3,11 +3,13 @@ import { comTomAdicional, gerarTons, normalizarHex } from '../lib/cor.js'
 import { comVarianteAlternada, MAXIMO_SECUNDARIAS } from '../lib/googleFonts.js'
 import { MAXIMO_POR_CATEGORIA, totalDeFotos } from '../data/fotografia.js'
 import { posicoesPadrao } from '../data/personalidade.js'
+import { TIPOS_ARQUIVO, PASSOS_COM_UPLOAD } from '../data/uploads.js'
+import { lerManual, salvarManual } from '../lib/armazenamento.js'
+import { deArmazenamento, paraArmazenamento } from '../lib/manual.js'
 
-export const TIPOS_ARQUIVO = ['principal', 'preta', 'branca']
+export { TIPOS_ARQUIVO, PASSOS_COM_UPLOAD }
 
-// Passos que recebem upload. Os demais entram aqui conforme forem construídos.
-export const PASSOS_COM_UPLOAD = ['logo', 'icone']
+export const MAXIMO_DE_ELEMENTOS = 10
 
 function uploadsVazios() {
   return Object.fromEntries(
@@ -42,20 +44,23 @@ function criarCor({ nome, hex }) {
 }
 
 /**
- * Estado do fluxo inteiro, só em memória: uploads dos passos de arquivo e a
- * paleta de cores, num objeto só.
+ * Estado do fluxo inteiro, num objeto só:
  *
  *   {
  *     uploads: { logo: {...}, icone: {...} },
  *     paleta: [ ...cores ],
  *     tipografia: { primaria, secundarias: [ { id, fonte } ] },
+ *     fotografia: { selecoes, tela },
+ *     personalidade: { [eixo]: 1..5 },
+ *     elementos: [ { id, nome, arquivo } ],
  *   }
  *
- * Nada é gravado no navegador. Ir e voltar entre passos preserva tudo, porque
- * o estado vive no componente do fluxo; sair pelo X ou pelo "Voltar" do passo 1
- * desmonta esse componente e descarta tudo.
- *
- * A gravação de verdade entra depois, na etapa final de salvar.
+ * Nada é gravado durante o fluxo: a escrita acontece uma vez só, no
+ * `finalizar` do último passo. Na entrada o hook lê o manual já salvo e
+ * hidrata o estado com ele, para continuar de onde parou não apagar o que já
+ * estava lá. Ir e voltar entre passos preserva tudo, porque o estado vive no
+ * componente do fluxo; sair pelo X ou pelo "Voltar" do passo 1 desmonta esse
+ * componente e descarta o que ainda não foi finalizado.
  */
 export default function useFluxo() {
   const [uploads, setUploads] = useState(uploadsVazios)
@@ -64,8 +69,14 @@ export default function useFluxo() {
   const [fotografia, setFotografia] = useState(fotografiaVazia)
   // Nasce preenchida: os cinco eixos já começam no meio.
   const [personalidade, setPersonalidade] = useState(posicoesPadrao)
+  const [elementos, setElementos] = useState([])
+  // Enquanto lê o que já estava salvo, para não mostrar um fluxo vazio e
+  // depois preencher na cara da pessoa.
+  const [carregando, setCarregando] = useState(true)
   const urls = useRef(new Set())
 
+  // O File fica guardado junto com a URL: a prévia usa a URL, mas quem vai
+  // para o IndexedDB na finalização é o arquivo em si.
   const salvarUpload = useCallback((passo, tipo, arquivo) => {
     const url = URL.createObjectURL(arquivo)
     urls.current.add(url)
@@ -79,7 +90,10 @@ export default function useFluxo() {
 
       return {
         ...atual,
-        [passo]: { ...atual[passo], [tipo]: { url, nome: arquivo.name } },
+        [passo]: {
+          ...atual[passo],
+          [tipo]: { url, nome: arquivo.name, tipo: arquivo.type, arquivo },
+        },
       }
     })
   }, [])
@@ -222,6 +236,102 @@ export default function useFluxo() {
     setPersonalidade((atual) => (atual[eixo] === valor ? atual : { ...atual, [eixo]: valor }))
   }, [])
 
+  // Elementos. Cada um é um nome dado pela pessoa mais um arquivo.
+  const registrarArquivo = useCallback((arquivo) => {
+    const url = URL.createObjectURL(arquivo)
+    urls.current.add(url)
+    return { url, nome: arquivo.name, tipo: arquivo.type, arquivo }
+  }, [])
+
+  const adicionarElemento = useCallback(
+    (nome, arquivo) => {
+      setElementos((atual) =>
+        atual.length >= MAXIMO_DE_ELEMENTOS
+          ? atual
+          : [...atual, { id: crypto.randomUUID(), nome, arquivo: registrarArquivo(arquivo) }],
+      )
+    },
+    [registrarArquivo],
+  )
+
+  // `arquivo` só vem quando a pessoa trocou o arquivo; senão só o nome muda.
+  const atualizarElemento = useCallback(
+    (id, nome, arquivo) => {
+      setElementos((atual) =>
+        atual.map((elemento) => {
+          if (elemento.id !== id) return elemento
+          if (!arquivo) return { ...elemento, nome }
+
+          if (elemento.arquivo?.url) {
+            URL.revokeObjectURL(elemento.arquivo.url)
+            urls.current.delete(elemento.arquivo.url)
+          }
+          return { ...elemento, nome, arquivo: registrarArquivo(arquivo) }
+        }),
+      )
+    },
+    [registrarArquivo],
+  )
+
+  const removerElemento = useCallback((id) => {
+    setElementos((atual) => {
+      const saindo = atual.find((elemento) => elemento.id === id)
+      if (saindo?.arquivo?.url) {
+        URL.revokeObjectURL(saindo.arquivo.url)
+        urls.current.delete(saindo.arquivo.url)
+      }
+      return atual.filter((elemento) => elemento.id !== id)
+    })
+  }, [])
+
+  // Ao entrar no fluxo, recupera o que já tinha sido salvo. Sem isso,
+  // continuar de onde parou sobrescreveria os temas já preenchidos com vazio.
+  useEffect(() => {
+    let ativo = true
+
+    lerManual()
+      .then((salvo) => {
+        const manual = deArmazenamento(salvo)
+        if (!ativo || !manual) return
+
+        Object.values(manual.uploads).forEach((porTipo) =>
+          Object.values(porTipo).forEach((registro) => {
+            if (registro?.url) urls.current.add(registro.url)
+          }),
+        )
+        manual.elementos.forEach((elemento) => {
+          if (elemento.arquivo?.url) urls.current.add(elemento.arquivo.url)
+        })
+
+        setUploads(manual.uploads)
+        setPaleta(manual.paleta)
+        setTipografia(manual.tipografia)
+        setFotografia(manual.fotografia)
+        // Um manual antigo pode não ter todos os eixos: o padrão completa.
+        setPersonalidade({ ...posicoesPadrao(), ...manual.personalidade })
+        setElementos(manual.elementos)
+      })
+      .catch(() => {
+        // Sem o que foi salvo o fluxo ainda funciona: começa vazio.
+      })
+      .finally(() => {
+        if (ativo) setCarregando(false)
+      })
+
+    return () => {
+      ativo = false
+    }
+  }, [])
+
+  // A única escrita do fluxo, na finalização: grava tudo de uma vez.
+  const finalizar = useCallback(
+    () =>
+      salvarManual(
+        paraArmazenamento({ uploads, paleta, tipografia, fotografia, personalidade, elementos }),
+      ),
+    [uploads, paleta, tipografia, fotografia, personalidade, elementos],
+  )
+
   // Ao sair do fluxo, libera as object URLs criadas.
   useEffect(() => {
     const criadas = urls.current
@@ -257,5 +367,13 @@ export default function useFluxo() {
     },
     personalidade,
     acoesDaPersonalidade: { definirPosicao },
+    elementos,
+    acoesDosElementos: {
+      adicionar: adicionarElemento,
+      atualizar: atualizarElemento,
+      remover: removerElemento,
+    },
+    carregando,
+    finalizar,
   }
 }

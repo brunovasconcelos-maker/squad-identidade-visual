@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import Carregando from '../components/Carregando.jsx'
 import FlowTopBar from '../components/FlowTopBar.jsx'
 import FlowBottomBar from '../components/FlowBottomBar.jsx'
 import PassoLogo from '../steps/PassoLogo.jsx'
@@ -8,14 +9,15 @@ import PassoPaleta from '../steps/PassoPaleta.jsx'
 import PassoTipografia from '../steps/PassoTipografia.jsx'
 import PassoFotografia from '../steps/PassoFotografia.jsx'
 import PassoPersonalidade from '../steps/PassoPersonalidade.jsx'
+import PassoElementos from '../steps/PassoElementos.jsx'
 import useFluxo from '../hooks/useFluxo.js'
 import { pilares, temas } from '../data/pilares.js'
 import { totalDeFotos } from '../data/fotografia.js'
 import s from './PassoAPasso.module.css'
 
-// No Figma esses dois passos têm 808px de conteúdo, mais que as 6 colunas
-// centrais (670px) usadas pelos demais. Ver .centroLargo no CSS.
-const PASSOS_LARGOS = ['fotografia', 'personalidade']
+// No Figma esses passos têm 808px de conteúdo, mais que as 6 colunas centrais
+// (670px) usadas pelos demais. Ver .centroLargo no CSS.
+const PASSOS_LARGOS = ['fotografia', 'personalidade', 'elementos']
 
 export default function PassoAPasso() {
   const { tema } = useParams()
@@ -27,7 +29,15 @@ export default function PassoAPasso() {
 function FluxoCompleto() {
   const navigate = useNavigate()
   const total = pilares.length
-  const [passo, setPasso] = useState(1)
+  // A Home manda continuar no primeiro tema incompleto por ?passo=N.
+  const [parametros] = useSearchParams()
+  const passoInicial = Number(parametros.get('passo'))
+  const [passo, setPasso] = useState(
+    Number.isInteger(passoInicial) && passoInicial >= 1 && passoInicial <= pilares.length
+      ? passoInicial
+      : 1,
+  )
+  const [salvando, setSalvando] = useState(false)
   // Um estado só para o fluxo inteiro: ir e voltar entre passos não perde nada.
   const {
     uploads,
@@ -40,6 +50,10 @@ function FluxoCompleto() {
     acoesDaFotografia,
     personalidade,
     acoesDaPersonalidade,
+    elementos,
+    acoesDosElementos,
+    carregando,
+    finalizar,
   } = useFluxo()
 
   const pilarAtual = pilares[passo - 1]
@@ -60,6 +74,7 @@ function FluxoCompleto() {
     fotografia: () => fotosEscolhidas > 0,
     // Os eixos já nascem no meio, então este passo nunca está vazio.
     personalidade: () => true,
+    elementos: () => elementos.length > 0,
   }
 
   const temConteudo =
@@ -92,6 +107,8 @@ function FluxoCompleto() {
         return (
           <PassoPersonalidade personalidade={personalidade} acoes={acoesDaPersonalidade} />
         )
+      case 'elementos':
+        return <PassoElementos elementos={elementos} acoes={acoesDosElementos} />
       default:
         return null
     }
@@ -101,10 +118,16 @@ function FluxoCompleto() {
   // É o que faz o X e o "Voltar" do passo 1 descartarem o que foi enviado.
   const sairDoFluxo = () => navigate('/')
 
-  const concluir = () => {
-    // TODO: salvar o fluxo de verdade quando a etapa final existir. Até lá
-    // concluir apenas sai, e os uploads em memória são descartados.
-    sairDoFluxo()
+  // A única gravação do fluxo. Enquanto grava, a tela de espera fica no lugar
+  // do passo; depois a Home já lê o que acabou de ser salvo.
+  const concluir = async () => {
+    setSalvando(true)
+    try {
+      await finalizar()
+    } catch (erro) {
+      console.error('Não foi possível salvar o manual.', erro)
+    }
+    navigate('/')
   }
 
   const voltar = () => {
@@ -130,6 +153,11 @@ function FluxoCompleto() {
   // "Não tenho, pular" na Fotografia salta o passo inteiro, sem passar pelo
   // resumo — que estaria vazio de qualquer forma.
   const pular = () => proximoPasso()
+
+  // Enquanto lê o que já foi salvo, e enquanto grava no fim, a tela de espera
+  // ocupa o lugar do fluxo.
+  if (carregando) return <Carregando mensagem="Abrindo seu manual…" />
+  if (salvando) return <Carregando mensagem="Salvando seu manual…" />
 
   return (
     <div className={s.pagina}>
