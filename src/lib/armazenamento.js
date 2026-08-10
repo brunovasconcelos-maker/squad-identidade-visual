@@ -11,11 +11,23 @@
 const BANCO = 'squad-identidade-visual'
 const DEPOSITO = 'manual'
 const CHAVE = 'atual'
-const VERSAO = 1
+/*
+ * Versão 2 porque a 1 podia existir sem o depósito.
+ *
+ * `indexedDB.open(nome)` sem versão, num banco que ainda não existe, cria a
+ * versão 1 e dispara o onupgradeneeded sem ninguém criar depósito nenhum — e
+ * fica um banco v1 vazio. Depois disso, abrir na v1 casa com a versão que já
+ * está lá, o onupgradeneeded não roda mais, e todo `transaction('manual')`
+ * falha com "One of the specified object stores was not found", para sempre.
+ * Subir a versão faz o onupgradeneeded rodar e criar o depósito que faltava.
+ */
+const VERSAO = 2
 
-function abrir() {
+function abrirNaVersao(versao) {
   return new Promise((resolve, reject) => {
-    const pedido = indexedDB.open(BANCO, VERSAO)
+    // Sem versão o navegador abre a que existir, que é o que queremos quando
+    // só precisamos descobrir em que pé o banco está.
+    const pedido = versao === undefined ? indexedDB.open(BANCO) : indexedDB.open(BANCO, versao)
 
     pedido.onupgradeneeded = () => {
       const bd = pedido.result
@@ -28,6 +40,38 @@ function abrir() {
     pedido.onblocked = () =>
       reject(new Error('O manual está aberto em outra aba. Feche as outras abas e tente de novo.'))
   })
+}
+
+/**
+ * Abre o banco garantindo que o depósito existe.
+ *
+ * Só subir a versão resolve quem está atrás dela. Se o banco já estiver numa
+ * versão igual ou maior e ainda assim sem o depósito, a única saída é subir de
+ * novo a partir da versão real — daí a segunda tentativa.
+ */
+async function abrir() {
+  let bd
+
+  try {
+    bd = await abrirNaVersao(VERSAO)
+  } catch (erro) {
+    // O banco está numa versão mais nova que a nossa constante: abrir na dele.
+    if (erro?.name !== 'VersionError') throw erro
+    bd = await abrirNaVersao(undefined)
+  }
+
+  if (bd.objectStoreNames.contains(DEPOSITO)) return bd
+
+  const proxima = bd.version + 1
+  bd.close()
+  bd = await abrirNaVersao(proxima)
+
+  if (!bd.objectStoreNames.contains(DEPOSITO)) {
+    bd.close()
+    throw new Error(`Não foi possível criar o depósito "${DEPOSITO}" no banco do manual.`)
+  }
+
+  return bd
 }
 
 function transacao(bd, modo, executar) {
