@@ -6,7 +6,7 @@ import {
   MAXIMO_POR_CATEGORIA,
   NUMEROS_DE_FOTO,
 } from '../data/fotografia.js'
-import { urlDaFoto } from '../lib/fotos.js'
+import { urlDaFoto } from '../lib/imagens.js'
 import s from './PassoFotografia.module.css'
 
 /**

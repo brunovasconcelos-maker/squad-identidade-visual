@@ -7,10 +7,15 @@ import PassoIcone from '../steps/PassoIcone.jsx'
 import PassoPaleta from '../steps/PassoPaleta.jsx'
 import PassoTipografia from '../steps/PassoTipografia.jsx'
 import PassoFotografia from '../steps/PassoFotografia.jsx'
+import PassoPersonalidade from '../steps/PassoPersonalidade.jsx'
 import useFluxo from '../hooks/useFluxo.js'
 import { pilares, temas } from '../data/pilares.js'
 import { totalDeFotos } from '../data/fotografia.js'
 import s from './PassoAPasso.module.css'
+
+// No Figma esses dois passos têm 808px de conteúdo, mais que as 6 colunas
+// centrais (670px) usadas pelos demais. Ver .centroLargo no CSS.
+const PASSOS_LARGOS = ['fotografia', 'personalidade']
 
 export default function PassoAPasso() {
   const { tema } = useParams()
@@ -33,6 +38,8 @@ function FluxoCompleto() {
     acoesDaTipografia,
     fotografia,
     acoesDaFotografia,
+    personalidade,
+    acoesDaPersonalidade,
   } = useFluxo()
 
   const pilarAtual = pilares[passo - 1]
@@ -51,6 +58,8 @@ function FluxoCompleto() {
     'paleta-de-cores': () => paleta.length > 0,
     tipografia: () => Boolean(tipografia.primaria),
     fotografia: () => fotosEscolhidas > 0,
+    // Os eixos já nascem no meio, então este passo nunca está vazio.
+    personalidade: () => true,
   }
 
   const temConteudo =
@@ -79,6 +88,10 @@ function FluxoCompleto() {
         return <PassoTipografia tipografia={tipografia} acoes={acoesDaTipografia} />
       case 'fotografia':
         return <PassoFotografia fotografia={fotografia} acoes={acoesDaFotografia} />
+      case 'personalidade':
+        return (
+          <PassoPersonalidade personalidade={personalidade} acoes={acoesDaPersonalidade} />
+        )
       default:
         return null
     }
@@ -128,7 +141,9 @@ function FluxoCompleto() {
         <div className={s.grade}>
           {/* A Fotografia usa um bloco mais largo: a grade 3x3 tem 808px no
               Figma, e não cabe nas 6 colunas centrais dos outros passos. */}
-          <div className={ehFotografia ? s.centroLargo : s.centro}>{conteudoDoPasso()}</div>
+          <div className={PASSOS_LARGOS.includes(pilarAtual.slug) ? s.centroLargo : s.centro}>
+            {conteudoDoPasso()}
+          </div>
         </div>
       </main>
 
