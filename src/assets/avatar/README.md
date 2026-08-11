@@ -1,28 +1,25 @@
 # Avatares
 
-Avatares dos agentes do Squad, para a página de Tom de Voz.
+Avatares dos agentes do Squad, usados no passo de Tom de Voz.
 
-Um arquivo por personagem, nomeado com o nome do agente:
+Um arquivo por personagem, nomeado `<id>_avatar.png`, com o `id` em minúsculas
+como está em `src/data/agentes.js`:
 
-- `Waz`
-- `Maky`
-- `Fin`
-- `Pipo`
-- `Juri`
-- `Opy`
+`waz` · `maky` · `fin` · `pipo` · `juri` · `opy`
 
-A pasta está vazia de propósito — os arquivos ainda não foram enviados, e
-nenhum código referencia esta pasta por enquanto.
+As imagens já vêm recortadas em círculo e com o degradê de fundo embutido — não
+há gradiente nenhum no CSS. Quem resolve os caminhos é `src/lib/avatares.js`,
+por `import.meta.glob`.
 
-## Ao subir os arquivos
+## Ao trocar ou acrescentar arquivos
 
 - **Maiúsculas importam.** O GitHub Pages diferencia maiúsculas de minúsculas,
-  então `Waz.png` e `waz.png` são arquivos diferentes. Um nome errado só quebra
-  em produção, nunca no `npm run dev` — vale conferir na hora de subir.
-- Mantenha uma extensão só para todos, para o carregamento por
-  `import.meta.glob` ficar simples (as demais pastas usam `.png` e `.svg`).
-- Este `README.md` é o que faz o Git rastrear a pasta enquanto ela está vazia.
-  Pode ficar depois que os avatares chegarem.
+  então `Waz_avatar.png` e `waz_avatar.png` são arquivos diferentes. Um nome
+  errado só quebra em produção, nunca no `npm run dev` — vale conferir na hora
+  de subir.
+- Mantenha `.png` para todos, para o `import.meta.glob` continuar simples.
+- Um agente novo precisa do arquivo **e** de uma entrada em
+  `src/data/agentes.js`; sem o arquivo, o avatar vira imagem quebrada.
 
 ## Sobre extrair assets do Figma
 

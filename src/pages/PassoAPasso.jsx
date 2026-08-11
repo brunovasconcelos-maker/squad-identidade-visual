@@ -19,7 +19,7 @@ import s from './PassoAPasso.module.css'
 
 // No Figma esses passos têm 808px de conteúdo, mais que as 6 colunas centrais
 // (670px) usadas pelos demais. Ver .centroLargo no CSS.
-const PASSOS_LARGOS = ['fotografia', 'personalidade', 'elementos']
+const PASSOS_LARGOS = ['tom-de-voz', 'fotografia', 'personalidade', 'elementos']
 
 // A tela de espera fica até as cinco mensagens passarem, mesmo que a gravação
 // termine antes — que é o normal, ela leva milissegundos.
@@ -54,6 +54,8 @@ function FluxoCompleto() {
     acoesDaPaleta,
     tipografia,
     acoesDaTipografia,
+    tomDeVoz,
+    acoesDoTomDeVoz,
     fotografia,
     acoesDaFotografia,
     personalidade,
@@ -83,6 +85,8 @@ function FluxoCompleto() {
   const conteudoDoPilar = {
     'paleta-de-cores': () => paleta.length > 0,
     tipografia: () => Boolean(tipografia.primaria),
+    // Passo inteiro opcional: criar um tom é oferta, não exigência.
+    'tom-de-voz': () => true,
     // Sempre habilitado: percorrer as categorias não exige escolher nada, e
     // com isso o "pular" some daqui pela regra geral.
     fotografia: () => true,
@@ -117,7 +121,7 @@ function FluxoCompleto() {
       case 'tipografia':
         return <PassoTipografia tipografia={tipografia} acoes={acoesDaTipografia} />
       case 'tom-de-voz':
-        return <PassoTomDeVoz />
+        return <PassoTomDeVoz tons={tomDeVoz} acoes={acoesDoTomDeVoz} />
       case 'fotografia':
         return <PassoFotografia fotografia={fotografia} acoes={acoesDaFotografia} />
       case 'personalidade':

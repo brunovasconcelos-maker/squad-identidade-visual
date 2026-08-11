@@ -22,6 +22,7 @@
   --cor-texto-auxiliar: #525b5b;     /* texto de apoio da área de upload */
   --cor-borda-upload: #b2b9b9;       /* borda tracejada da área de upload */
   --cor-borda-previa: #e5e5e5;       /* borda da prévia em fundo branco */
+  --cor-borda-caixa: #b2b9b9;        /* borda dos campos de texto em fundo cinza */
   --cor-borda-campo: #e5e8e8;        /* borda dos campos do color picker */
   --cor-scrim: rgba(0, 0, 0, 0.2);   /* fundo escurecido atrás do modal */
   --cor-destrutiva: #ce2c31;         /* ações destrutivas, como excluir */
@@ -48,6 +49,7 @@
   --espacamento-letras-secao: -0.23px;
 
   /* Raios */
+  --raio-campo: 4px;
   --raio-caixa: 8px;
   --raio-card: 16px;
   --raio-icone: 12px;
