@@ -6,6 +6,7 @@
 .cabecalho,
 .cabecalhoSecundarias {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--espaco-16);
@@ -361,12 +362,7 @@
   border-radius: var(--espaco-4);
 }
 
-@media (max-width: 1024px) {
-  .cabecalho,
-  .cabecalhoSecundarias {
-    flex-wrap: wrap;
-  }
-
+@media (max-width: 1023px) {
   .variantes {
     flex-wrap: wrap;
     gap: var(--espaco-16);

@@ -66,3 +66,21 @@
   color: var(--cor-texto-desabilitado);
   cursor: default;
 }
+
+/* No celular os três botões não cabem lado a lado com o respiro do desktop:
+   o preenchimento horizontal cede, o texto continua inteiro. */
+@media (max-width: 767px) {
+  .barra {
+    padding: var(--espaco-20) var(--grid-margem) var(--espaco-12);
+  }
+
+  .direita {
+    gap: var(--espaco-4);
+  }
+
+  .voltar,
+  .pular,
+  .continuar {
+    padding: var(--espaco-12) var(--espaco-12);
+  }
+}

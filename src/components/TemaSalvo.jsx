@@ -7,6 +7,7 @@ import { temaCompleto } from '../lib/manual.js'
 import { TIPOS_ARQUIVO } from '../data/uploads.js'
 import { categoriasEscolhidas } from '../data/fotografia.js'
 import { EIXOS, POSICOES } from '../data/personalidade.js'
+import { nomeDoAgente } from '../data/agentes.js'
 import { urlDaFoto } from '../lib/imagens.js'
 import s from './TemaSalvo.module.css'
 
@@ -58,6 +59,8 @@ function Corpo({ slug, manual }) {
       return <Paleta cores={manual.paleta} />
     case 'tipografia':
       return <Tipografia tipografia={manual.tipografia} />
+    case 'tom-de-voz':
+      return <TomDeVoz tons={manual.tomDeVoz} />
     case 'fotografia':
       return <Fotografia selecoes={manual.fotografia.selecoes} />
     case 'personalidade':
@@ -145,6 +148,47 @@ function Fonte({ fonte, papel }) {
           : 'Nenhum peso ativo.'}
       </p>
     </section>
+  )
+}
+
+function TomDeVoz({ tons }) {
+  return (
+    <div className={s.lista}>
+      {tons.map((tom) => {
+        const substituicoes = tom.evitar.filter((item) => item.substituto.trim())
+
+        return (
+          <section key={tom.id} className={s.bloco}>
+            <div className={s.corTopo}>
+              <span className={s.nome}>{tom.nome}</span>
+              {tom.agentes.map((id) => (
+                <span key={id} className={s.etiqueta}>
+                  {nomeDoAgente(id)}
+                </span>
+              ))}
+            </div>
+
+            {tom.instrucoes && <p className={s.pesos}>{tom.instrucoes}</p>}
+
+            {tom.evitar.length > 0 && (
+              <p className={s.pesos}>
+                <span className={s.secundario}>Evita: </span>
+                {tom.evitar.map((item) => item.palavra).join(' · ')}
+              </p>
+            )}
+
+            {substituicoes.length > 0 && (
+              <p className={s.pesos}>
+                <span className={s.secundario}>Substitui: </span>
+                {substituicoes
+                  .map((item) => `${item.palavra} → ${item.substituto}`)
+                  .join(' · ')}
+              </p>
+            )}
+          </section>
+        )
+      })}
+    </div>
   )
 }
 

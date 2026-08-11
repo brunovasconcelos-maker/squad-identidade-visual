@@ -64,11 +64,42 @@
   --espaco-24: 24px;
   --espaco-60: 60px;
 
-  /* Grid: 12 colunas, margem 40px, gutter 20px */
+  /* Grid: 12 colunas, margem 40px, gutter 20px.
+     A margem encolhe nos pontos de quebra abaixo — quem usa o token acompanha
+     sem precisar de media query própria. */
   --grid-colunas: 12;
   --grid-margem: 40px;
   --grid-gutter: 20px;
 
   /* Movimento */
   --transicao-padrao: 160ms ease;
+}
+
+/*
+ * Pontos de quebra do grid. São três, e os mesmos em todo o projeto:
+ *
+ *   1200px  desktop estreito — a margem cede e o conteúdo se alarga uma coluna
+ *   1024px  tablet — o conteúdo passa a ocupar as 12 colunas
+ *    768px  celular — margem mínima e uma coluna de cards
+ *
+ * Só a margem mora aqui; quantas colunas cada bloco ocupa é decisão de quem
+ * desenha a página, e fica no CSS dela.
+ */
+@media (max-width: 1199px) {
+  :root {
+    --grid-margem: 32px;
+  }
+}
+
+@media (max-width: 1023px) {
+  :root {
+    --grid-margem: 24px;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --grid-margem: 16px;
+    --grid-gutter: 16px;
+  }
 }

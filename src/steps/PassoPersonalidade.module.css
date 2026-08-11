@@ -6,6 +6,7 @@
 /* Mesmo cabeçalho dos outros passos: título 24px com o (?) ao lado. */
 .cabecalho {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--espaco-16);
@@ -201,7 +202,7 @@
   outline-offset: 2px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
   .eixos {
     gap: var(--espaco-60);
   }

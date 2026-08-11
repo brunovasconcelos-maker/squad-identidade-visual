@@ -124,6 +124,7 @@ const COMPLETO = {
   icone: (m) => arquivosDoPasso(m, 'icone') > 0,
   'paleta-de-cores': (m) => (m.paleta?.length ?? 0) > 0,
   tipografia: (m) => Boolean(m.tipografia?.primaria),
+  'tom-de-voz': (m) => (m.tomDeVoz?.length ?? 0) > 0,
   fotografia: (m) => totalDeFotos(m.fotografia?.selecoes ?? {}) > 0,
   personalidade: () => true,
   elementos: (m) => (m.elementos?.length ?? 0) > 0,
@@ -166,6 +167,8 @@ export function resumoDoTema(manual, slug) {
       if (!primaria) return null
       return secundarias > 0 ? `${primaria} + ${secundarias}` : primaria
     }
+    case 'tom-de-voz':
+      return plural(manual.tomDeVoz?.length ?? 0, 'tom criado', 'tons criados')
     case 'fotografia':
       return plural(totalDeFotos(manual.fotografia?.selecoes ?? {}), 'selecionada', 'selecionadas')
     case 'personalidade':

@@ -21,18 +21,47 @@
   gap: var(--grid-gutter);
 }
 
-/* Abaixo de 1024px as 12 colunas ficam estreitas demais para o layout
-   original; o conteúdo passa a ocupar a largura toda e os cards reflowam. */
-@media (max-width: 1024px) {
-  .pagina {
-    display: flex;
-    flex-direction: column;
-    padding: var(--espaco-24) var(--espaco-24) 48px;
-    row-gap: var(--espaco-24);
+/* O grid de 12 colunas continua o mesmo em toda largura; o que muda é quanto
+   dele cada bloco ocupa. A cada quebra o conteúdo cede um recuo de cada lado,
+   até ocupar as 12 colunas, e os cards passam de 3 para 2 e depois para 1. */
+
+/* Desktop estreito: um recuo de cada lado em vez de dois. */
+@media (max-width: 1199px) {
+  .faixaLarga {
+    grid-column: 2 / span 10;
   }
 
   .grade {
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-column: 3 / span 8;
+  }
+}
+
+/* Tablet: sem recuo, e dois cards por linha. */
+@media (max-width: 1023px) {
+  .pagina {
+    row-gap: 40px;
+    padding: 40px var(--grid-margem) 48px;
+  }
+
+  .faixaLarga,
+  .grade {
+    grid-column: 1 / -1;
+  }
+
+  .grade {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Celular: um card por linha. */
+@media (max-width: 767px) {
+  .pagina {
+    row-gap: var(--espaco-24);
+    padding: var(--espaco-24) var(--grid-margem) 40px;
+  }
+
+  .grade {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
