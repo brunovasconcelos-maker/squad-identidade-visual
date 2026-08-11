@@ -5,6 +5,7 @@ import Logo from './pages/Logo.jsx'
 import Icone from './pages/Icone.jsx'
 import PaletaDeCores from './pages/PaletaDeCores.jsx'
 import Tipografia from './pages/Tipografia.jsx'
+import TomDeVoz from './pages/TomDeVoz.jsx'
 import Fotografia from './pages/Fotografia.jsx'
 import Personalidade from './pages/Personalidade.jsx'
 import Elementos from './pages/Elementos.jsx'
@@ -20,6 +21,7 @@ export default function AppRoutes() {
       <Route path="/icone" element={<Icone />} />
       <Route path="/paleta-de-cores" element={<PaletaDeCores />} />
       <Route path="/tipografia" element={<Tipografia />} />
+      <Route path="/tom-de-voz" element={<TomDeVoz />} />
       <Route path="/fotografia" element={<Fotografia />} />
       <Route path="/personalidade" element={<Personalidade />} />
       <Route path="/elementos" element={<Elementos />} />
