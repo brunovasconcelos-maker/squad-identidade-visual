@@ -7,16 +7,19 @@
 // src/assets/icones.
 export const pilares = [
   { slug: 'logo', titulo: 'Logo', icone: 'Logo' },
-  { slug: 'icone', titulo: 'Ícone', icone: 'Icone' },
+  { slug: 'icone', titulo: 'Ícone', icone: 'Star-Filled' },
   { slug: 'paleta-de-cores', titulo: 'Paleta de Cores', icone: 'Paleta' },
   { slug: 'tipografia', titulo: 'Tipografia', icone: 'Tipografia' },
   // O passo já funciona e o que é criado nele vai para o manual salvo, mas a
   // Home ainda não lê esse pedaço: o tema nunca conta como preenchido, então
   // 100% só volta a ser possível quando o card da Home for construído.
-  // O ícone é emprestado da Personalidade até ter o próprio.
+  // Personalidade.svg é o rosto com as ondas de som — o glifo do Figma para
+  // este tema, apesar do nome do arquivo.
   { slug: 'tom-de-voz', titulo: 'Tom de Voz', icone: 'Personalidade' },
   { slug: 'fotografia', titulo: 'Fotografia', icone: 'Fotografia' },
-  { slug: 'personalidade', titulo: 'Personalidade', icone: 'Personalidade' },
+  // O rosto de Icone.svg é o ícone da Personalidade; o Ícone ficou com a
+  // estrela sólida. Os nomes dos arquivos não acompanharam a troca de propósito.
+  { slug: 'personalidade', titulo: 'Personalidade', icone: 'Icone' },
   { slug: 'elementos', titulo: 'Elementos', icone: 'Elementos' },
 ]
 
