@@ -23,7 +23,7 @@ const ROTULO_DO_ARQUIVO = {
  * desenho de verdade vem depois; por ora o que importa é conseguir conferir o
  * que está no manual.
  */
-export default function TemaSalvo({ titulo, slug }) {
+export default function TemaSalvo({ titulo, slug, vazio = 'Nada adicionado ainda.' }) {
   const { manual, carregando } = useManual()
 
   if (carregando) return <Carregando mensagens={['Abrindo seu manual...']} />
@@ -43,7 +43,7 @@ export default function TemaSalvo({ titulo, slug }) {
       </header>
 
       <main className={s.conteudo}>
-        {temAlgo ? <Corpo slug={slug} manual={manual} /> : <p className={s.vazio}>Nada adicionado ainda.</p>}
+        {temAlgo ? <Corpo slug={slug} manual={manual} /> : <p className={s.vazio}>{vazio}</p>}
       </main>
     </div>
   )

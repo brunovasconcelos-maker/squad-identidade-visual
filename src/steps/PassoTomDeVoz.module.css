@@ -1,0 +1,32 @@
+.passo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-24);
+}
+
+/* Mesmo título de seção dos outros passos, sem o (?) — não há o que explicar
+   enquanto o passo não existe de verdade. */
+.titulo {
+  margin: 0;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  font-size: var(--texto-secao);
+  font-weight: var(--peso-semibold);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
+.aviso {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 169px;
+  margin: 0;
+  border: 1px dashed var(--cor-borda-upload);
+  border-radius: var(--raio-caixa);
+  background: var(--cor-superficie);
+  color: var(--cor-texto-auxiliar);
+  font-size: var(--texto-corpo);
+  line-height: var(--altura-linha);
+}

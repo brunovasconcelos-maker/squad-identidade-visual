@@ -8,6 +8,7 @@ import PassoLogo from '../steps/PassoLogo.jsx'
 import PassoIcone from '../steps/PassoIcone.jsx'
 import PassoPaleta from '../steps/PassoPaleta.jsx'
 import PassoTipografia from '../steps/PassoTipografia.jsx'
+import PassoTomDeVoz from '../steps/PassoTomDeVoz.jsx'
 import PassoFotografia from '../steps/PassoFotografia.jsx'
 import PassoPersonalidade from '../steps/PassoPersonalidade.jsx'
 import PassoElementos from '../steps/PassoElementos.jsx'
@@ -115,6 +116,8 @@ function FluxoCompleto() {
         return <PassoPaleta paleta={paleta} acoes={acoesDaPaleta} />
       case 'tipografia':
         return <PassoTipografia tipografia={tipografia} acoes={acoesDaTipografia} />
+      case 'tom-de-voz':
+        return <PassoTomDeVoz />
       case 'fotografia':
         return <PassoFotografia fotografia={fotografia} acoes={acoesDaFotografia} />
       case 'personalidade':

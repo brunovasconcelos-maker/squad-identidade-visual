@@ -65,7 +65,7 @@ fotografia, personalidade e elementos. Isso atravessa a navegação entre passos
 mas sair pelo X ou pelo "Voltar" do passo 1 descarta o que ainda não foi
 finalizado.
 
-O "Finalizar" do passo 7 grava o manual inteiro no IndexedDB de uma vez
+O "Finalizar" do último passo grava o manual inteiro no IndexedDB de uma vez
 (`src/lib/armazenamento.js`, um registro só, sobrescrito a cada finalização).
 **Não reintroduza escrita por passo** — nem IndexedDB, nem localStorage — sem
 que isso seja pedido.
@@ -77,6 +77,17 @@ seguinte, porque a gravação substitui o registro inteiro.
 O que vai para o disco são os Blobs dos arquivos, nunca as object URLs: elas
 morrem com a aba. `src/lib/manual.js` converte entre as duas formas e recria as
 URLs na leitura; quem lê é responsável por liberá-las.
+
+## Pilares — uma lista só
+
+`src/data/pilares.js` é a única fonte da ordem e da quantidade de temas. Dela
+saem o total de passos do fluxo, a barra de progresso, o percentual da Home,
+os cards e os temas aceitos em `/passo-a-passo/:tema`. Acrescentar ou reordenar
+um tema é mexer só nessa lista — não há contagem escrita à mão em lugar nenhum.
+
+Um tema sem modelo de dados (hoje o Tom de Voz) simplesmente não declara nada
+em `conteudoDoPilar`, e com isso nunca conta como preenchido: o "Continuar"
+dele fica desabilitado e 100% fica inalcançável até o passo ser construído.
 
 ## Barra inferior — regra fixa
 
