@@ -50,6 +50,7 @@ function criarCor({ nome, hex }) {
  *     uploads: { logo: {...}, icone: {...} },
  *     paleta: [ ...cores ],
  *     tipografia: { primaria, secundarias: [ { id, fonte } ] },
+ *     tomDeVoz: [ { id, nome, instrucoes, evitar, agentes } ],
  *     fotografia: { selecoes, tela },
  *     personalidade: { [eixo]: 1..5 },
  *     elementos: [ { id, nome, arquivo } ],
@@ -66,6 +67,7 @@ export default function useFluxo() {
   const [uploads, setUploads] = useState(uploadsVazios)
   const [paleta, setPaleta] = useState([])
   const [tipografia, setTipografia] = useState(tipografiaVazia)
+  const [tomDeVoz, setTomDeVoz] = useState([])
   const [fotografia, setFotografia] = useState(fotografiaVazia)
   // Nasce preenchida: os cinco eixos já começam no meio.
   const [personalidade, setPersonalidade] = useState(posicoesPadrao)
@@ -211,6 +213,22 @@ export default function useFluxo() {
     )
   }, [])
 
+  // Tom de Voz. O modal devolve o tom inteiro, com id: se já existe na lista é
+  // edição no lugar, senão entra no fim.
+  const salvarTomDeVoz = useCallback((tom) => {
+    setTomDeVoz((atual) =>
+      atual.some((existente) => existente.id === tom.id)
+        ? atual.map((existente) => (existente.id === tom.id ? tom : existente))
+        : [...atual, tom],
+    )
+  }, [])
+
+  // Excluir um tom devolve os agentes dele para os que ainda podem ser
+  // atribuídos — a conta é feita a partir da lista, então não há o que limpar.
+  const removerTomDeVoz = useCallback((id) => {
+    setTomDeVoz((atual) => atual.filter((tom) => tom.id !== id))
+  }, [])
+
   // Fotografia. As escolhas ficam por categoria, e trocar de aba não mexe nas
   // outras — cada categoria guarda a sua própria lista.
   const alternarFoto = useCallback((categoria, numero) => {
@@ -324,6 +342,7 @@ export default function useFluxo() {
         setUploads(manual.uploads)
         setPaleta(manual.paleta)
         setTipografia(manual.tipografia)
+        setTomDeVoz(manual.tomDeVoz)
         setFotografia({ ...fotografiaVazia(), ...manual.fotografia })
         // Um manual antigo pode não ter todos os eixos: o padrão completa.
         setPersonalidade({ ...posicoesPadrao(), ...manual.personalidade })
@@ -345,9 +364,17 @@ export default function useFluxo() {
   const finalizar = useCallback(
     () =>
       salvarManual(
-        paraArmazenamento({ uploads, paleta, tipografia, fotografia, personalidade, elementos }),
+        paraArmazenamento({
+          uploads,
+          paleta,
+          tipografia,
+          tomDeVoz,
+          fotografia,
+          personalidade,
+          elementos,
+        }),
       ),
-    [uploads, paleta, tipografia, fotografia, personalidade, elementos],
+    [uploads, paleta, tipografia, tomDeVoz, fotografia, personalidade, elementos],
   )
 
   // Ao sair do fluxo, libera as object URLs criadas.
@@ -378,6 +405,11 @@ export default function useFluxo() {
       removerFonte,
       adicionarSecundaria,
       alternarVariante,
+    },
+    tomDeVoz,
+    acoesDoTomDeVoz: {
+      salvar: salvarTomDeVoz,
+      remover: removerTomDeVoz,
     },
     fotografia,
     acoesDaFotografia: {

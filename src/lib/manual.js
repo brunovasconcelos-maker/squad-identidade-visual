@@ -70,6 +70,7 @@ export function paraArmazenamento(fluxo) {
     ),
     paleta: fluxo.paleta,
     tipografia: fluxo.tipografia,
+    tomDeVoz: fluxo.tomDeVoz,
     fotografia: fluxo.fotografia,
     personalidade: fluxo.personalidade,
     elementos: fluxo.elementos.map((elemento) => ({
@@ -98,6 +99,7 @@ export function deArmazenamento(manual) {
     ),
     paleta: manual.paleta ?? [],
     tipografia: manual.tipografia ?? { primaria: null, secundarias: [] },
+    tomDeVoz: manual.tomDeVoz ?? [],
     fotografia: manual.fotografia ?? { selecoes: {}, tela: 'selecao' },
     personalidade: manual.personalidade ?? {},
     elementos: (manual.elementos ?? []).map((elemento) => ({

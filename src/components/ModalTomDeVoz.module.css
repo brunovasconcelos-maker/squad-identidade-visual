@@ -1,0 +1,401 @@
+/* Mesma casca do ModalElemento: 580px (532 de conteúdo + 24 de padding dos
+   dois lados), cantos de 16 e 40px entre os blocos. Figma: 6165:795. */
+.fundo {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--espaco-24);
+  background: var(--cor-scrim);
+}
+
+.painel {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 580px;
+  max-width: 100%;
+  max-height: 100%;
+  padding: var(--espaco-24);
+  overflow-y: auto;
+  border-radius: var(--raio-card);
+  background: var(--cor-fundo);
+}
+
+.cabecalho {
+  display: flex;
+  gap: var(--espaco-12);
+  align-items: center;
+}
+
+.titulo {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: var(--texto-destaque);
+  font-weight: var(--peso-semibold);
+  line-height: var(--altura-linha);
+  letter-spacing: var(--espacamento-letras);
+}
+
+.fechar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: var(--raio-pilula);
+  background: transparent;
+  color: var(--cor-texto);
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.fechar:hover {
+  background: var(--cor-superficie);
+}
+
+/* Passo 1: o nome, com a dica logo abaixo da linha. */
+.campoNome {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-16);
+}
+
+.linhaCampo {
+  display: flex;
+  align-items: flex-end;
+  padding: var(--espaco-16) 0;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.entrada {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--cor-texto);
+  font-family: inherit;
+  font-size: var(--texto-secao);
+  font-weight: var(--peso-medio);
+  line-height: normal;
+  letter-spacing: -0.4px;
+}
+
+.entrada:focus {
+  outline: none;
+}
+
+.entrada::placeholder {
+  color: var(--cor-texto-secundario);
+}
+
+.dica {
+  margin: 0;
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-micro);
+  font-weight: var(--peso-regular);
+  line-height: var(--altura-linha);
+  letter-spacing: -0.08px;
+}
+
+/* Passos 2 a 4: o nome já definido, no lugar do campo. */
+.nomeDefinido {
+  margin: 0;
+  padding: var(--espaco-16) 0;
+  border-bottom: 1px solid var(--cor-borda);
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-secao);
+  font-weight: var(--peso-medio);
+  line-height: normal;
+  letter-spacing: -0.4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Rótulo cinza + campo (Instruções Gerais, Evite usar). */
+.bloco {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-20);
+}
+
+.rotulo {
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-medio);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
+.area {
+  height: 160px;
+  padding: 22px;
+  border: 1px solid var(--cor-borda-caixa);
+  border-radius: var(--raio-caixa);
+  background: var(--cor-superficie);
+  color: var(--cor-texto);
+  font-family: inherit;
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-medio);
+  line-height: 1.1;
+  letter-spacing: var(--espacamento-letras-secao);
+  resize: none;
+}
+
+.area:focus {
+  outline: none;
+  border-color: var(--cor-texto);
+}
+
+.area::placeholder {
+  color: var(--cor-texto-secundario);
+}
+
+/* Passos 3 e 4: rótulo (ou rótulo + botão) e o conteúdo 32px abaixo. */
+.secao {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.cabecalhoDaSecao {
+  display: flex;
+  gap: var(--espaco-16);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.adicionar {
+  display: inline-flex;
+  flex: none;
+  gap: var(--espaco-8);
+  align-items: center;
+  height: 48px;
+  padding: var(--espaco-12) var(--espaco-16);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-caixa);
+  background: transparent;
+  color: var(--cor-texto);
+  font-family: inherit;
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.adicionar:hover {
+  background: var(--cor-superficie);
+}
+
+.vazio {
+  margin: 0;
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-botao);
+  line-height: var(--altura-linha);
+}
+
+.linhas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-12);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.linha {
+  display: flex;
+  gap: var(--espaco-20);
+  align-items: center;
+}
+
+/* As duas caixas da linha dividem a largura por igual; a lixeira fica fora. */
+.caixa {
+  flex: 1;
+  min-width: 0;
+  height: 50px;
+  padding: var(--espaco-16) var(--espaco-24);
+  border: 1px solid var(--cor-borda-caixa);
+  border-radius: var(--raio-campo);
+  background: var(--cor-superficie);
+  color: var(--cor-texto);
+  font-family: inherit;
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-medio);
+  line-height: 1.1;
+  letter-spacing: var(--espacamento-letras-secao);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.caixa:focus {
+  outline: none;
+  border-color: var(--cor-texto);
+}
+
+.caixa::placeholder {
+  color: var(--cor-texto-secundario);
+}
+
+/* A palavra evitada é referência, não campo principal: fica no cinza. */
+.caixaPalavra {
+  color: var(--cor-texto-secundario);
+}
+
+/* A versão só leitura da caixa é um <span>: centraliza o texto na mesma altura
+   que o <input> ao lado. */
+.caixaLida {
+  display: flex;
+  align-items: center;
+}
+
+.excluirLinha {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: -4px;
+  padding: 0;
+  border: none;
+  border-radius: var(--raio-pilula);
+  background: transparent;
+  color: var(--cor-destrutiva);
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.excluirLinha:hover {
+  background: var(--cor-superficie);
+}
+
+/* Grade de agentes: duas colunas de três, preenchidas coluna a coluna. */
+.grade {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(3, auto);
+  grid-auto-flow: column;
+  gap: var(--espaco-16) 32px;
+  padding: var(--espaco-12) var(--espaco-16);
+}
+
+.agente {
+  display: flex;
+  gap: var(--espaco-12);
+  align-items: center;
+  min-width: 0;
+  color: var(--cor-texto);
+  cursor: pointer;
+}
+
+.agenteOcupado {
+  color: var(--cor-texto-desabilitado);
+  cursor: default;
+}
+
+.agenteOcupado .avatar {
+  opacity: 0.4;
+}
+
+.avatar {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--raio-pilula);
+  object-fit: cover;
+}
+
+.nomeDoAgente {
+  overflow: hidden;
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-medio);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* O input existe pela semântica; quem aparece é o ícone. */
+.caixaNativa {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.caixaNativa:focus-visible + span {
+  outline: 2px solid var(--cor-texto);
+  outline-offset: 2px;
+  border-radius: var(--raio-campo);
+}
+
+/* Rodapé: Voltar, o contador de passos e a pílula preta. */
+.rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.contador {
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-medio);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
+.voltar,
+.continuar {
+  display: inline-flex;
+  gap: var(--espaco-8);
+  align-items: center;
+  height: 40px;
+  padding: var(--espaco-12) var(--espaco-16);
+  border: none;
+  border-radius: var(--raio-pilula);
+  font-family: inherit;
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+  cursor: pointer;
+}
+
+.voltar {
+  background: transparent;
+  color: var(--cor-texto);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color var(--transicao-padrao);
+}
+
+.voltar:hover {
+  text-decoration-color: currentColor;
+}
+
+.continuar {
+  background: var(--cor-marca);
+  color: var(--cor-texto-invertido);
+  transition: opacity var(--transicao-padrao);
+}
+
+.continuar:disabled {
+  background: var(--cor-fundo-desabilitado);
+  color: var(--cor-texto-desabilitado);
+  cursor: default;
+}

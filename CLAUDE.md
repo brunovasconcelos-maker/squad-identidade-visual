@@ -107,10 +107,25 @@ resumo): a tela atual vive no estado do fluxo, não no componente, porque voltar
 do passo seguinte precisa cair de novo onde a pessoa estava. A barra de
 progresso só anda quando `passo` muda — trocar de tela interna não mexe nela.
 
+O Tom de Voz é diferente: os quatro passos dele são um modal, não telas do
+fluxo. Enquanto o modal está aberto o passo por baixo não muda, e o que foi
+digitado só vira dado no "Finalizar" — fechar descarta tudo.
+
+## Tom de Voz — um agente, um tom
+
+**Cada agente do Squad pertence a um Tom de Voz só.** Na atribuição, um agente
+já usado por outro tom aparece desabilitado, nunca só desmarcado. A conta sai
+da própria lista de tons (`tons.flatMap((tom) => tom.agentes)`), então excluir
+um tom devolve os agentes dele sozinho — não há nada para limpar à parte.
+
+Numa edição, os agentes do próprio tom continuam selecionáveis; só os dos
+outros ficam bloqueados.
+
 ## Assets
 
 Ícones em `src/assets/icones`, imagens em `src/assets/imagens`, avatares dos
-agentes do Squad em `src/assets/avatar` (ainda vazia, para o Tom de Voz).
+agentes do Squad em `src/assets/avatar` (`<id>_avatar.png`, resolvidos por
+`src/lib/avatares.js`).
 
 Os ícones são inline via `src/components/Icon.jsx`, que lê os SVGs como texto
 e os injeta para que `currentColor` funcione. SVGs exportados do Figma vêm com

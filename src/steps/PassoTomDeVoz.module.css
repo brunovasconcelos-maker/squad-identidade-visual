@@ -1,32 +1,178 @@
 .passo {
   display: flex;
   flex-direction: column;
-  gap: var(--espaco-24);
 }
 
-/* Mesmo título de seção dos outros passos, sem o (?) — não há o que explicar
-   enquanto o passo não existe de verdade. */
+/* Mesmo cabeçalho dos outros passos: título 24px com o (?) ao lado. A altura
+   mínima vem do botão de 48px à direita, e é ela que põe a lista em 236px no
+   Figma (148 do título + 48 + 40). */
+.cabecalho {
+  display: flex;
+  gap: var(--espaco-16);
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+}
+
+.tituloGrupo {
+  display: flex;
+  gap: var(--espaco-12);
+  align-items: center;
+}
+
 .titulo {
   margin: 0;
-  min-height: 48px;
-  display: flex;
-  align-items: center;
   font-size: var(--texto-secao);
   font-weight: var(--peso-semibold);
   line-height: 1;
   letter-spacing: var(--espacamento-letras-secao);
 }
 
-.aviso {
+/* 32px de área clicável com -4px de margem: o ícone de 24px fica onde o
+   Figma coloca, e o hover tem folga. */
+.ajuda {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: -4px;
+  padding: 0;
+  border: none;
+  border-radius: var(--raio-pilula);
+  background: transparent;
+  color: var(--cor-texto-auxiliar);
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.ajuda:hover {
+  background: var(--cor-superficie);
+}
+
+.criar {
+  display: inline-flex;
+  flex: none;
+  gap: var(--espaco-8);
+  align-items: center;
+  height: 48px;
+  padding: var(--espaco-12) var(--espaco-16);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-caixa);
+  background: transparent;
+  color: var(--cor-texto);
+  font-family: inherit;
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.criar:hover:not(:disabled) {
+  background: var(--cor-superficie);
+}
+
+.criar:disabled {
+  border-color: var(--cor-fundo-desabilitado);
+  color: var(--cor-texto-desabilitado);
+  cursor: default;
+}
+
+/* Lista dos tons criados */
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-16);
+  margin: 40px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cartao {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  padding: var(--espaco-12) 32px var(--espaco-12) var(--espaco-12);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-caixa);
+}
+
+.grupo {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  min-width: 0;
+}
+
+.selo {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--raio-caixa);
+  background: var(--cor-superficie);
+  color: var(--cor-texto);
+}
+
+.nome {
+  overflow: hidden;
+  color: var(--cor-texto);
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-medio);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.avatares {
+  display: flex;
+  flex: none;
+  gap: var(--espaco-16);
+  align-items: center;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--raio-pilula);
+  object-fit: cover;
+}
+
+/* Empurra as ações para a direita do cartão. */
+.acoes {
+  display: flex;
+  flex: 1;
+  gap: var(--espaco-20);
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.acao {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 169px;
-  margin: 0;
-  border: 1px dashed var(--cor-borda-upload);
-  border-radius: var(--raio-caixa);
+  width: 32px;
+  height: 32px;
+  margin: -4px;
+  padding: 0;
+  border: none;
+  border-radius: var(--raio-pilula);
+  background: transparent;
+  color: var(--cor-icone);
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.acao:hover {
   background: var(--cor-superficie);
-  color: var(--cor-texto-auxiliar);
-  font-size: var(--texto-corpo);
-  line-height: var(--altura-linha);
+}
+
+.destrutiva {
+  color: var(--cor-destrutiva);
 }

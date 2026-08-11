@@ -10,8 +10,9 @@ export const pilares = [
   { slug: 'icone', titulo: 'Ícone', icone: 'Icone' },
   { slug: 'paleta-de-cores', titulo: 'Paleta de Cores', icone: 'Paleta' },
   { slug: 'tipografia', titulo: 'Tipografia', icone: 'Tipografia' },
-  // Ainda sem conteúdo: o passo mostra um aviso e o tema nunca conta como
-  // preenchido, então 100% só volta a ser possível quando ele for construído.
+  // O passo já funciona e o que é criado nele vai para o manual salvo, mas a
+  // Home ainda não lê esse pedaço: o tema nunca conta como preenchido, então
+  // 100% só volta a ser possível quando o card da Home for construído.
   // O ícone é emprestado da Personalidade até ter o próprio.
   { slug: 'tom-de-voz', titulo: 'Tom de Voz', icone: 'Personalidade' },
   { slug: 'fotografia', titulo: 'Fotografia', icone: 'Fotografia' },
