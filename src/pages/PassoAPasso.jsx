@@ -85,8 +85,7 @@ function FluxoCompleto() {
   const conteudoDoPilar = {
     'paleta-de-cores': () => paleta.length > 0,
     tipografia: () => Boolean(tipografia.primaria),
-    // Passo inteiro opcional: criar um tom é oferta, não exigência.
-    'tom-de-voz': () => true,
+    'tom-de-voz': () => tomDeVoz.length > 0,
     // Sempre habilitado: percorrer as categorias não exige escolher nada, e
     // com isso o "pular" some daqui pela regra geral.
     fotografia: () => true,
