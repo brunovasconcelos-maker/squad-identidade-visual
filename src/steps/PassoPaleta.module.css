@@ -5,10 +5,13 @@
 
 .cabecalho {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--espaco-16);
-  height: 48px;
+  /* min-height, não height: quebrando em duas linhas o cabeçalho cresce em
+     vez de cortar o botão. */
+  min-height: 48px;
 }
 
 .tituloGrupo {
@@ -273,7 +276,7 @@
   opacity: 1;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
   .cabecalho {
     height: auto;
     flex-wrap: wrap;

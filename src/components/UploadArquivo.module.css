@@ -10,6 +10,7 @@
    de 24px exatamente com a borda direita da moldura abaixo. */
 .cabecalho {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--espaco-12);

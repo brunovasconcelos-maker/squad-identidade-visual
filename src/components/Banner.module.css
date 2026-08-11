@@ -1,5 +1,8 @@
 .banner {
   display: flex;
+  /* Um vão mínimo: sem ele, com o texto em duas linhas, a frase encosta no
+     botão em vez de o `space-between` separar os dois. */
+  gap: var(--espaco-16);
   align-items: center;
   justify-content: space-between;
   /* min-height em vez de height: em telas estreitas o texto quebra em duas
@@ -93,4 +96,32 @@
 
 .botao:hover {
   opacity: 0.85;
+}
+
+/* No celular o botão desce para a própria linha, e o Tom encolhe junto: a
+   arte de 107px sozinha já é um terço da tela. */
+@media (max-width: 767px) {
+  .banner {
+    flex-wrap: wrap;
+    gap: var(--espaco-12);
+    padding: var(--espaco-16);
+  }
+
+  .conteudo {
+    gap: var(--espaco-12);
+  }
+
+  .slotIlustracao {
+    width: 56px;
+    height: 56px;
+  }
+
+  .ilustracao {
+    width: 75px;
+    height: 90px;
+  }
+
+  .texto {
+    font-size: var(--texto-corpo);
+  }
 }

@@ -33,9 +33,32 @@
   max-width: 808px;
 }
 
-@media (max-width: 1024px) {
+/* Mesmas quebras da Home, e a mesma ideia: o grid não muda, muda quanto dele
+   o conteúdo do passo ocupa. */
+
+/* Desktop estreito: um recuo de cada lado em vez de três. */
+@media (max-width: 1199px) {
+  .centro {
+    grid-column: 3 / span 8;
+  }
+}
+
+/* Tablet e abaixo: o passo ocupa as 12 colunas. O bloco largo perde o teto de
+   808px, que a essa altura já é maior que a faixa disponível. */
+@media (max-width: 1023px) {
   .grade {
-    display: block;
-    padding: var(--espaco-24) var(--espaco-24) 48px;
+    padding: 40px var(--grid-margem) 48px;
+  }
+
+  .centro,
+  .centroLargo {
+    grid-column: 1 / -1;
+    max-width: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .grade {
+    padding: var(--espaco-24) var(--grid-margem) 40px;
   }
 }

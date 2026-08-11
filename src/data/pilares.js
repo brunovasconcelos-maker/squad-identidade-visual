@@ -10,9 +10,6 @@ export const pilares = [
   { slug: 'icone', titulo: 'Ícone', icone: 'Star-Filled' },
   { slug: 'paleta-de-cores', titulo: 'Paleta de Cores', icone: 'Paleta' },
   { slug: 'tipografia', titulo: 'Tipografia', icone: 'Tipografia' },
-  // O passo já funciona e o que é criado nele vai para o manual salvo, mas a
-  // Home ainda não lê esse pedaço: o tema nunca conta como preenchido, então
-  // 100% só volta a ser possível quando o card da Home for construído.
   // Personalidade.svg é o rosto com as ondas de som — o glifo do Figma para
   // este tema, apesar do nome do arquivo.
   { slug: 'tom-de-voz', titulo: 'Tom de Voz', icone: 'Personalidade' },
