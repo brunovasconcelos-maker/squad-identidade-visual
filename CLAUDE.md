@@ -109,7 +109,8 @@ progresso só anda quando `passo` muda — trocar de tela interna não mexe nela
 
 ## Assets
 
-Ícones em `src/assets/icones`, imagens em `src/assets/imagens`.
+Ícones em `src/assets/icones`, imagens em `src/assets/imagens`, avatares dos
+agentes do Squad em `src/assets/avatar` (ainda vazia, para o Tom de Voz).
 
 Os ícones são inline via `src/components/Icon.jsx`, que lê os SVGs como texto
 e os injeta para que `currentColor` funcione. SVGs exportados do Figma vêm com
