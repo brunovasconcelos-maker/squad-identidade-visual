@@ -19,7 +19,7 @@ import s from './PassoAPasso.module.css'
 
 // No Figma esses passos têm 808px de conteúdo, mais que as 6 colunas centrais
 // (670px) usadas pelos demais. Ver .centroLargo no CSS.
-const PASSOS_LARGOS = ['tom-de-voz', 'fotografia', 'personalidade', 'elementos']
+const PASSOS_LARGOS = ['fotografia', 'personalidade', 'elementos']
 
 // A tela de espera fica até as cinco mensagens passarem, mesmo que a gravação
 // termine antes — que é o normal, ela leva milissegundos.
