@@ -1,66 +1,39 @@
-import { Link } from 'react-router-dom'
-import Carregando from './Carregando.jsx'
-import Icon from './Icon.jsx'
+import PaginaDoTema from './PaginaDoTema.jsx'
 import { Miniatura } from './ModalElemento.jsx'
 import useManual from '../hooks/useManual.js'
 import { temaCompleto } from '../lib/manual.js'
-import { TIPOS_ARQUIVO } from '../data/uploads.js'
 import { categoriasEscolhidas } from '../data/fotografia.js'
 import { EIXOS, POSICOES } from '../data/personalidade.js'
-import { nomeDoAgente } from '../data/agentes.js'
 import { urlDaFoto } from '../lib/imagens.js'
 import s from './TemaSalvo.module.css'
 
-const ROTULO_DO_ARQUIVO = {
-  principal: 'Principal',
-  preta: 'Cor única (preta)',
-  branca: 'Cor única (branca)',
-}
-
 /**
- * Visão de leitura do que foi salvo num tema.
+ * Visão de leitura do que foi salvo num tema que ainda não tem página própria
+ * — Fotografia, Personalidade e Elementos.
  *
  * É de propósito simples: mostra o conteúdo gravado sem edição nenhuma. O
- * desenho de verdade vem depois; por ora o que importa é conseguir conferir o
- * que está no manual.
+ * desenho de verdade vem depois, um tema por vez; por ora o que importa é
+ * conseguir conferir o que está no manual. A casca (topo, coluna e vazio) é a
+ * mesma das páginas já desenhadas.
  */
 export default function TemaSalvo({ titulo, slug, vazio = 'Nada adicionado ainda.' }) {
   const { manual, carregando } = useManual()
 
-  if (carregando) return <Carregando mensagens={['Abrindo seu manual...']} />
-
-  const temAlgo = temaCompleto(manual, slug)
-
   return (
-    <div className={s.pagina}>
-      <header className={s.topo}>
-        <Link to="/" className={s.voltar} aria-label="Voltar para a Home">
-          <Icon nome="Arrow-Left" />
-        </Link>
-        <h1 className={s.titulo}>{titulo}</h1>
-        <Link to={`/passo-a-passo/${slug}`} className={s.editar}>
-          Editar
-        </Link>
-      </header>
-
-      <main className={s.conteudo}>
-        {temAlgo ? <Corpo slug={slug} manual={manual} /> : <p className={s.vazio}>{vazio}</p>}
-      </main>
-    </div>
+    <PaginaDoTema
+      titulo={titulo}
+      slug={slug}
+      carregando={carregando}
+      temConteudo={temaCompleto(manual, slug)}
+      vazio={vazio}
+    >
+      <Corpo slug={slug} manual={manual} />
+    </PaginaDoTema>
   )
 }
 
 function Corpo({ slug, manual }) {
   switch (slug) {
-    case 'logo':
-    case 'icone':
-      return <Arquivos porTipo={manual.uploads[slug]} />
-    case 'paleta-de-cores':
-      return <Paleta cores={manual.paleta} />
-    case 'tipografia':
-      return <Tipografia tipografia={manual.tipografia} />
-    case 'tom-de-voz':
-      return <TomDeVoz tons={manual.tomDeVoz} />
     case 'fotografia':
       return <Fotografia selecoes={manual.fotografia.selecoes} />
     case 'personalidade':
@@ -70,126 +43,6 @@ function Corpo({ slug, manual }) {
     default:
       return null
   }
-}
-
-function Arquivos({ porTipo }) {
-  const enviados = TIPOS_ARQUIVO.filter((tipo) => porTipo?.[tipo])
-
-  return (
-    <div className={s.grade}>
-      {enviados.map((tipo) => (
-        <figure key={tipo} className={s.arquivo}>
-          <div className={tipo === 'branca' ? `${s.moldura} ${s.molduraEscura}` : s.moldura}>
-            <img src={porTipo[tipo].url} alt="" className={s.imagem} />
-          </div>
-          <figcaption className={s.legenda}>
-            {ROTULO_DO_ARQUIVO[tipo]}
-            <span className={s.secundario}>{porTipo[tipo].nome}</span>
-          </figcaption>
-        </figure>
-      ))}
-    </div>
-  )
-}
-
-function Paleta({ cores }) {
-  return (
-    <div className={s.lista}>
-      {cores.map((cor) => (
-        <section key={cor.id} className={s.bloco}>
-          <div className={s.corTopo}>
-            <span className={s.amostra} style={{ background: `#${cor.hex}` }} />
-            <span className={s.nome}>{cor.nome}</span>
-            <span className={s.secundario}>#{cor.hex}</span>
-            {cor.principal && <span className={s.etiqueta}>Principal</span>}
-          </div>
-
-          <div className={s.tons}>
-            {cor.tons.map((tom) => (
-              <span key={tom.passo} className={s.tom}>
-                <span className={s.amostraTom} style={{ background: `#${tom.hex}` }} />
-                <span className={s.micro}>{tom.passo}</span>
-              </span>
-            ))}
-          </div>
-        </section>
-      ))}
-    </div>
-  )
-}
-
-function Tipografia({ tipografia }) {
-  const secundarias = tipografia.secundarias.filter((vaga) => vaga.fonte)
-
-  return (
-    <div className={s.lista}>
-      <Fonte fonte={tipografia.primaria} papel="Primária" />
-      {secundarias.map((vaga) => (
-        <Fonte key={vaga.id} fonte={vaga.fonte} papel="Secundária" />
-      ))}
-    </div>
-  )
-}
-
-function Fonte({ fonte, papel }) {
-  if (!fonte) return null
-  const marcadas = fonte.variantes.filter((variante) => variante.marcado)
-
-  return (
-    <section className={s.bloco}>
-      <div className={s.corTopo}>
-        <span className={s.nome}>{fonte.familia}</span>
-        <span className={s.etiqueta}>{papel}</span>
-        <span className={s.secundario}>{fonte.categoria}</span>
-      </div>
-      <p className={s.pesos}>
-        {marcadas.length > 0
-          ? marcadas.map((variante) => variante.rotulo).join(' · ')
-          : 'Nenhum peso ativo.'}
-      </p>
-    </section>
-  )
-}
-
-function TomDeVoz({ tons }) {
-  return (
-    <div className={s.lista}>
-      {tons.map((tom) => {
-        const substituicoes = tom.evitar.filter((item) => item.substituto.trim())
-
-        return (
-          <section key={tom.id} className={s.bloco}>
-            <div className={s.corTopo}>
-              <span className={s.nome}>{tom.nome}</span>
-              {tom.agentes.map((id) => (
-                <span key={id} className={s.etiqueta}>
-                  {nomeDoAgente(id)}
-                </span>
-              ))}
-            </div>
-
-            {tom.instrucoes && <p className={s.pesos}>{tom.instrucoes}</p>}
-
-            {tom.evitar.length > 0 && (
-              <p className={s.pesos}>
-                <span className={s.secundario}>Evita: </span>
-                {tom.evitar.map((item) => item.palavra).join(' · ')}
-              </p>
-            )}
-
-            {substituicoes.length > 0 && (
-              <p className={s.pesos}>
-                <span className={s.secundario}>Substitui: </span>
-                {substituicoes
-                  .map((item) => `${item.palavra} → ${item.substituto}`)
-                  .join(' · ')}
-              </p>
-            )}
-          </section>
-        )
-      })}
-    </div>
-  )
 }
 
 function Fotografia({ selecoes }) {
