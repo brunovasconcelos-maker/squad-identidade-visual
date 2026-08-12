@@ -24,12 +24,19 @@
   gap: var(--espaco-12);
 }
 
-.titulo {
+.titulo,
+.tituloSecundarias {
   margin: 0;
   font-size: var(--texto-secao);
   font-weight: var(--peso-semibold);
   line-height: 1;
   letter-spacing: var(--espacamento-letras-secao);
+}
+
+/* "Adicionar tipografia secundária" é subtítulo: o título do passo é só o
+   "Tipografia da Marca" lá em cima. */
+.tituloSecundarias {
+  font-size: var(--texto-subsecao);
 }
 
 /* 32px de área clicável com -4px de margem: o ícone de 24px fica onde o

@@ -79,6 +79,7 @@
 /* Lista dos adicionados */
 .tituloAdicionados {
   margin-top: var(--espaco-60);
+  font-size: var(--texto-subsecao);
 }
 
 .lista {
