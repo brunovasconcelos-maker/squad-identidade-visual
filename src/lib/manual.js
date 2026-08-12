@@ -82,6 +82,49 @@ export function paraArmazenamento(fluxo) {
 }
 
 /**
+ * O pedaço do manual que pertence a um tema só, pronto para ser espalhado
+ * sobre o que já estava salvo.
+ *
+ * É o que permite salvar um tema sem passar por cima dos outros: a edição
+ * avulsa (entrar pela Home num card vazio) grava só a sua fatia, e o resto do
+ * manual continua exatamente como estava no disco. `salvo` é o manual lido do
+ * IndexedDB, ou null quando ainda não existe nenhum.
+ *
+ * Logo e Ícone dividem o mesmo `uploads`, então esses dois recompõem o objeto
+ * inteiro em vez de trocá-lo: a chave do tema vem do fluxo, as demais vêm do
+ * disco.
+ */
+export function fatiaDoTema(fluxo, slug, salvo) {
+  const completo = paraArmazenamento(fluxo)
+
+  switch (slug) {
+    case 'logo':
+    case 'icone':
+      return {
+        uploads: {
+          ...completo.uploads,
+          ...(salvo?.uploads ?? {}),
+          [slug]: completo.uploads[slug],
+        },
+      }
+    case 'paleta-de-cores':
+      return { paleta: completo.paleta }
+    case 'tipografia':
+      return { tipografia: completo.tipografia }
+    case 'tom-de-voz':
+      return { tomDeVoz: completo.tomDeVoz }
+    case 'fotografia':
+      return { fotografia: completo.fotografia }
+    case 'personalidade':
+      return { personalidade: completo.personalidade }
+    case 'elementos':
+      return { elementos: completo.elementos }
+    default:
+      return {}
+  }
+}
+
+/**
  * Recria as object URLs. As URLs criadas aqui ficam vivas enquanto a página
  * estiver aberta; quem chama devolve a lista para liberar depois.
  */

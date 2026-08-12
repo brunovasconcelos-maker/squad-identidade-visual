@@ -57,6 +57,27 @@ sem framework de CSS — o design é definido no Figma e traduzido à mão.
 - `src/data` — listas fixas do domínio (ex.: `pilares`, `googleFonts.json`)
 - `scripts` — geradores rodados à mão, nunca no build
 
+## Dois modos de entrar no fluxo
+
+`/passo-a-passo` é o fluxo completo: caminha pelos oito temas com estado
+interno, sem trocar de rota, e grava tudo de uma vez no "Finalizar" do último
+passo.
+
+`/passo-a-passo/:tema` é a edição avulsa, para onde vai um card vazio da Home.
+Ali não existe próximo tema: some a barra de progresso, some o "Não tenho,
+pular" e o "Continuar" vira "Salvar", que grava **só aquele tema** por cima do
+manual que já estava no disco (`fatiaDoTema` em `src/lib/manual.js`) e volta
+para a Home. O "Voltar" também vai para a Home, descartando o que não foi
+salvo.
+
+Os dois modos dividem a validação por passo (`temConteudoDoPasso`), o conteúdo
+de cada passo (`ConteudoDoPasso`) e as telas internas da Fotografia
+(`telasDaFotografia`), todos em `src/pages/PassoAPasso.jsx`. Mudança de regra de
+passo vale para os dois sem duplicação.
+
+A distinção depende de o fluxo completo **não** navegar por
+`/passo-a-passo/:tema` ao trocar de tema. Não navegue.
+
 ## Persistência
 
 **Existe uma gravação só, no fim.** Durante o fluxo tudo vive em memória, no
