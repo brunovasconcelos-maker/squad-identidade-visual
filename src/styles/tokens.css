@@ -26,6 +26,8 @@
   --cor-borda-campo: #e5e8e8;        /* borda dos campos do color picker */
   --cor-scrim: rgba(0, 0, 0, 0.2);   /* fundo escurecido atrás do modal */
   --cor-destrutiva: #ce2c31;         /* ações destrutivas, como excluir */
+  --cor-guia: rgba(0, 0, 0, 0.2);    /* linhas da área de proteção da logo */
+  --cor-baixo-contraste: #383939;    /* fundo do exemplo de uso sem contraste */
 
   /* Tipografia — Inter em todo o site, em todas as páginas.
      Regra fixa do projeto: nada usa outra família. Ver CLAUDE.md.
@@ -59,6 +61,7 @@
   /* Raios */
   --raio-campo: 4px;
   --raio-caixa: 8px;
+  --raio-moldura: 12px;  /* molduras de apresentação da página do Logo */
   --raio-card: 16px;
   --raio-icone: 12px;
   --raio-pilula: 360px;

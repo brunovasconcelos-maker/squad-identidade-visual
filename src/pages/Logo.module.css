@@ -1,0 +1,329 @@
+/*
+ * Página do Logo — medidas do Figma, node 6064:4785.
+ *
+ * A coluna de conteúdo tem 808px, a mesma dos passos largos do fluxo, e as
+ * molduras seguem daí: 808 de largura na grande, 394 + 20 de vão + 394 no par.
+ */
+.pagina {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+/* Mesmo topo das outras páginas de tema: 96px com a borda embaixo. */
+.topo {
+  display: flex;
+  gap: var(--espaco-16);
+  align-items: center;
+  height: 96px;
+  padding: 0 var(--grid-margem, 40px);
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.voltar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--cor-borda-sutil);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+}
+
+.titulo {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: var(--texto-titulo-pagina);
+  font-weight: var(--peso-semibold);
+  line-height: var(--altura-linha);
+  letter-spacing: var(--espacamento-letras);
+}
+
+.editar {
+  flex: none;
+  color: var(--cor-texto);
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+}
+
+.conteudo {
+  flex: 1;
+  padding: var(--espaco-60) var(--grid-margem, 40px) 100px;
+}
+
+.vazio {
+  max-width: 808px;
+  margin: 0 auto;
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-corpo);
+  line-height: var(--altura-linha);
+}
+
+/* 100px entre seções, como no Figma. */
+.secoes {
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+  max-width: 808px;
+  margin: 0 auto;
+}
+
+.secao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-24);
+}
+
+.tituloDaSecao,
+.tituloDaSubsecao {
+  margin: 0;
+  font-size: var(--texto-destaque);
+  font-weight: var(--peso-semibold);
+  line-height: var(--altura-linha);
+  letter-spacing: var(--espacamento-letras);
+}
+
+.tituloDaSubsecao {
+  font-size: var(--texto-corpo);
+  color: var(--cor-texto-secundario);
+}
+
+/* --- Molduras --- */
+
+.moldura {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 220px;
+  overflow: hidden;
+  border-radius: var(--raio-moldura);
+  background-color: var(--cor-superficie);
+}
+
+.molduraGrande {
+  height: 260px;
+}
+
+.molduraComBorda {
+  border: 1px solid var(--cor-borda-tracejada);
+  background-color: var(--cor-fundo);
+}
+
+.fundoClaro {
+  background-color: var(--cor-superficie);
+}
+
+.fundoEscuro {
+  background-color: var(--cor-marca);
+}
+
+/* Duas molduras lado a lado: 394 + 20 + 394 = os 808 da coluna. */
+.par {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--espaco-20);
+}
+
+/* A logo enviada tem proporção desconhecida: o teto é de altura e de largura,
+   e o `contain` cuida do resto sem nunca deformar o arquivo. */
+.logo {
+  /* Posicionada para ficar acima da foto de fundo, que é absoluta: sem isto a
+     foto pinta por cima e a logo some. */
+  position: relative;
+  max-width: 62%;
+  max-height: 62px;
+  object-fit: contain;
+}
+
+.logoGrande {
+  max-width: 60%;
+  max-height: 88px;
+}
+
+.fundoDaFoto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- Área de proteção --- */
+
+/* A unidade de respiro é metade da altura desenhada da logo (88px). */
+.protecao {
+  --unidade: 44px;
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--unidade);
+}
+
+.logoProtegido {
+  width: 342px;
+  max-width: none;
+  max-height: 88px;
+}
+
+/* O retângulo do respiro, na borda externa do padding. */
+.limite {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--cor-guia);
+}
+
+/* Linhas que passam das bordas da área de proteção e morrem na borda da
+   moldura, que corta o que sobra. O comprimento é relativo à própria caixa
+   (200% = meia caixa para cada lado), e não à janela: dentro de uma caixa de
+   ~430px, um 100vw faria a régua de rolagem do elemento saltar para 1920. */
+.rasgo {
+  position: absolute;
+  background: var(--cor-guia);
+}
+
+.rasgoTopo,
+.rasgoBase {
+  left: 50%;
+  width: 200%;
+  height: 1px;
+  transform: translateX(-50%);
+}
+
+.rasgoTopo {
+  top: var(--unidade);
+}
+
+.rasgoBase {
+  bottom: var(--unidade);
+}
+
+.rasgoEsquerda,
+.rasgoDireita {
+  top: 50%;
+  width: 1px;
+  height: 200%;
+  transform: translateY(-50%);
+}
+
+.rasgoEsquerda {
+  left: var(--unidade);
+}
+
+.rasgoDireita {
+  right: var(--unidade);
+}
+
+/* Os quadrados que mostram o tamanho da unidade, um por lado. */
+.unidade {
+  position: absolute;
+  width: var(--unidade);
+  height: var(--unidade);
+  border: 1px solid var(--cor-guia);
+}
+
+.unidadeTopo {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.unidadeBase {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.unidadeEsquerda {
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+.unidadeDireita {
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+}
+
+/* --- Usos incorretos --- */
+
+.erros {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px var(--espaco-20);
+}
+
+.erro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-20);
+  margin: 0;
+}
+
+.legenda {
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-regular);
+  line-height: var(--altura-linha);
+  letter-spacing: var(--espacamento-letras);
+}
+
+.inclinada {
+  transform: rotate(-16deg);
+}
+
+/* Só na horizontal: é o que deforma a logo. */
+.espremida {
+  transform: scaleX(0.44);
+}
+
+/* Fundo escuro quase da cor da logo — o erro é justamente esse. */
+.semContraste {
+  border-color: var(--cor-borda-tracejada);
+  background-color: var(--cor-baixo-contraste);
+}
+
+/* Duas metades da mesma logo, separadas por um vão. */
+.partida {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-8);
+  align-items: center;
+}
+
+.metadeEsquerda,
+.metadeDireita {
+  max-width: 62%;
+  max-height: 48px;
+}
+
+/* Cada metade some pela metade e desliza um quarto da própria largura, para a
+   parte que sobrou ficar centralizada na moldura. */
+.metadeEsquerda {
+  clip-path: inset(0 50% 0 0);
+  transform: translateX(25%);
+}
+
+.metadeDireita {
+  clip-path: inset(0 0 0 50%);
+  transform: translateX(-25%);
+}
+
+/* Em tela estreita as molduras empilham, como os cards da Home. */
+@media (max-width: 767px) {
+  .secoes {
+    gap: 64px;
+  }
+
+  .par,
+  .erros {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
