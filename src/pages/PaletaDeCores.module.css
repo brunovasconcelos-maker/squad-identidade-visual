@@ -1,0 +1,115 @@
+/*
+ * Paleta de Cores — medidas do Figma, node 6178:2788. A casca da página está
+ * em PaginaDoTema.module.css; aqui é só o conteúdo.
+ *
+ * Cada cor é uma seção: nome, a amostra da âncora em 808 x 140, o rótulo dela
+ * e a fileira de tons.
+ */
+.cor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-24);
+}
+
+.nome {
+  margin: 0;
+  font-size: var(--texto-destaque);
+  font-weight: var(--peso-semibold);
+  line-height: var(--altura-linha);
+  letter-spacing: var(--espacamento-letras);
+}
+
+/* A fileira de tons: cada tom cresce igual, com 12px entre eles. */
+.tons {
+  display: flex;
+  gap: var(--espaco-12);
+  align-items: flex-start;
+}
+
+.tom {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--espaco-16);
+  min-width: 0;
+}
+
+/* Amostra: 140px de altura e o raio pequeno, tanto na âncora quanto na
+   fileira. A âncora ocupa a coluna inteira porque está fora da fileira. */
+.amostra {
+  position: relative;
+  height: 140px;
+  overflow: hidden;
+  border-radius: var(--raio-campo);
+}
+
+/* Os selos ficam encostados no canto de cima à esquerda, 12px de cada borda,
+   e empilham quando o branco e o preto passam os dois. */
+.selos {
+  position: absolute;
+  top: var(--espaco-12);
+  left: var(--espaco-12);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-8);
+  align-items: flex-start;
+}
+
+.selo {
+  display: flex;
+  gap: var(--espaco-4);
+  align-items: center;
+  font-size: var(--texto-micro);
+  font-weight: var(--peso-medio);
+  line-height: 20px;
+  letter-spacing: var(--espacamento-letras-secao);
+  white-space: nowrap;
+}
+
+/* O quadrado tem a cor do texto que passa: quadrado branco, texto branco. */
+.quadrado {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--raio-campo);
+  background: currentcolor;
+}
+
+/* Rótulo de duas linhas: o degrau em cima, o hex embaixo. */
+.rotulo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-8);
+  min-width: 0;
+}
+
+.passo {
+  color: var(--cor-texto);
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-medio);
+  line-height: 20px;
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
+.hex {
+  overflow: hidden;
+  color: var(--cor-hex);
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+  line-height: 20px;
+  letter-spacing: var(--espacamento-letras-secao);
+  text-overflow: ellipsis;
+}
+
+/* Em tela estreita a fileira de dez tons não cabe: quebra em linhas, cada tom
+   com uma largura mínima para o hex continuar legível. */
+@media (max-width: 1023px) {
+  .tons {
+    flex-wrap: wrap;
+  }
+
+  .tom {
+    flex: 1 1 120px;
+    min-width: 120px;
+  }
+}
