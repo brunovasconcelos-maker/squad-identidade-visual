@@ -78,18 +78,12 @@
   gap: var(--espaco-24);
 }
 
-.tituloDaSecao,
-.tituloDaSubsecao {
+.tituloDaSecao {
   margin: 0;
   font-size: var(--texto-destaque);
   font-weight: var(--peso-semibold);
   line-height: var(--altura-linha);
   letter-spacing: var(--espacamento-letras);
-}
-
-.tituloDaSubsecao {
-  font-size: var(--texto-corpo);
-  color: var(--cor-texto-secundario);
 }
 
 /* --- Molduras --- */
