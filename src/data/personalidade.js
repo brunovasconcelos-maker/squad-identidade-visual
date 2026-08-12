@@ -4,6 +4,10 @@
  * Cada eixo é um par de opostos com um controle de cinco posições entre eles:
  * 1 é totalmente à esquerda, 5 totalmente à direita, 3 é o meio.
  *
+ * Nenhum eixo começa com valor: `posicoes[eixo.id]` é undefined até a pessoa
+ * escolher um ponto. Um eixo no 3 é uma escolha de quem preencheu, não um
+ * padrão — daí não existir posição padrão aqui.
+ *
  * `imagem` é o nome do arquivo em src/assets/imagens, sem a extensão. Os
  * arquivos são capitalizados e sem acento ("Seria.png", "Descontraida.png"),
  * diferente do rótulo que aparece na tela — e o nome diferencia maiúsculas
@@ -39,9 +43,10 @@ export const EIXOS = [
 
 export const POSICOES = [1, 2, 3, 4, 5]
 
-/** Todo eixo começa no meio. */
-export const POSICAO_PADRAO = 3
+/** O centro da faixa, de onde o preenchimento cresce para os dois lados. */
+export const CENTRO = 3
 
-export function posicoesPadrao() {
-  return Object.fromEntries(EIXOS.map((eixo) => [eixo.id, POSICAO_PADRAO]))
+/** Só os eixos que já receberam uma posição, na ordem em que aparecem. */
+export function eixosDefinidos(posicoes) {
+  return EIXOS.filter((eixo) => posicoes?.[eixo.id] != null)
 }

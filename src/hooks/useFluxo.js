@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { comTomAdicional, gerarTons, normalizarHex } from '../lib/cor.js'
 import { comVarianteAlternada, MAXIMO_SECUNDARIAS } from '../lib/googleFonts.js'
 import { CATEGORIAS, MAXIMO_POR_CATEGORIA, totalDeFotos } from '../data/fotografia.js'
-import { posicoesPadrao } from '../data/personalidade.js'
 import { TIPOS_ARQUIVO, PASSOS_COM_UPLOAD } from '../data/uploads.js'
 import { lerManual, salvarManual } from '../lib/armazenamento.js'
 import {
@@ -58,7 +57,7 @@ function criarCor({ nome, hex }) {
  *     tipografia: { primaria, secundarias: [ { id, fonte } ] },
  *     tomDeVoz: [ { id, nome, instrucoes, evitar, agentes } ],
  *     fotografia: { selecoes, tela },
- *     personalidade: { [eixo]: 1..5 },
+ *     personalidade: { [eixo]: 1..5 },  // só os eixos escolhidos
  *     elementos: [ { id, nome, arquivo } ],
  *   }
  *
@@ -75,8 +74,8 @@ export default function useFluxo() {
   const [tipografia, setTipografia] = useState(tipografiaVazia)
   const [tomDeVoz, setTomDeVoz] = useState([])
   const [fotografia, setFotografia] = useState(fotografiaVazia)
-  // Nasce preenchida: os cinco eixos já começam no meio.
-  const [personalidade, setPersonalidade] = useState(posicoesPadrao)
+  // Nasce vazia: eixo sem escolha não tem entrada aqui.
+  const [personalidade, setPersonalidade] = useState({})
   const [elementos, setElementos] = useState([])
   // Enquanto lê o que já estava salvo, para não mostrar um fluxo vazio e
   // depois preencher na cara da pessoa.
@@ -350,8 +349,7 @@ export default function useFluxo() {
         setTipografia(manual.tipografia)
         setTomDeVoz(manual.tomDeVoz)
         setFotografia({ ...fotografiaVazia(), ...manual.fotografia })
-        // Um manual antigo pode não ter todos os eixos: o padrão completa.
-        setPersonalidade({ ...posicoesPadrao(), ...manual.personalidade })
+        setPersonalidade(manual.personalidade)
         setElementos(manual.elementos)
       })
       .catch(() => {

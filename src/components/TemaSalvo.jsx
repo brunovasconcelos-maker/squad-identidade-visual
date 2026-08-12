@@ -3,7 +3,7 @@ import { Miniatura } from './ModalElemento.jsx'
 import useManual from '../hooks/useManual.js'
 import { temaCompleto } from '../lib/manual.js'
 import { categoriasEscolhidas } from '../data/fotografia.js'
-import { EIXOS, POSICOES } from '../data/personalidade.js'
+import { eixosDefinidos, POSICOES } from '../data/personalidade.js'
 import { urlDaFoto } from '../lib/imagens.js'
 import s from './TemaSalvo.module.css'
 
@@ -67,11 +67,13 @@ function Fotografia({ selecoes }) {
   )
 }
 
+/* Só os eixos escolhidos: um eixo sem valor desenhado no meio seria mentira,
+   porque no meio é uma escolha possível. */
 function Personalidade({ posicoes }) {
   return (
     <div className={s.lista}>
-      {EIXOS.map((eixo) => {
-        const valor = posicoes[eixo.id] ?? 3
+      {eixosDefinidos(posicoes).map((eixo) => {
+        const valor = posicoes[eixo.id]
         return (
           <section key={eixo.id} className={s.eixo}>
             <span className={s.pontaEsquerda}>{eixo.esquerda.nome}</span>

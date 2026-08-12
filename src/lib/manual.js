@@ -8,7 +8,7 @@
  */
 import { pilares } from '../data/pilares.js'
 import { totalDeFotos } from '../data/fotografia.js'
-import { EIXOS } from '../data/personalidade.js'
+import { eixosDefinidos, EIXOS } from '../data/personalidade.js'
 import { TIPOS_ARQUIVO, PASSOS_COM_UPLOAD } from '../data/uploads.js'
 
 /*
@@ -159,8 +159,6 @@ const arquivosDoPasso = (manual, passo) =>
  * O que conta como tema preenchido. É o mesmo critério que habilita o
  * "Continuar" de cada passo, para a Home não discordar do fluxo.
  *
- * A Personalidade é a exceção: os cinco eixos já nascem no meio, então o passo
- * nunca fica vazio e o tema conta como preenchido sempre que existe um manual.
  */
 const COMPLETO = {
   logo: (m) => arquivosDoPasso(m, 'logo') > 0,
@@ -169,7 +167,7 @@ const COMPLETO = {
   tipografia: (m) => Boolean(m.tipografia?.primaria),
   'tom-de-voz': (m) => (m.tomDeVoz?.length ?? 0) > 0,
   fotografia: (m) => totalDeFotos(m.fotografia?.selecoes ?? {}) > 0,
-  personalidade: () => true,
+  personalidade: (m) => eixosDefinidos(m.personalidade).length > 0,
   elementos: (m) => (m.elementos?.length ?? 0) > 0,
 }
 
@@ -215,7 +213,7 @@ export function resumoDoTema(manual, slug) {
     case 'fotografia':
       return plural(totalDeFotos(manual.fotografia?.selecoes ?? {}), 'selecionada', 'selecionadas')
     case 'personalidade':
-      return `${EIXOS.length} de ${EIXOS.length} preenchidas`
+      return `${eixosDefinidos(manual.personalidade).length} de ${EIXOS.length} preenchidas`
     case 'elementos':
       return plural(manual.elementos?.length ?? 0, 'adicionado', 'adicionados')
     default:
