@@ -145,3 +145,17 @@ mudanças precisam chegar na `main` para irem ao ar.
 
 `vite.config.js` define `base: '/squad-identidade-visual/'` em produção; se o
 repositório for renomeado, atualize esse valor.
+
+## Luminância das fotos
+
+`src/data/luminanciaDasFotos.json` guarda o brilho médio do miolo de cada
+imagem de `src/assets/imagens`. A página do Logo usa esse número para escolher
+a foto que dá mais contraste com a logo de cor única, sem precisar decodificar
+54 PNGs no navegador. É gerado por `scripts/gerar-luminancia.mjs` (decodificador
+de PNG próprio, sem dependência nova) e versionado:
+
+```
+npm run fotos:luminancia
+```
+
+Só precisa rodar de novo se as fotos mudarem.
