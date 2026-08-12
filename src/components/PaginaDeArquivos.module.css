@@ -123,9 +123,10 @@
   gap: var(--espaco-20);
 }
 
-/* A logo enviada tem proporção desconhecida: o teto é de altura e de largura,
-   e o `contain` cuida do resto sem nunca deformar o arquivo. */
-.logo {
+/* O arquivo enviado tem proporção desconhecida — uma logo é larga, um ícone é
+   quadrado. O teto é de altura e de largura, e o `contain` cuida do resto sem
+   nunca deformar o que foi enviado. */
+.marca {
   /* Posicionada para ficar acima da foto de fundo, que é absoluta: sem isto a
      foto pinta por cima e a logo some. */
   position: relative;
@@ -134,7 +135,7 @@
   object-fit: contain;
 }
 
-.logoGrande {
+.marcaGrande {
   max-width: 60%;
   max-height: 88px;
 }
@@ -160,10 +161,15 @@
   padding: var(--unidade);
 }
 
-.logoProtegido {
-  width: 342px;
-  max-width: none;
-  max-height: 88px;
+.marcaProtegida {
+  /* Aqui a caixa da imagem é a própria régua do respiro, então ela tem de
+     abraçar a marca: altura fixa e largura pela proporção do arquivo. Com
+     `width` fixa, um ícone quadrado ficaria dentro de uma caixa larga de logo
+     e o respiro sairia medido no lugar errado. */
+  width: auto;
+  height: 88px;
+  max-width: 560px;
+  max-height: none;
 }
 
 /* O retângulo do respiro, na borda externa do padding. */
@@ -292,10 +298,12 @@
   align-items: center;
 }
 
+/* Sem teto menor que o das outras molduras: cada metade já mostra só metade
+   da marca, e num ícone quadrado o que sobra fica pequeno demais. */
 .metadeEsquerda,
 .metadeDireita {
   max-width: 62%;
-  max-height: 48px;
+  max-height: 62px;
 }
 
 /* Cada metade some pela metade e desliza um quarto da própria largura, para a
