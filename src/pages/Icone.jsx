@@ -1,5 +1,5 @@
-import TemaSalvo from '../components/TemaSalvo.jsx'
+import PaginaDeArquivos from '../components/PaginaDeArquivos.jsx'
 
 export default function Icone() {
-  return <TemaSalvo titulo="Ícone" slug="icone" />
+  return <PaginaDeArquivos titulo="Ícone" slug="icone" />
 }
