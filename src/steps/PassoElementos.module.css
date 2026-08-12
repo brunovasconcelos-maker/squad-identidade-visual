@@ -8,7 +8,7 @@
 .titulo,
 .tituloAdicionados {
   margin: 0;
-  font-size: var(--texto-secao);
+  font-size: var(--texto-titulo-passo);
   font-weight: var(--peso-semibold);
   line-height: 1;
   letter-spacing: var(--espacamento-letras-secao);
@@ -79,7 +79,6 @@
 /* Lista dos adicionados */
 .tituloAdicionados {
   margin-top: var(--espaco-60);
-  font-size: var(--texto-subsecao);
 }
 
 .lista {

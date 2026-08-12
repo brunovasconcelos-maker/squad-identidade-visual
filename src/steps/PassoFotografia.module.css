@@ -22,15 +22,10 @@
 .titulo,
 .nomeDaCategoria {
   margin: 0;
-  font-size: var(--texto-secao);
+  font-size: var(--texto-titulo-passo);
   font-weight: var(--peso-semibold);
   line-height: 1;
   letter-spacing: var(--espacamento-letras-secao);
-}
-
-/* O nome da categoria é subtítulo, um degrau abaixo do título do passo. */
-.nomeDaCategoria {
-  font-size: var(--texto-subsecao);
 }
 
 /* 32px de área clicável com -4px de margem: o ícone de 24px fica onde o
