@@ -28,7 +28,7 @@
   --cor-destrutiva: #ce2c31;         /* ações destrutivas, como excluir */
   --cor-guia: rgba(0, 0, 0, 0.2);    /* linhas da área de proteção da logo */
   --cor-baixo-contraste: #383939;    /* fundo do exemplo de uso sem contraste */
-  --cor-hex: #a6abb2;                /* hex abaixo de cada tom, na Paleta */
+  --cor-tenue: #a6abb2;              /* hex da Paleta, divisórias da Tipografia */
 
   /* Tipografia — Inter em todo o site, em todas as páginas.
      Regra fixa do projeto: nada usa outra família. Ver CLAUDE.md.

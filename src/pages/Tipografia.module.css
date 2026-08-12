@@ -1,0 +1,78 @@
+/*
+ * Tipografia — medidas do Figma, node 6179:4189. A casca da página (topo,
+ * coluna de 808px, 100px entre blocos, estado vazio) está em
+ * PaginaDoTema.module.css; aqui é só o conteúdo de cada bloco.
+ */
+.bloco {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-60);
+}
+
+.rotulo {
+  margin: 0;
+  font-size: var(--texto-destaque);
+  font-weight: var(--peso-semibold);
+  line-height: var(--altura-linha);
+  letter-spacing: var(--espacamento-letras);
+}
+
+/* O nome vem na própria fonte escolhida, em 160px. A quebra é normal — um
+   nome de duas palavras cai em duas linhas, como no Figma —, e o
+   `break-word` só entra quando uma palavra sozinha não cabe na coluna. */
+.nome {
+  margin: 0;
+  overflow-wrap: break-word;
+  font-size: 160px;
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras);
+}
+
+.pesos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-8);
+}
+
+/* Duas colunas de largura igual, e é o grid que garante o alinhamento: a
+   itálica cai sempre na mesma coluna, mesmo quando a linha de cima não tem
+   itálica marcada e a célula fica vazia. */
+.linha {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--espaco-20);
+  align-items: start;
+  padding: var(--espaco-20) 0;
+  border-bottom: 1px solid var(--cor-tenue);
+}
+
+/* Cada rótulo é desenhado no peso e no estilo que ele nomeia. */
+.variante {
+  margin: 0;
+  overflow-wrap: break-word;
+  font-size: var(--texto-secao);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras);
+}
+
+/* Os 160px do Figma são para a coluna de 808px; em tela menor o nome encolhe
+   junto, senão uma palavra só ocupa a tela inteira. */
+@media (max-width: 1023px) {
+  .nome {
+    font-size: 112px;
+  }
+}
+
+@media (max-width: 767px) {
+  .bloco {
+    gap: 40px;
+  }
+
+  .nome {
+    font-size: 64px;
+  }
+
+  .variante {
+    font-size: var(--texto-destaque);
+  }
+}
