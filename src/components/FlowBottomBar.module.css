@@ -2,7 +2,7 @@
   position: relative;
   flex: none;
   height: 80px;
-  padding: var(--espaco-24) var(--grid-margem) var(--espaco-16);
+  padding: var(--espaco-24) var(--grid-margem, 40px) var(--espaco-16);
   background: var(--cor-fundo);
 }
 
@@ -71,7 +71,7 @@
    o preenchimento horizontal cede, o texto continua inteiro. */
 @media (max-width: 767px) {
   .barra {
-    padding: var(--espaco-20) var(--grid-margem) var(--espaco-12);
+    padding: var(--espaco-20) var(--grid-margem, 40px) var(--espaco-12);
   }
 
   .direita {

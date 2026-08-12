@@ -10,7 +10,7 @@
   gap: var(--espaco-16);
   align-items: center;
   height: 96px;
-  padding: 0 var(--grid-margem);
+  padding: 0 var(--grid-margem, 40px);
   border-bottom: 1px solid var(--cor-borda);
 }
 
@@ -44,7 +44,7 @@
 
 .conteudo {
   flex: 1;
-  padding: var(--espaco-60) var(--grid-margem);
+  padding: var(--espaco-60) var(--grid-margem, 40px);
 }
 
 .vazio {

@@ -12,7 +12,7 @@
   align-items: flex-end;
   justify-content: space-between;
   height: 96px;
-  padding: 0 var(--grid-margem) var(--espaco-16);
+  padding: 0 var(--grid-margem, 40px) var(--espaco-16);
   border-bottom: 1px solid var(--cor-borda);
 }
 
@@ -43,7 +43,7 @@
   gap: 37px;
   align-items: center;
   justify-content: center;
-  padding: var(--espaco-60) var(--grid-margem);
+  padding: var(--espaco-60) var(--grid-margem, 40px);
 }
 
 .titulo {

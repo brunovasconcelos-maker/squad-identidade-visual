@@ -7,7 +7,7 @@
 .par {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--grid-gutter);
+  gap: var(--grid-gutter, 20px);
   margin-top: 72px;
 }
 
