@@ -11,21 +11,25 @@
   overflow-y: auto;
 }
 
-/* Mesmo grid da Home: 12 colunas, margem 40px, gutter 20px. O conteúdo
-   do passo ocupa as 6 colunas centrais, alinhado com os cards da Home. */
+/* Mesmo grid da Home: 12 colunas, margem 40px, gutter 20px — e o mesmo recuo,
+   para o conteúdo do passo cair alinhado com os cards da Home.
+
+   O 12 é literal, não um token: ver a nota em tokens.css. */
 .grade {
   display: grid;
-  grid-template-columns: repeat(var(--grid-colunas), minmax(0, 1fr));
-  column-gap: var(--grid-gutter);
-  padding: 60px var(--grid-margem) 54px;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gutter, 20px);
+  padding: 60px var(--grid-margem, 40px) 54px;
 }
 
+/* Padrão do notebook: recuo de uma coluna de cada lado. */
 .centro {
-  grid-column: 4 / span 6;
+  grid-column: 2 / span 10;
 }
 
-/* A Fotografia foge das 6 colunas: no Figma a grade 3x3 tem 808px (3 x 256 +
-   2 x 20 de gap), centrados na página. Ocupa a faixa toda e se centraliza. */
+/* A Fotografia foge do recuo: no Figma a grade 3x3 tem 808px (3 x 256 + 2 x 20
+   de gap), centrados na página. Ocupa a faixa toda e se centraliza — largura de
+   desenho, não de grid, então não acompanha o recuo das demais. */
 .centroLargo {
   grid-column: 1 / -1;
   justify-self: center;
@@ -33,13 +37,10 @@
   max-width: 808px;
 }
 
-/* Mesmas quebras da Home, e a mesma ideia: o grid não muda, muda quanto dele
-   o conteúdo do passo ocupa. */
-
-/* Desktop estreito: um recuo de cada lado em vez de três. */
-@media (max-width: 1199px) {
+/* Monitor grande: volta às 6 colunas centrais do Figma. */
+@media (min-width: 1600px) {
   .centro {
-    grid-column: 3 / span 8;
+    grid-column: 4 / span 6;
   }
 }
 
@@ -47,7 +48,7 @@
    808px, que a essa altura já é maior que a faixa disponível. */
 @media (max-width: 1023px) {
   .grade {
-    padding: 40px var(--grid-margem) 48px;
+    padding: 40px var(--grid-margem, 24px) 48px;
   }
 
   .centro,
@@ -59,6 +60,6 @@
 
 @media (max-width: 767px) {
   .grade {
-    padding: var(--espaco-24) var(--grid-margem) 40px;
+    padding: var(--espaco-24) var(--grid-margem, 16px) 40px;
   }
 }

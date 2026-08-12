@@ -1,38 +1,44 @@
-/* Grid de 12 colunas, margem de 40px e gutter de 20px. */
+/* Grid de 12 colunas, margem de 40px e gutter de 20px.
+
+   O 12 é literal, não um token: ver a nota em tokens.css. */
 .pagina {
   display: grid;
-  grid-template-columns: repeat(var(--grid-colunas), minmax(0, 1fr));
-  column-gap: var(--grid-gutter);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gutter, 20px);
   row-gap: var(--espaco-60);
-  padding: 48px var(--grid-margem) 64px;
+  padding: 48px var(--grid-margem, 40px) 64px;
 }
 
-/* Top bar e banner ocupam as 8 colunas centrais (3 a 10). */
-.faixaLarga {
-  grid-column: 3 / span 8;
+/*
+ * Quanto do grid o conteúdo ocupa, por faixa de largura:
+ *
+ *   1600px+        recuo de 2 colunas — os valores do Figma
+ *   1024–1599px    recuo de 1 coluna, que é o comum num notebook
+ *   até 1023px     sem recuo, e os cards reflowam
+ *
+ * O caso do notebook é o padrão porque é a largura mais comum; as outras duas
+ * faixas são exceções declaradas abaixo.
+ */
+.faixaLarga,
+.grade {
+  grid-column: 2 / span 10;
 }
 
-/* A grade de cards ocupa as 6 colunas centrais (4 a 9); cada card, 2 colunas.
-   Os três cards por linha + os gutters reproduzem exatamente essas 6 colunas. */
 .grade {
   display: grid;
-  grid-column: 4 / span 6;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--grid-gutter);
+  gap: var(--grid-gutter, 20px);
 }
 
-/* O grid de 12 colunas continua o mesmo em toda largura; o que muda é quanto
-   dele cada bloco ocupa. A cada quebra o conteúdo cede um recuo de cada lado,
-   até ocupar as 12 colunas, e os cards passam de 3 para 2 e depois para 1. */
-
-/* Desktop estreito: um recuo de cada lado em vez de dois. */
-@media (max-width: 1199px) {
+/* Monitor grande: volta aos recuos do Figma — banner nas 8 colunas centrais,
+   cards nas 6, cada card ocupando 2. */
+@media (min-width: 1600px) {
   .faixaLarga {
-    grid-column: 2 / span 10;
+    grid-column: 3 / span 8;
   }
 
   .grade {
-    grid-column: 3 / span 8;
+    grid-column: 4 / span 6;
   }
 }
 
@@ -40,7 +46,7 @@
 @media (max-width: 1023px) {
   .pagina {
     row-gap: 40px;
-    padding: 40px var(--grid-margem) 48px;
+    padding: 40px var(--grid-margem, 24px) 48px;
   }
 
   .faixaLarga,
@@ -57,7 +63,7 @@
 @media (max-width: 767px) {
   .pagina {
     row-gap: var(--espaco-24);
-    padding: var(--espaco-24) var(--grid-margem) 40px;
+    padding: var(--espaco-24) var(--grid-margem, 16px) 40px;
   }
 
   .grade {

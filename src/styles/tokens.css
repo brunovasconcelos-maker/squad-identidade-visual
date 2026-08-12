@@ -66,8 +66,15 @@
 
   /* Grid: 12 colunas, margem 40px, gutter 20px.
      A margem encolhe nos pontos de quebra abaixo — quem usa o token acompanha
-     sem precisar de media query própria. */
-  --grid-colunas: 12;
+     sem precisar de media query própria.
+
+     Não há token para a quantidade de colunas, e é de propósito: um
+     `repeat(var(--x), ...)` que não resolve invalida o `grid-template-columns`
+     inteiro, e aí o grid vira implícito — as colunas saem de tamanhos
+     diferentes, o conteúdo desencontra e os botões espremidos deixam o texto
+     vazar. O 12 fica literal em cada página, que é uma constante do desenho e
+     não muda com a largura. Pelo mesmo motivo os `var()` de layout abaixo
+     levam valor de reserva. */
   --grid-margem: 40px;
   --grid-gutter: 20px;
 
