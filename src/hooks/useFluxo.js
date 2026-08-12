@@ -68,7 +68,7 @@ function criarCor({ nome, hex }) {
  * componente do fluxo; sair pelo X ou pelo "Voltar" do passo 1 desmonta esse
  * componente e descarta o que ainda não foi finalizado.
  */
-export default function useFluxo() {
+export default function useFluxo({ recomecarFotografia = false } = {}) {
   const [uploads, setUploads] = useState(uploadsVazios)
   const [paleta, setPaleta] = useState([])
   const [tipografia, setTipografia] = useState(tipografiaVazia)
@@ -348,7 +348,15 @@ export default function useFluxo() {
         setPaleta(manual.paleta)
         setTipografia(manual.tipografia)
         setTomDeVoz(manual.tomDeVoz)
-        setFotografia({ ...fotografiaVazia(), ...manual.fotografia })
+        // A aba e a tela salvas fazem o fluxo completo reabrir onde parou. Na
+        // edição avulsa da Fotografia é o contrário: quem entra pelo "Editar"
+        // refaz o caminho pelas seis categorias, então só as fotos escolhidas
+        // são recuperadas e a navegação volta ao começo.
+        setFotografia(
+          recomecarFotografia
+            ? { ...fotografiaVazia(), selecoes: manual.fotografia?.selecoes ?? {} }
+            : { ...fotografiaVazia(), ...manual.fotografia },
+        )
         setPersonalidade(manual.personalidade)
         setElementos(manual.elementos)
       })
@@ -362,7 +370,9 @@ export default function useFluxo() {
     return () => {
       ativo = false
     }
-  }, [])
+    // Constante ao longo da vida do componente: quem monta o fluxo já sabe se
+    // é a edição avulsa da Fotografia ou não.
+  }, [recomecarFotografia])
 
   const estadoDoFluxo = useCallback(
     () => ({ uploads, paleta, tipografia, tomDeVoz, fotografia, personalidade, elementos }),

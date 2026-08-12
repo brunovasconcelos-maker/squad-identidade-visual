@@ -1,0 +1,119 @@
+/*
+ * Personalidade — medidas do Figma, node 6206:5487. A casca da página está em
+ * PaginaDoTema.module.css.
+ *
+ * A linha soma 118 + 532 + 118 e mais 20px de cada lado, que são as 808px da
+ * coluna. Os extremos têm largura fixa e o trilho fica com o resto, então em
+ * tela estreita é ele que cede.
+ */
+.eixos {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+
+/* Alinhado pelo topo, não pelo centro: o trilho tem que ficar na altura do
+   meio da imagem, não do meio da coluna, que ainda tem o rótulo embaixo. */
+.eixo {
+  display: flex;
+  gap: var(--espaco-20);
+  align-items: flex-start;
+}
+
+.extremo {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: var(--espaco-20);
+  align-items: center;
+  width: 118px;
+}
+
+/* 118x66.836 e raio 3.688 vêm de um componente escalado no Figma; os valores
+   quebrados são os de lá mesmo. O fundo aparece enquanto a imagem carrega. */
+.imagem {
+  display: block;
+  width: 118px;
+  height: 66.836px;
+  object-fit: cover;
+  border-radius: 3.688px;
+  background: var(--cor-borda-tracejada);
+}
+
+.rotulo {
+  color: var(--cor-texto);
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-semibold);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+  text-align: center;
+}
+
+/* 22px do topo alinha o centro do trilho com o centro da imagem. */
+.trilho {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 24px;
+  margin-top: 22px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-superficie);
+}
+
+/* Área interna de 526px (532 menos 3px de cada lado): é nela que as bolinhas
+   se distribuem, e é o que faz as das pontas encostarem na borda do trilho. */
+.pontos {
+  position: relative;
+  height: 18px;
+  margin: 3px;
+}
+
+.ponto {
+  position: absolute;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--cor-borda-tracejada);
+}
+
+/* Do centro até a posição escolhida, as duas pontas inclusive. */
+.pontoNoCaminho {
+  background: var(--cor-marca);
+}
+
+/* A faixa cheia entre o centro e a posição: 10px de altura, centrada nas 24px
+   do trilho. */
+.preenchimento {
+  position: absolute;
+  top: 50%;
+  height: 10px;
+  transform: translateY(-50%);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-marca);
+}
+
+/*
+ * Celular: o trilho desce para baixo dos extremos.
+ *
+ * Espremido entre as duas imagens de 118px ele ficava com menos de 100px, e as
+ * cinco bolinhas de 18px se encavalavam num borrão. Em linha própria ele volta
+ * a ter largura suficiente para a posição ser legível.
+ */
+@media (max-width: 767px) {
+  .eixos {
+    gap: 40px;
+  }
+
+  .eixo {
+    flex-wrap: wrap;
+    gap: var(--espaco-16);
+    justify-content: space-between;
+  }
+
+  .trilho {
+    order: 3;
+    flex: 0 0 100%;
+    margin-top: 0;
+  }
+}

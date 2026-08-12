@@ -278,7 +278,10 @@ function FluxoDeUmTema({ tema }) {
   const navigate = useNavigate()
   const [salvando, setSalvando] = useState(false)
   const [erroAoSalvar, setErroAoSalvar] = useState(null)
-  const fluxo = useFluxo()
+  // A Fotografia é o único tema com mais de uma tela, e aqui ela recomeça da
+  // primeira categoria: editar é refazer o caminho pelas seis, com o que já
+  // estava escolhido marcado. Os demais temas têm uma tela só e nada a repor.
+  const fluxo = useFluxo({ recomecarFotografia: tema === 'fotografia' })
   const { carregando, salvarTema } = fluxo
 
   const pilar = pilares.find((item) => item.slug === tema)

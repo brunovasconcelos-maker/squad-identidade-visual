@@ -1,5 +1,6 @@
 import Icon from '../components/Icon.jsx'
 import { CENTRO, EIXOS, POSICOES } from '../data/personalidade.js'
+import { esquerdaDaPosicao, estiloDoPreenchimento, noCaminho } from '../lib/personalidade.js'
 import { urlDaImagem } from '../lib/imagens.js'
 import s from './PassoPersonalidade.module.css'
 
@@ -40,28 +41,6 @@ export default function PassoPersonalidade({ personalidade, acoes }) {
 }
 
 /**
- * A bolinha faz parte do caminho preenchido?
- *
- * Precisa estar do mesmo lado do centro que o cursor (daí o produto dos sinais
- * não ser negativo) e não passar dele (daí a comparação das distâncias). No
- * centro só ele próprio entra, e sem valor nenhuma entra.
- */
-function noCaminho(posicao, valor) {
-  if (valor == null) return false
-  return (
-    (posicao - CENTRO) * (valor - CENTRO) >= 0 &&
-    Math.abs(posicao - CENTRO) <= Math.abs(valor - CENTRO)
-  )
-}
-
-// A distância até o centro, em quartos da faixa útil, é a largura.
-function estiloDoPreenchimento(valor) {
-  if (valor == null) return { width: 0 }
-  const largura = `calc(${Math.abs(valor - CENTRO) / 4} * (100% - 18px))`
-  return valor >= CENTRO ? { left: '50%', width: largura } : { right: '50%', width: largura }
-}
-
-/**
  * A posição sob um clique, contada na faixa em que o cursor anda.
  *
  * Serve ao eixo ainda sem valor: ali o input está parado no centro só para ter
@@ -97,7 +76,7 @@ function Eixo({ eixo, valor, onMudar }) {
               className={noCaminho(posicao, valor) ? `${s.ponto} ${s.pontoNoCaminho}` : s.ponto}
               // Mesmo cálculo que o navegador usa para o cursor do range, então
               // os dois coincidem em qualquer largura.
-              style={{ left: `calc((100% - 18px) * ${i} / 4)` }}
+              style={{ left: esquerdaDaPosicao(i) }}
             />
           ))}
 
