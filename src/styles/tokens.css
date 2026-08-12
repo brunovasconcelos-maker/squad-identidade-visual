@@ -36,11 +36,14 @@
 
   --texto-titulo-pagina: 28px;
   --texto-secao: 24px;
-  /* Títulos de subseção — os que ficam acima das molduras de upload e dos
-     cards, um degrau abaixo do título principal do passo. Nascem em 16px, que
-     é o tamanho para a largura de um notebook, e voltam aos 24px do Figma no
-     monitor grande. Ver o ponto de quebra no fim do arquivo. */
-  --texto-subsecao: 16px;
+  /* Todo título de conteúdo dentro do passo a passo — do principal de cada
+     passo aos que ficam acima das molduras de upload e dos cards. Nascem em
+     16px, que é o tamanho para a largura de um notebook, e voltam aos 24px do
+     Figma no monitor grande. Ver o ponto de quebra no fim do arquivo.
+
+     Fica separado de --texto-secao de propósito: aquele continua fixo em 24px
+     e é usado por campos de modal, que não acompanham esta regra. */
+  --texto-titulo-passo: 16px;
   --texto-destaque: 20px;
   --texto-corpo: 16px;
   --texto-botao: 14px;
@@ -117,9 +120,9 @@
 }
 
 /* Monitor grande: mesma fronteira dos 1600px que devolve o recuo de duas
-   colunas ao grid. Os títulos de subseção voltam aos 24px do Figma. */
+   colunas ao grid. Os títulos dos passos voltam aos 24px do Figma. */
 @media (min-width: 1600px) {
   :root {
-    --texto-subsecao: 24px;
+    --texto-titulo-passo: 24px;
   }
 }
