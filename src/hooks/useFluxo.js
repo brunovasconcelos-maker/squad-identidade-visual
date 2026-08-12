@@ -5,7 +5,13 @@ import { CATEGORIAS, MAXIMO_POR_CATEGORIA, totalDeFotos } from '../data/fotograf
 import { posicoesPadrao } from '../data/personalidade.js'
 import { TIPOS_ARQUIVO, PASSOS_COM_UPLOAD } from '../data/uploads.js'
 import { lerManual, salvarManual } from '../lib/armazenamento.js'
-import { comUrl, deArmazenamento, lerArquivo, paraArmazenamento } from '../lib/manual.js'
+import {
+  comUrl,
+  deArmazenamento,
+  fatiaDoTema,
+  lerArquivo,
+  paraArmazenamento,
+} from '../lib/manual.js'
 
 export { TIPOS_ARQUIVO, PASSOS_COM_UPLOAD }
 
@@ -360,21 +366,33 @@ export default function useFluxo() {
     }
   }, [])
 
-  // A única escrita do fluxo, na finalização: grava tudo de uma vez.
-  const finalizar = useCallback(
-    () =>
-      salvarManual(
-        paraArmazenamento({
-          uploads,
-          paleta,
-          tipografia,
-          tomDeVoz,
-          fotografia,
-          personalidade,
-          elementos,
-        }),
-      ),
+  const estadoDoFluxo = useCallback(
+    () => ({ uploads, paleta, tipografia, tomDeVoz, fotografia, personalidade, elementos }),
     [uploads, paleta, tipografia, tomDeVoz, fotografia, personalidade, elementos],
+  )
+
+  // A escrita do fluxo completo, na finalização: grava tudo de uma vez.
+  const finalizar = useCallback(
+    () => salvarManual(paraArmazenamento(estadoDoFluxo())),
+    [estadoDoFluxo],
+  )
+
+  /*
+   * A escrita da edição avulsa, vinda de um card vazio da Home: grava só a
+   * fatia daquele tema por cima do manual que já estava no disco.
+   *
+   * Não dá para reaproveitar o `finalizar` aqui. O estado em memória nasce do
+   * que foi lido na entrada, então gravá-lo inteiro *quase* preserva os demais
+   * temas — mas se a leitura tiver falhado o hook começa vazio, e o "quase"
+   * viraria apagar o manual todo para salvar um tema. Reler e mesclar agora
+   * tira essa aposta do caminho.
+   */
+  const salvarTema = useCallback(
+    async (slug) => {
+      const salvo = await lerManual()
+      await salvarManual({ ...(salvo ?? {}), ...fatiaDoTema(estadoDoFluxo(), slug, salvo) })
+    },
+    [estadoDoFluxo],
   )
 
   // Ao sair do fluxo, libera as object URLs criadas.
@@ -427,5 +445,6 @@ export default function useFluxo() {
     },
     carregando,
     finalizar,
+    salvarTema,
   }
 }

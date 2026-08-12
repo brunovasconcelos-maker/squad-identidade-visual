@@ -84,3 +84,28 @@
     padding: var(--espaco-12) var(--espaco-12);
   }
 }
+
+/* Espera curta do "Salvar" da edição avulsa. Gravar um tema leva
+   milissegundos, então não vale tomar a tela inteira: o próprio botão mostra
+   que está trabalhando. */
+.girando {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: var(--raio-pilula);
+  animation: girar 700ms linear infinite;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .girando {
+    animation-duration: 2s;
+  }
+}

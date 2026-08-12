@@ -25,6 +25,122 @@ const PASSOS_LARGOS = ['fotografia', 'personalidade', 'elementos']
 // termine antes — que é o normal, ela leva milissegundos.
 const ESPERA_MINIMA = DURACAO_TOTAL
 
+/**
+ * O que conta como conteúdo em cada passo — a mesma regra nos dois modos, para
+ * o "Continuar" do fluxo e o "Salvar" da edição avulsa não discordarem.
+ *
+ * Nos passos de arquivo basta o principal; na paleta, ao menos uma cor; na
+ * tipografia, a fonte primária; no tom de voz, ao menos um tom. Fotografia e
+ * Personalidade nunca ficam vazias, então estão sempre prontas.
+ */
+function temConteudoDoPasso(slug, estado) {
+  const regras = {
+    'paleta-de-cores': () => estado.paleta.length > 0,
+    tipografia: () => Boolean(estado.tipografia.primaria),
+    'tom-de-voz': () => estado.tomDeVoz.length > 0,
+    fotografia: () => true,
+    personalidade: () => true,
+    elementos: () => estado.elementos.length > 0,
+  }
+
+  return regras[slug]?.() ?? Boolean(estado.uploads[slug]?.principal)
+}
+
+/**
+ * As telas internas da Fotografia (seleção por categoria e resumo).
+ *
+ * Os dois modos caminham por elas do mesmo jeito; o que muda é só o que
+ * acontece ao chegar no fim. Por isso `avancar` e `voltar` devolvem se o passo
+ * acabou, e quem chama decide se avança de tema, salva ou vai para a Home.
+ */
+function telasDaFotografia(fotografia, acoes) {
+  const indiceDaAba = CATEGORIAS.findIndex((c) => c.id === fotografia.aba)
+  const noResumo = fotografia.tela === 'resumo'
+
+  return {
+    /** true quando não há mais tela interna pela frente. */
+    avancar() {
+      if (noResumo) return true
+
+      // Ainda há categoria pela frente: só troca de aba.
+      if (indiceDaAba < CATEGORIAS.length - 1) {
+        acoes.irParaAba(CATEGORIAS[indiceDaAba + 1].id)
+        return false
+      }
+
+      // Última categoria: com fotos vai para o resumo, sem nenhuma não há o
+      // que resumir e o passo termina aqui.
+      if (totalDeFotos(fotografia.selecoes) > 0) {
+        acoes.irParaTela('resumo')
+        return false
+      }
+      return true
+    },
+
+    /** true quando não há mais tela interna atrás. */
+    voltar() {
+      if (noResumo) {
+        acoes.irParaTela('selecao')
+        acoes.irParaAba(CATEGORIAS[CATEGORIAS.length - 1].id)
+        return false
+      }
+      if (indiceDaAba > 0) {
+        acoes.irParaAba(CATEGORIAS[indiceDaAba - 1].id)
+        return false
+      }
+      return true
+    },
+  }
+}
+
+/** O conteúdo de um passo, igual nos dois modos. */
+function ConteudoDoPasso({ slug, fluxo }) {
+  const arquivos = fluxo.uploads[slug]
+  const props = {
+    arquivos,
+    onSalvar: (tipo, arquivo) => fluxo.salvarUpload(slug, tipo, arquivo),
+    onRemover: (tipo) => fluxo.removerUpload(slug, tipo),
+  }
+
+  switch (slug) {
+    case 'logo':
+      return <PassoLogo {...props} />
+    case 'icone':
+      return <PassoIcone {...props} />
+    case 'paleta-de-cores':
+      return <PassoPaleta paleta={fluxo.paleta} acoes={fluxo.acoesDaPaleta} />
+    case 'tipografia':
+      return <PassoTipografia tipografia={fluxo.tipografia} acoes={fluxo.acoesDaTipografia} />
+    case 'tom-de-voz':
+      return <PassoTomDeVoz tons={fluxo.tomDeVoz} acoes={fluxo.acoesDoTomDeVoz} />
+    case 'fotografia':
+      return <PassoFotografia fotografia={fluxo.fotografia} acoes={fluxo.acoesDaFotografia} />
+    case 'personalidade':
+      return (
+        <PassoPersonalidade personalidade={fluxo.personalidade} acoes={fluxo.acoesDaPersonalidade} />
+      )
+    case 'elementos':
+      return <PassoElementos elementos={fluxo.elementos} acoes={fluxo.acoesDosElementos} />
+    default:
+      return null
+  }
+}
+
+/** A área central, com a largura que o passo pede. */
+function AreaDoPasso({ slug, fluxo }) {
+  return (
+    <main className={s.conteudo}>
+      <div className={s.grade}>
+        {/* A Fotografia usa um bloco mais largo: a grade 3x3 tem 808px no
+            Figma, e não cabe nas 6 colunas centrais dos outros passos. */}
+        <div className={PASSOS_LARGOS.includes(slug) ? s.centroLargo : s.centro}>
+          <ConteudoDoPasso slug={slug} fluxo={fluxo} />
+        </div>
+      </div>
+    </main>
+  )
+}
+
 export default function PassoAPasso() {
   const { tema } = useParams()
 
@@ -46,56 +162,11 @@ function FluxoCompleto() {
   const [salvando, setSalvando] = useState(false)
   const [erroAoSalvar, setErroAoSalvar] = useState(null)
   // Um estado só para o fluxo inteiro: ir e voltar entre passos não perde nada.
-  const {
-    uploads,
-    salvarUpload,
-    removerUpload,
-    paleta,
-    acoesDaPaleta,
-    tipografia,
-    acoesDaTipografia,
-    tomDeVoz,
-    acoesDoTomDeVoz,
-    fotografia,
-    acoesDaFotografia,
-    personalidade,
-    acoesDaPersonalidade,
-    elementos,
-    acoesDosElementos,
-    carregando,
-    finalizar,
-  } = useFluxo()
+  const fluxo = useFluxo()
+  const { carregando, finalizar } = fluxo
 
   const pilarAtual = pilares[passo - 1]
-
-  // A Fotografia tem duas telas dentro do mesmo passo: a barra de progresso
-  // não anda ao passar da seleção para o resumo, só no "Continuar" do resumo.
-  const ehFotografia = pilarAtual.slug === 'fotografia'
-  const fotosEscolhidas = totalDeFotos(fotografia.selecoes)
-  const noResumoDaFotografia = ehFotografia && fotografia.tela === 'resumo'
-  // Na seleção, "Continuar" caminha pelas categorias em ordem antes de sair do
-  // passo — passar por todas é o que se pede, escolher foto não.
-  const indiceDaAba = CATEGORIAS.findIndex((c) => c.id === fotografia.aba)
-  const naUltimaCategoria = indiceDaAba === CATEGORIAS.length - 1
-
-  // Nos passos de arquivo basta o principal; na paleta, ao menos uma cor; na
-  // tipografia, a fonte primária — as secundárias são opcionais. As variações
-  // preta e branca seguem opcionais, e passos ainda sem conteúdo não têm
-  // entrada em uploads, então continuam desabilitados.
-  const conteudoDoPilar = {
-    'paleta-de-cores': () => paleta.length > 0,
-    tipografia: () => Boolean(tipografia.primaria),
-    'tom-de-voz': () => tomDeVoz.length > 0,
-    // Sempre habilitado: percorrer as categorias não exige escolher nada, e
-    // com isso o "pular" some daqui pela regra geral.
-    fotografia: () => true,
-    // Os eixos já nascem no meio, então este passo nunca está vazio.
-    personalidade: () => true,
-    elementos: () => elementos.length > 0,
-  }
-
-  const temConteudo =
-    conteudoDoPilar[pilarAtual.slug]?.() ?? Boolean(uploads[pilarAtual.slug]?.principal)
+  const temConteudo = temConteudoDoPasso(pilarAtual.slug, fluxo)
 
   // Regra do fluxo inteiro: "Não tenho, pular" e "Continuar" nunca aparecem
   // habilitados ao mesmo tempo. Assim que o passo tem conteúdo, o pular some
@@ -103,43 +174,19 @@ function FluxoCompleto() {
   // que ainda serão construídos, então é uma expressão só e não caso a caso.
   const mostrarPular = !temConteudo
 
-  const conteudoDoPasso = () => {
-    const props = {
-      arquivos: uploads[pilarAtual.slug],
-      onSalvar: (tipo, arquivo) => salvarUpload(pilarAtual.slug, tipo, arquivo),
-      onRemover: (tipo) => removerUpload(pilarAtual.slug, tipo),
-    }
-
-    switch (pilarAtual.slug) {
-      case 'logo':
-        return <PassoLogo {...props} />
-      case 'icone':
-        return <PassoIcone {...props} />
-      case 'paleta-de-cores':
-        return <PassoPaleta paleta={paleta} acoes={acoesDaPaleta} />
-      case 'tipografia':
-        return <PassoTipografia tipografia={tipografia} acoes={acoesDaTipografia} />
-      case 'tom-de-voz':
-        return <PassoTomDeVoz tons={tomDeVoz} acoes={acoesDoTomDeVoz} />
-      case 'fotografia':
-        return <PassoFotografia fotografia={fotografia} acoes={acoesDaFotografia} />
-      case 'personalidade':
-        return (
-          <PassoPersonalidade personalidade={personalidade} acoes={acoesDaPersonalidade} />
-        )
-      case 'elementos':
-        return <PassoElementos elementos={elementos} acoes={acoesDosElementos} />
-      default:
-        return null
-    }
-  }
+  // A Fotografia tem telas internas: a barra de progresso não anda ao passar
+  // da seleção para o resumo, só quando o passo termina.
+  const fotos =
+    pilarAtual.slug === 'fotografia'
+      ? telasDaFotografia(fluxo.fotografia, fluxo.acoesDaFotografia)
+      : null
 
   // Sair do fluxo desmonta este componente, e com ele o estado dos uploads.
   // É o que faz o X e o "Voltar" do passo 1 descartarem o que foi enviado.
   const sairDoFluxo = () => navigate('/')
 
-  // A única gravação do fluxo. Enquanto grava, a tela de espera fica no lugar
-  // do passo; depois a Home já lê o que acabou de ser salvo.
+  // A única gravação do fluxo completo. Enquanto grava, a tela de espera fica
+  // no lugar do passo; depois a Home já lê o que acabou de ser salvo.
   //
   // Gravar costuma levar poucos milissegundos, rápido demais para a tela de
   // espera chegar a ser pintada — daí o tempo mínimo, senão a transição parece
@@ -165,39 +212,20 @@ function FluxoCompleto() {
     navigate('/')
   }
 
-  const voltar = () => {
-    // Do resumo da Fotografia se volta para a seleção, na última categoria.
-    if (noResumoDaFotografia) {
-      acoesDaFotografia.irParaTela('selecao')
-      acoesDaFotografia.irParaAba(CATEGORIAS[CATEGORIAS.length - 1].id)
-    } else if (ehFotografia && indiceDaAba > 0) {
-      // Na seleção, volta uma categoria antes de sair do passo.
-      acoesDaFotografia.irParaAba(CATEGORIAS[indiceDaAba - 1].id)
-    } else if (passo === 1) sairDoFluxo()
-    else setPasso((atual) => atual - 1)
-  }
-
   const proximoPasso = () => {
     if (passo === total) concluir()
     else setPasso((atual) => atual + 1)
   }
 
+  const voltar = () => {
+    // Havendo tela interna atrás, é para ela que se volta.
+    if (fotos && !fotos.voltar()) return
+    if (passo === 1) sairDoFluxo()
+    else setPasso((atual) => atual - 1)
+  }
+
   const avancar = () => {
-    if (!ehFotografia || noResumoDaFotografia) {
-      proximoPasso()
-      return
-    }
-
-    // Ainda há categoria pela frente: só troca de aba, sem mexer no progresso.
-    if (!naUltimaCategoria) {
-      acoesDaFotografia.irParaAba(CATEGORIAS[indiceDaAba + 1].id)
-      return
-    }
-
-    // Última categoria: com fotos vai para o resumo, sem nenhuma não há o que
-    // resumir e o passo termina aqui.
-    if (fotosEscolhidas > 0) acoesDaFotografia.irParaTela('resumo')
-    else proximoPasso()
+    if (!fotos || fotos.avancar()) proximoPasso()
   }
 
   // "Não tenho, pular" na Fotografia salta o passo inteiro, sem passar pelo
@@ -210,11 +238,7 @@ function FluxoCompleto() {
   if (salvando) return <Carregando />
   if (erroAoSalvar) {
     return (
-      <FalhaAoSalvar
-        erro={erroAoSalvar}
-        onTentarDeNovo={concluir}
-        onDescartar={sairDoFluxo}
-      />
+      <FalhaAoSalvar erro={erroAoSalvar} onTentarDeNovo={concluir} onDescartar={sairDoFluxo} />
     )
   }
 
@@ -223,16 +247,7 @@ function FluxoCompleto() {
       {/* O topo mostra o tema do passo atual, não o nome do pilar. */}
       <FlowTopBar titulo={pilarAtual.titulo} onFechar={sairDoFluxo} />
 
-      {/* Só esta área rola. Os passos restantes entram no switch acima. */}
-      <main className={s.conteudo}>
-        <div className={s.grade}>
-          {/* A Fotografia usa um bloco mais largo: a grade 3x3 tem 808px no
-              Figma, e não cabe nas 6 colunas centrais dos outros passos. */}
-          <div className={PASSOS_LARGOS.includes(pilarAtual.slug) ? s.centroLargo : s.centro}>
-            {conteudoDoPasso()}
-          </div>
-        </div>
-      </main>
+      <AreaDoPasso slug={pilarAtual.slug} fluxo={fluxo} />
 
       <FlowBottomBar
         passo={passo}
@@ -247,9 +262,46 @@ function FluxoCompleto() {
   )
 }
 
-// Ainda é o placeholder do setup: o fluxo de um tema só será especificado depois.
+/**
+ * Edição avulsa: entrar direto num tema por /passo-a-passo/:tema, que é para
+ * onde vai um card vazio da Home.
+ *
+ * Aqui não existe "próximo tema": some a barra de progresso, some o "Não
+ * tenho, pular" (não há para onde pular) e o "Continuar" vira "Salvar", que
+ * grava só este tema e volta para a Home. O que habilita o botão é a mesma
+ * regra por passo do fluxo completo.
+ */
 function FluxoDeUmTema({ tema }) {
-  if (!temas.includes(tema)) {
+  const navigate = useNavigate()
+  const [salvando, setSalvando] = useState(false)
+  const [erroAoSalvar, setErroAoSalvar] = useState(null)
+  const fluxo = useFluxo()
+  const { carregando, salvarTema } = fluxo
+
+  const pilar = pilares.find((item) => item.slug === tema)
+
+  const fotos =
+    tema === 'fotografia' ? telasDaFotografia(fluxo.fotografia, fluxo.acoesDaFotografia) : null
+
+  const paraHome = () => navigate('/')
+
+  const salvar = async () => {
+    setErroAoSalvar(null)
+    setSalvando(true)
+
+    try {
+      await salvarTema(tema)
+    } catch (erro) {
+      console.error(`Não foi possível salvar o tema "${tema}".`, erro)
+      setSalvando(false)
+      setErroAoSalvar(erro)
+      return
+    }
+
+    navigate('/')
+  }
+
+  if (!pilar) {
     return (
       <section className="page">
         <h1>Passo a Passo</h1>
@@ -258,10 +310,40 @@ function FluxoDeUmTema({ tema }) {
     )
   }
 
+  if (carregando) return <Carregando mensagens={['Abrindo seu manual...']} />
+  if (erroAoSalvar) {
+    return (
+      <FalhaAoSalvar erro={erroAoSalvar} onTentarDeNovo={salvar} onDescartar={paraHome} />
+    )
+  }
+
+  // O "Voltar" não anda entre temas — não há um anterior. Volta para a Home,
+  // a menos que o próprio tema tenha uma tela interna atrás (o resumo da
+  // Fotografia), que continua funcionando como no fluxo completo.
+  const voltar = () => {
+    if (fotos && !fotos.voltar()) return
+    paraHome()
+  }
+
+  const acao = () => {
+    if (!fotos || fotos.avancar()) salvar()
+  }
+
   return (
-    <section className="page">
-      <h1>Passo a Passo — {tema}</h1>
-      <p className="page-placeholder">Fluxo do tema — conteúdo definido depois.</p>
-    </section>
+    <div className={s.pagina}>
+      <FlowTopBar titulo={pilar.titulo} onFechar={paraHome} />
+
+      <AreaDoPasso slug={pilar.slug} fluxo={fluxo} />
+
+      <FlowBottomBar
+        temConteudo={temConteudoDoPasso(pilar.slug, fluxo)}
+        mostrarProgresso={false}
+        mostrarPular={false}
+        rotulo="Salvar"
+        ocupado={salvando}
+        onVoltar={voltar}
+        onContinuar={acao}
+      />
+    </div>
   )
 }
