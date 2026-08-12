@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import Carregando from './Carregando.jsx'
 import Icon from './Icon.jsx'
+import useFundoSemContraste from '../hooks/useFundoSemContraste.js'
 import useManual from '../hooks/useManual.js'
 import { degradeDaMarca, fotoParaLogo } from '../lib/aplicacoesDaLogo.js'
 import { urlDaImagem } from '../lib/imagens.js'
@@ -212,6 +213,11 @@ function AreaDeProtecao({ principal, textos }) {
 
 /** Seção 4: os quatro erros de uso, cada um com a legenda embaixo. */
 function UsosIncorretos({ principal, textos }) {
+  // O fundo do exemplo sem contraste sai da própria marca: um cinza fixo não
+  // serve, porque contra uma marca clara ele até que contrasta bem, e aí o
+  // exemplo do erro não mostra erro nenhum.
+  const fundoSemContraste = useFundoSemContraste(principal.url)
+
   return (
     <section className={s.secao}>
       <h2 className={s.tituloDaSecao}>Usos Incorretos</h2>
@@ -225,7 +231,11 @@ function UsosIncorretos({ principal, textos }) {
           <img className={`${s.marca} ${s.espremida}`} src={principal.url} alt="" />
         </Erro>
 
-        <Erro legenda={textos.erros[2]} className={s.semContraste}>
+        <Erro
+          legenda={textos.erros[2]}
+          className={s.semContraste}
+          estilo={fundoSemContraste ? { backgroundColor: fundoSemContraste } : undefined}
+        >
           <img className={s.marca} src={principal.url} alt="" />
         </Erro>
 
@@ -242,10 +252,13 @@ function UsosIncorretos({ principal, textos }) {
   )
 }
 
-function Erro({ legenda, className, children }) {
+function Erro({ legenda, className, estilo, children }) {
   return (
     <figure className={s.erro}>
-      <div className={[s.moldura, s.molduraComBorda, className].filter(Boolean).join(' ')}>
+      <div
+        className={[s.moldura, s.molduraComBorda, className].filter(Boolean).join(' ')}
+        style={estilo}
+      >
         {children}
       </div>
       <figcaption className={s.legenda}>{legenda}</figcaption>

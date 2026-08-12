@@ -284,7 +284,9 @@
   transform: scaleX(0.44);
 }
 
-/* Fundo escuro quase da cor da logo — o erro é justamente esse. */
+/* O fundo de verdade vem do JS, quase da cor dominante da marca — ver
+   useFundoSemContraste. Este cinza é a reserva de quando não dá para medir o
+   arquivo (SVG sem dimensão, imagem que não carrega). */
 .semContraste {
   border-color: var(--cor-borda-tracejada);
   background-color: var(--cor-baixo-contraste);
