@@ -28,6 +28,11 @@
   letter-spacing: var(--espacamento-letras-secao);
 }
 
+/* O nome da categoria é subtítulo, um degrau abaixo do título do passo. */
+.nomeDaCategoria {
+  font-size: var(--texto-subsecao);
+}
+
 /* 32px de área clicável com -4px de margem: o ícone de 24px fica onde o
    Figma coloca, e o hover tem folga. */
 .ajuda {

@@ -19,7 +19,7 @@
 
 .titulo {
   margin: 0;
-  font-size: var(--texto-secao);
+  font-size: var(--texto-subsecao);
   font-weight: var(--peso-semibold);
   line-height: 1;
   letter-spacing: var(--espacamento-letras-secao);

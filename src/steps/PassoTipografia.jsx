@@ -51,7 +51,7 @@ export default function PassoTipografia({ tipografia, acoes }) {
 
       <div className={s.cabecalhoSecundarias}>
         <div className={s.tituloGrupo}>
-          <h2 className={s.titulo}>Adicionar tipografia secundária</h2>
+          <h2 className={s.tituloSecundarias}>Adicionar tipografia secundária</h2>
           <button type="button" className={s.ajuda} aria-label="Sobre a tipografia secundária">
             <Icon nome="Help" />
           </button>
