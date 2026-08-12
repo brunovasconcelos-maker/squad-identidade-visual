@@ -207,3 +207,20 @@
     gap: var(--espaco-60);
   }
 }
+
+/* Eixo ainda sem escolha: o cursor some, e sobram as cinco bolinhas cinza. O
+   input continua ali, clicável — o que muda é só o que se vê. */
+.semValor::-webkit-slider-thumb {
+  opacity: 0;
+}
+
+.semValor::-moz-range-thumb {
+  opacity: 0;
+}
+
+/* Com o cursor invisível, o foco do teclado precisa aparecer no trilho. */
+.semValor:focus-visible {
+  outline: 2px solid var(--cor-texto);
+  outline-offset: 2px;
+  border-radius: var(--raio-pilula);
+}

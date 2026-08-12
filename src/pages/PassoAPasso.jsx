@@ -15,6 +15,7 @@ import PassoElementos from '../steps/PassoElementos.jsx'
 import useFluxo from '../hooks/useFluxo.js'
 import { pilares, temas } from '../data/pilares.js'
 import { CATEGORIAS, totalDeFotos } from '../data/fotografia.js'
+import { eixosDefinidos } from '../data/personalidade.js'
 import s from './PassoAPasso.module.css'
 
 // No Figma esses passos têm 808px de conteúdo, mais que as 6 colunas centrais
@@ -30,8 +31,9 @@ const ESPERA_MINIMA = DURACAO_TOTAL
  * o "Continuar" do fluxo e o "Salvar" da edição avulsa não discordarem.
  *
  * Nos passos de arquivo basta o principal; na paleta, ao menos uma cor; na
- * tipografia, a fonte primária; no tom de voz, ao menos um tom. Fotografia e
- * Personalidade nunca ficam vazias, então estão sempre prontas.
+ * tipografia, a fonte primária; no tom de voz, ao menos um tom; na
+ * personalidade, ao menos um eixo escolhido. A Fotografia é a única sempre
+ * pronta: percorrer as categorias não exige escolher foto.
  */
 function temConteudoDoPasso(slug, estado) {
   const regras = {
@@ -39,7 +41,8 @@ function temConteudoDoPasso(slug, estado) {
     tipografia: () => Boolean(estado.tipografia.primaria),
     'tom-de-voz': () => estado.tomDeVoz.length > 0,
     fotografia: () => true,
-    personalidade: () => true,
+    // Basta um eixo escolhido; os outros podem ficar sem valor.
+    personalidade: () => eixosDefinidos(estado.personalidade).length > 0,
     elementos: () => estado.elementos.length > 0,
   }
 
@@ -275,7 +278,10 @@ function FluxoDeUmTema({ tema }) {
   const navigate = useNavigate()
   const [salvando, setSalvando] = useState(false)
   const [erroAoSalvar, setErroAoSalvar] = useState(null)
-  const fluxo = useFluxo()
+  // A Fotografia é o único tema com mais de uma tela, e aqui ela recomeça da
+  // primeira categoria: editar é refazer o caminho pelas seis, com o que já
+  // estava escolhido marcado. Os demais temas têm uma tela só e nada a repor.
+  const fluxo = useFluxo({ recomecarFotografia: tema === 'fotografia' })
   const { carregando, salvarTema } = fluxo
 
   const pilar = pilares.find((item) => item.slug === tema)

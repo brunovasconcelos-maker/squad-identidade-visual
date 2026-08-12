@@ -1,0 +1,30 @@
+/*
+ * Elementos — a casca da página está em PaginaDoTema.module.css; aqui é só a
+ * lista do que foi gravado.
+ */
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-16);
+}
+
+.elemento {
+  display: flex;
+  gap: var(--espaco-16);
+  align-items: center;
+  padding: var(--espaco-12);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-caixa);
+}
+
+.nome {
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-semibold);
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
+.secundario {
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-regular);
+}

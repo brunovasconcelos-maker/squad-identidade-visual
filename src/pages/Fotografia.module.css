@@ -1,0 +1,55 @@
+/*
+ * Fotografia — medidas do Figma, node 6206:5331. A casca da página (topo,
+ * coluna de 808px e estado vazio) está em PaginaDoTema.module.css.
+ */
+.categorias {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+
+.categoria {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-24);
+}
+
+.titulo {
+  margin: 0;
+  color: var(--cor-texto);
+  font-size: var(--texto-secao);
+  font-weight: var(--peso-semibold);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
+/* Três colunas com 20px entre elas dão exatamente as 256px do Figma na coluna
+   de 808px. São no máximo três fotos por categoria, então a última linha nunca
+   sobra — e com uma ou duas a foto mantém a largura em vez de esticar. */
+.fotos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--espaco-20);
+}
+
+/* 256x144 é 16/9. Só a imagem: sem borda e sem selo, que na seleção do fluxo
+   marcam a foto escolhida e aqui não teriam o que dizer. */
+.foto {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--raio-caixa);
+  object-fit: cover;
+  background: var(--cor-superficie);
+}
+
+@media (max-width: 767px) {
+  .categorias {
+    gap: 40px;
+  }
+
+  .fotos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--espaco-12);
+  }
+}
