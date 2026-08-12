@@ -1,6 +1,4 @@
-import { Link } from 'react-router-dom'
-import Carregando from './Carregando.jsx'
-import Icon from './Icon.jsx'
+import PaginaDoTema from './PaginaDoTema.jsx'
 import useFundoSemContraste from '../hooks/useFundoSemContraste.js'
 import useManual from '../hooks/useManual.js'
 import { degradeDaMarca, fotoParaLogo } from '../lib/aplicacoesDaLogo.js'
@@ -69,50 +67,34 @@ export default function PaginaDeArquivos({ titulo, slug }) {
   const { manual, carregando } = useManual()
   const textos = TEXTOS[slug]
 
-  if (carregando) return <Carregando mensagens={['Abrindo seu manual...']} />
-
   const arquivos = manual?.uploads?.[slug]
   const principal = arquivos?.principal
   const preta = arquivos?.preta
   const branca = arquivos?.branca
 
   return (
-    <div className={s.pagina}>
-      <header className={s.topo}>
-        <Link to="/" className={s.voltar} aria-label="Voltar para a Home">
-          <Icon nome="Arrow-Left" />
-        </Link>
-        <h1 className={s.titulo}>{titulo}</h1>
-        {/* No Figma este canto tem o menu de três pontos, que é da Home. Aqui
-            ele dá lugar ao atalho de edição, que a página precisa ter. */}
-        <Link to={`/passo-a-passo/${slug}`} className={s.editar}>
-          Editar
-        </Link>
-      </header>
+    <PaginaDoTema
+      titulo={titulo}
+      slug={slug}
+      carregando={carregando}
+      temConteudo={Boolean(principal)}
+      vazio={textos.vazio}
+    >
+      <Primaria
+        principal={principal}
+        preta={preta}
+        branca={branca}
+        paleta={manual?.paleta}
+        textos={textos}
+      />
 
-      <main className={s.conteudo}>
-        {principal ? (
-          <div className={s.secoes}>
-            <Primaria
-              principal={principal}
-              preta={preta}
-              branca={branca}
-              paleta={manual.paleta}
-              textos={textos}
-            />
+      {/* Aqui entram as seções das variações ("Horizontal" e as demais)
+          quando o "Adicionar variações" do passo existir: mesma estrutura
+          da Primária, uma seção por variação salva. Ver node 6064:4991. */}
 
-            {/* Aqui entram as seções das variações ("Horizontal" e as demais)
-                quando o "Adicionar variações" do passo existir: mesma estrutura
-                da Primária, uma seção por variação salva. Ver node 6064:4991. */}
-
-            <AreaDeProtecao principal={principal} textos={textos} />
-            <UsosIncorretos principal={principal} textos={textos} />
-          </div>
-        ) : (
-          <p className={s.vazio}>{textos.vazio}</p>
-        )}
-      </main>
-    </div>
+      <AreaDeProtecao principal={principal} textos={textos} />
+      <UsosIncorretos principal={principal} textos={textos} />
+    </PaginaDoTema>
   )
 }
 

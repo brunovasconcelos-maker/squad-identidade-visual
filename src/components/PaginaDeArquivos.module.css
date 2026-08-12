@@ -1,77 +1,11 @@
 /*
- * Página do Logo — medidas do Figma, node 6064:4785.
+ * Molduras de apresentação do Logo e do Ícone — medidas do Figma, node
+ * 6064:4785. A casca da página (topo, coluna de 808px, vãos entre seções) está
+ * em PaginaDoTema.module.css.
  *
- * A coluna de conteúdo tem 808px, a mesma dos passos largos do fluxo, e as
- * molduras seguem daí: 808 de largura na grande, 394 + 20 de vão + 394 no par.
+ * A coluna tem 808px, e as molduras seguem daí: 808 de largura na grande,
+ * 394 + 20 de vão + 394 no par.
  */
-.pagina {
-  display: flex;
-  flex-direction: column;
-  min-height: 100dvh;
-}
-
-/* Mesmo topo das outras páginas de tema: 96px com a borda embaixo. */
-.topo {
-  display: flex;
-  gap: var(--espaco-16);
-  align-items: center;
-  height: 96px;
-  padding: 0 var(--grid-margem, 40px);
-  border-bottom: 1px solid var(--cor-borda);
-}
-
-.voltar {
-  display: flex;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--cor-borda-sutil);
-  border-radius: var(--raio-pilula);
-  background: var(--cor-fundo);
-  color: var(--cor-texto);
-}
-
-.titulo {
-  flex: 1;
-  min-width: 0;
-  margin: 0;
-  font-size: var(--texto-titulo-pagina);
-  font-weight: var(--peso-semibold);
-  line-height: var(--altura-linha);
-  letter-spacing: var(--espacamento-letras);
-}
-
-.editar {
-  flex: none;
-  color: var(--cor-texto);
-  font-size: var(--texto-botao);
-  font-weight: var(--peso-medio);
-}
-
-.conteudo {
-  flex: 1;
-  padding: var(--espaco-60) var(--grid-margem, 40px) 100px;
-}
-
-.vazio {
-  max-width: 808px;
-  margin: 0 auto;
-  color: var(--cor-texto-secundario);
-  font-size: var(--texto-corpo);
-  line-height: var(--altura-linha);
-}
-
-/* 100px entre seções, como no Figma. */
-.secoes {
-  display: flex;
-  flex-direction: column;
-  gap: 100px;
-  max-width: 808px;
-  margin: 0 auto;
-}
-
 .secao {
   display: flex;
   flex-direction: column;
@@ -322,10 +256,6 @@
 
 /* Em tela estreita as molduras empilham, como os cards da Home. */
 @media (max-width: 767px) {
-  .secoes {
-    gap: 64px;
-  }
-
   .par,
   .erros {
     grid-template-columns: minmax(0, 1fr);

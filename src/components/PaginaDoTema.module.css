@@ -1,0 +1,80 @@
+/*
+ * A casca das páginas de leitura de um tema — Logo, Ícone, Paleta de Cores.
+ *
+ * Topo com a volta para a Home, título e atalho de edição; embaixo a coluna de
+ * 808px do Figma, com 100px entre seções. O conteúdo de cada tema entra como
+ * filho; o que muda de uma página para outra é só ele.
+ */
+.pagina {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+/* 96px com a borda embaixo, como nas demais páginas de tema. */
+.topo {
+  display: flex;
+  gap: var(--espaco-16);
+  align-items: center;
+  height: 96px;
+  padding: 0 var(--grid-margem, 40px);
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.voltar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--cor-borda-sutil);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+}
+
+.titulo {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: var(--texto-titulo-pagina);
+  font-weight: var(--peso-semibold);
+  line-height: var(--altura-linha);
+  letter-spacing: var(--espacamento-letras);
+}
+
+.editar {
+  flex: none;
+  color: var(--cor-texto);
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+}
+
+.conteudo {
+  flex: 1;
+  padding: var(--espaco-60) var(--grid-margem, 40px) 100px;
+}
+
+.vazio {
+  max-width: 808px;
+  margin: 0 auto;
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-corpo);
+  line-height: var(--altura-linha);
+}
+
+/* 100px entre seções, como no Figma. */
+.secoes {
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+  max-width: 808px;
+  margin: 0 auto;
+}
+
+@media (max-width: 767px) {
+  .secoes {
+    gap: 64px;
+  }
+}

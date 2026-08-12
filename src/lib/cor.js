@@ -154,6 +154,25 @@ export function textoClaroSobre(hex) {
   return razaoDeContraste(hex, 'FFFFFF') > razaoDeContraste(hex, '000000')
 }
 
+/**
+ * Os níveis WCAG que passam sobre a cor, um por cor de texto.
+ *
+ * Devolve, na ordem do Figma (branco antes de preto), só o que chega ao AA:
+ * `[{ texto: 'FFFFFF', nivel: 'AAA' }]`. Numa cor de meio-tom os dois podem
+ * passar, e aí a lista tem dois itens; numa cor sem contraste nenhum, ela vem
+ * vazia.
+ */
+export function niveisDeContraste(hex) {
+  return ['FFFFFF', '000000']
+    .map((texto) => {
+      const razao = razaoDeContraste(hex, texto)
+      if (razao >= 7) return { texto, nivel: 'AAA' }
+      if (razao >= 4.5) return { texto, nivel: 'AA' }
+      return null
+    })
+    .filter(Boolean)
+}
+
 /** Nível WCAG do melhor entre texto branco e preto sobre a cor. */
 export function nivelDeContraste(hex) {
   const razao = Math.max(razaoDeContraste(hex, 'FFFFFF'), razaoDeContraste(hex, '000000'))
