@@ -25,6 +25,12 @@ const NOMES_DE_PESO = {
   900: 'Black',
 }
 
+/** "Light", "Light Italic" — o nome do peso, sem o número. */
+export function nomeDaVariante(variante) {
+  const nome = NOMES_DE_PESO[variante.peso] ?? variante.peso
+  return variante.italico ? `${nome} Italic` : nome
+}
+
 /** "Light 300", "Light 300 Italic" — o rótulo que aparece no checkbox. */
 function rotuloDaVariante(peso, italico) {
   const nome = NOMES_DE_PESO[peso] ?? peso
@@ -151,18 +157,19 @@ export function urlDoCss2(fonte) {
 }
 
 /**
- * Peso e estilo do "Aa" da prévia. Só usa variante marcada: pedir um peso que
- * não foi carregado faria o navegador engrossar a fonte por conta própria.
- * Entre as marcadas, a mais perto de 600 — o peso do desenho no Figma.
+ * Peso e estilo de uma amostra da fonte. Só usa variante marcada: pedir um peso
+ * que não foi carregado faria o navegador engrossar a fonte por conta própria.
+ * Entre as marcadas, a mais perto do `alvo` — 600 no "Aa" do passo, 500 no nome
+ * grande da página do tema, que são os pesos dos respectivos desenhos.
  */
-export function estiloDaPrevia(fonte) {
+export function estiloDaPrevia(fonte, alvo = 600) {
   const marcadas = fonte?.variantes.filter((variante) => variante.marcado) ?? []
   if (marcadas.length === 0) return null
 
   const romanas = marcadas.filter((variante) => !variante.italico)
   const candidatas = romanas.length > 0 ? romanas : marcadas
   const escolhida = candidatas.reduce((melhor, variante) =>
-    Math.abs(variante.peso - 600) < Math.abs(melhor.peso - 600) ? variante : melhor,
+    Math.abs(variante.peso - alvo) < Math.abs(melhor.peso - alvo) ? variante : melhor,
   )
 
   return { fontWeight: escolhida.peso, fontStyle: escolhida.italico ? 'italic' : 'normal' }
@@ -171,4 +178,23 @@ export function estiloDaPrevia(fonte) {
 /** Família da fonte escolhida, com a do projeto como reserva enquanto carrega. */
 export function familiaCss(fonte) {
   return `'${fonte.familia}', var(--fonte)`
+}
+
+/**
+ * As variantes marcadas em pares peso a peso: a romana à esquerda, a itálica do
+ * mesmo peso à direita.
+ *
+ * Um lado pode vir nulo — marcar "Bold" sem "Bold Italic" deixa a direita
+ * vazia, e a linha continua existindo para as colunas não desalinharem. Os
+ * pares saem do peso mais leve para o mais pesado, como no Figma.
+ */
+export function paresDeVariantes(fonte) {
+  const marcadas = fonte?.variantes.filter((variante) => variante.marcado) ?? []
+  const pesos = [...new Set(marcadas.map((variante) => variante.peso))].sort((a, b) => a - b)
+
+  return pesos.map((peso) => ({
+    peso,
+    romana: marcadas.find((v) => v.peso === peso && !v.italico) ?? null,
+    italica: marcadas.find((v) => v.peso === peso && v.italico) ?? null,
+  }))
 }

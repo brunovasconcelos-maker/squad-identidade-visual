@@ -93,7 +93,7 @@
 
 .hex {
   overflow: hidden;
-  color: var(--cor-hex);
+  color: var(--cor-tenue);
   font-size: var(--texto-botao);
   font-weight: var(--peso-medio);
   line-height: 20px;
