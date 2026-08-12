@@ -44,11 +44,14 @@
   letter-spacing: var(--espacamento-letras);
 }
 
+/* No Figma este canto tem o menu de três pontos, que é da Home. Aqui é o
+   atalho de edição, sublinhado, que leva ao passo do tema. */
 .editar {
   flex: none;
   color: var(--cor-texto);
   font-size: var(--texto-botao);
   font-weight: var(--peso-medio);
+  text-decoration: underline;
 }
 
 .conteudo {
