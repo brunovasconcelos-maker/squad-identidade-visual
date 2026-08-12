@@ -97,20 +97,15 @@ function Primaria({ principal, preta, branca, paleta }) {
       {/* Sem versão de cor única não há o que aplicar sobre fundo colorido: a
           logo principal costuma ter cor própria e brigaria com o fundo. */}
       {(preta || branca) && (
-        <>
-          <h3 className={s.tituloDaSubsecao}>Aplicação sobre gradiente e imagem</h3>
-          <div className={s.par}>
-            <div className={s.moldura} style={{ backgroundImage: degrade.css }}>
-              <img className={s.logo} src={noDegrade.url} alt="Logo aplicada sobre gradiente" />
-            </div>
-            <div className={s.moldura}>
-              {foto.nome && (
-                <img className={s.fundoDaFoto} src={urlDaImagem(foto.nome)} alt="" />
-              )}
-              <img className={s.logo} src={naFoto.url} alt="Logo aplicada sobre foto" />
-            </div>
+        <div className={s.par}>
+          <div className={s.moldura} style={{ backgroundImage: degrade.css }}>
+            <img className={s.logo} src={noDegrade.url} alt="Logo aplicada sobre gradiente" />
           </div>
-        </>
+          <div className={s.moldura}>
+            {foto.nome && <img className={s.fundoDaFoto} src={urlDaImagem(foto.nome)} alt="" />}
+            <img className={s.logo} src={naFoto.url} alt="Logo aplicada sobre foto" />
+          </div>
+        </div>
       )}
     </section>
   )
