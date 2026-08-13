@@ -1,14 +1,15 @@
+import CartaoDeElemento, { AcaoDoCartao } from '../components/CartaoDeElemento.jsx'
+import Icon from '../components/Icon.jsx'
 import PaginaDoTema from '../components/PaginaDoTema.jsx'
-import { Miniatura } from '../components/ModalElemento.jsx'
 import useManual from '../hooks/useManual.js'
 import s from './Elementos.module.css'
 
-/**
- * Visão de leitura dos elementos adicionais.
+/*
+ * Página de leitura dos elementos adicionais — node 6217:6288 do Figma.
  *
- * Último tema ainda sem desenho próprio no Figma: por ora é a lista do que foi
- * gravado, com a prévia, o nome dado e o nome do arquivo. A casca (topo,
- * coluna e vazio) é a mesma das páginas já desenhadas.
+ * A mesma linha da lista de "Adicionados" do passo, com o lápis e a lixeira
+ * trocados por um download só: aqui não se edita nem se exclui, quem faz isso
+ * é o "Editar" do topo.
  */
 export default function Elementos() {
   const { manual, carregando } = useManual()
@@ -16,21 +17,34 @@ export default function Elementos() {
 
   return (
     <PaginaDoTema
-      titulo="Elementos"
+      titulo="Elementos adicionais"
       slug="elementos"
       carregando={carregando}
       temConteudo={elementos.length > 0}
-      vazio="Nada adicionado ainda."
+      vazio="Nada adicionado ainda. Envie arquivos adicionais para vê-los aqui."
     >
-      <div className={s.lista}>
+      <ul className={s.lista}>
         {elementos.map((elemento) => (
-          <div key={elemento.id} className={s.elemento}>
-            <Miniatura arquivo={elemento.arquivo} />
-            <span className={s.nome}>{elemento.nome}</span>
-            <span className={s.secundario}>{elemento.arquivo?.nome}</span>
-          </div>
+          <CartaoDeElemento key={elemento.id} elemento={elemento}>
+            {/* O `href` é a object URL dos bytes gravados no IndexedDB, e o
+                `download` devolve o nome original do arquivo — é o arquivo
+                mesmo que a pessoa enviou, não uma cópia remontada.
+
+                Sem arquivo não há o que baixar; a linha fica sem a ação em vez
+                de oferecer um botão que não faz nada. */}
+            {elemento.arquivo?.url && (
+              <AcaoDoCartao
+                como="a"
+                href={elemento.arquivo.url}
+                download={elemento.arquivo.nome}
+                aria-label={`Baixar ${elemento.arquivo.nome}`}
+              >
+                <Icon nome="Download-Simple" />
+              </AcaoDoCartao>
+            )}
+          </CartaoDeElemento>
         ))}
-      </div>
+      </ul>
     </PaginaDoTema>
   )
 }
