@@ -20,6 +20,24 @@
   letter-spacing: var(--espacamento-letras);
 }
 
+/* Título e regra de uso como um bloco só: a regra fica colada no título, e é o
+   par inteiro que guarda os 24px até a moldura — senão a regra ficaria solta
+   no meio dos dois e o ritmo da página se perderia. */
+.cabecalhoDaSecao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-8);
+}
+
+.regraDeUso {
+  margin: 0;
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-regular);
+  line-height: var(--altura-linha);
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
 /* --- Molduras --- */
 
 .moldura {
