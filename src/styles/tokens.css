@@ -29,6 +29,11 @@
   --cor-guia: rgba(0, 0, 0, 0.2);    /* linhas da área de proteção da logo */
   --cor-baixo-contraste: #383939;    /* fundo do exemplo de uso sem contraste */
   --cor-tenue: #a6abb2;              /* hex da Paleta, divisórias da Tipografia */
+  --cor-chat: #f5f9fc;               /* fundo das sugestões e do campo do Tom */
+  /* Um degrau mais escuro do mesmo azulado, para o hover das sugestões. Não sai
+     do Figma: os nodes do painel desenham as pílulas num estado só. Segue a
+     mesma ideia do hover das abas, que escurecem um passo. */
+  --cor-chat-hover: #e8eff5;
 
   /* Tipografia — Inter em todo o site, em todas as páginas.
      Regra fixa do projeto: nada usa outra família. Ver CLAUDE.md.
@@ -89,6 +94,9 @@
      levam valor de reserva. */
   --grid-margem: 40px;
   --grid-gutter: 20px;
+
+  /* Sombra do que flutua sobre a página — hoje só o painel do Tom. */
+  --sombra-flutuante: 0 2px 40px rgba(0, 0, 0, 0.16);
 
   /* Movimento */
   --transicao-padrao: 160ms ease;

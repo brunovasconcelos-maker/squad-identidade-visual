@@ -43,6 +43,11 @@
   animation: balancar 500ms ease-in-out;
 }
 
+/* Mesma balançada nos dois lugares que o Tom aparece. Os `@keyframes` ficam em
+   cada módulo de propósito: os CSS Modules dão escopo de arquivo a eles, e nem
+   `animation: :global(balancar)` nem `animation-name: :global(balancar)`
+   compilam neste toolchain — a alternativa seria uma classe global, contra a
+   regra de um módulo por componente. A definição é a mesma nos dois. */
 @keyframes balancar {
   0%,
   100% {
