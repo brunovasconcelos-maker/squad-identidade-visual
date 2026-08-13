@@ -72,6 +72,14 @@ export default function PaginaDeArquivos({ titulo, slug }) {
   const preta = arquivos?.preta
   const branca = arquivos?.branca
 
+  // As variações são da logo, e só dela — o Ícone não tem esta seção. Sem a
+  // URL não há o que mostrar, então a variação fica de fora em vez de abrir
+  // uma seção com a moldura vazia.
+  const variacoes =
+    slug === 'logo'
+      ? (manual?.variacoesDaLogo ?? []).filter((variacao) => variacao.arquivo?.url)
+      : []
+
   return (
     <PaginaDoTema
       titulo={titulo}
@@ -88,9 +96,10 @@ export default function PaginaDeArquivos({ titulo, slug }) {
         textos={textos}
       />
 
-      {/* Aqui entram as seções das variações ("Horizontal" e as demais)
-          quando o "Adicionar variações" do passo existir: mesma estrutura
-          da Primária, uma seção por variação salva. Ver node 6064:4991. */}
+      {/* Uma seção por variação salva, na ordem em que foram criadas. */}
+      {variacoes.map((variacao) => (
+        <Variacao key={variacao.id} variacao={variacao} />
+      ))}
 
       <AreaDeProtecao principal={principal} textos={textos} />
       <UsosIncorretos principal={principal} textos={textos} />
@@ -150,6 +159,38 @@ function Primaria({ principal, preta, branca, paleta, textos }) {
           </div>
         </div>
       )}
+    </section>
+  )
+}
+
+/**
+ * Seção 2: uma variação salva — o nome dela e o arquivo na moldura grande.
+ *
+ * Só isso. Área de proteção, usos incorretos e as aplicações sobre degradê e
+ * foto continuam exclusivos da marca primária: as aplicações dependem das
+ * versões de cor única, que a variação não tem, e repetir as regras de uso
+ * indevido a cada variação encheria a página sem dizer nada de novo.
+ *
+ * A regra de uso, quando existe, entra como legenda do título. É a única
+ * forma de ela aparecer fora do editor, e é exatamente o que um manual de
+ * marca registra ao lado de uma variação — quando não há regra, a seção fica
+ * idêntica à da primária.
+ */
+function Variacao({ variacao }) {
+  return (
+    <section className={s.secao}>
+      <div className={s.cabecalhoDaSecao}>
+        <h2 className={s.tituloDaSecao}>{variacao.nome}</h2>
+        {variacao.regras && <p className={s.regraDeUso}>{variacao.regras}</p>}
+      </div>
+
+      <div className={`${s.moldura} ${s.molduraGrande} ${s.fundoClaro}`}>
+        <img
+          className={`${s.marca} ${s.marcaGrande}`}
+          src={variacao.arquivo.url}
+          alt={variacao.nome}
+        />
+      </div>
     </section>
   )
 }

@@ -20,6 +20,24 @@
   letter-spacing: var(--espacamento-letras);
 }
 
+/* Título e regra de uso como um bloco só: a regra fica colada no título, e é o
+   par inteiro que guarda os 24px até a moldura — senão a regra ficaria solta
+   no meio dos dois e o ritmo da página se perderia. */
+.cabecalhoDaSecao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-8);
+}
+
+.regraDeUso {
+  margin: 0;
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-regular);
+  line-height: var(--altura-linha);
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
 /* --- Molduras --- */
 
 .moldura {
@@ -226,12 +244,20 @@
   background-color: var(--cor-baixo-contraste);
 }
 
-/* Duas metades da mesma logo, separadas por um vão. */
+/* Duas metades da mesma logo, separadas por um vão.
+ *
+ * A largura tem que ser a da moldura, e não a do conteúdo: o `max-width: 62%`
+ * das metades se mede pelo pai, e um pai de largura automática só tem largura
+ * depois de medir os filhos. Com um SVG sem `width`/`height` — só com
+ * `viewBox`, que é export comum — a conta fecha em zero e o exemplo aparece
+ * vazio. As demais molduras não passam por isso porque a imagem é filha direta
+ * delas, que já têm largura definida. */
 .partida {
   display: flex;
   flex-direction: column;
   gap: var(--espaco-8);
   align-items: center;
+  width: 100%;
 }
 
 /* Sem teto menor que o das outras molduras: cada metade já mostra só metade
