@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
+import CartaoDeElemento, { AcaoDoCartao } from '../components/CartaoDeElemento.jsx'
 import Icon from '../components/Icon.jsx'
-import ModalElemento, { Miniatura } from '../components/ModalElemento.jsx'
+import ModalElemento from '../components/ModalElemento.jsx'
 import { MAXIMO_DE_ELEMENTOS } from '../hooks/useFluxo.js'
 import s from './PassoElementos.module.css'
 
@@ -125,32 +126,23 @@ export default function PassoElementos({ elementos, acoes }) {
           <h2 className={s.tituloAdicionados}>Adicionados</h2>
           <ul className={s.lista}>
             {elementos.map((elemento) => (
-              <li key={elemento.id} className={s.cartao}>
-                <div className={s.grupo}>
-                  <Miniatura arquivo={elemento.arquivo} />
-                  <span className={s.nome}>{elemento.nome}</span>
-                  <span className={s.arquivo}>{elemento.arquivo?.nome}</span>
-                </div>
-
-                <div className={s.acoes}>
-                  <button
-                    type="button"
-                    className={s.acao}
-                    onClick={() => setModal({ elemento })}
-                    aria-label={`Editar ${elemento.nome}`}
-                  >
-                    <Icon nome="Edit" />
-                  </button>
-                  <button
-                    type="button"
-                    className={`${s.acao} ${s.destrutiva}`}
-                    onClick={() => acoes.remover(elemento.id)}
-                    aria-label={`Excluir ${elemento.nome}`}
-                  >
-                    <Icon nome="Delete" />
-                  </button>
-                </div>
-              </li>
+              <CartaoDeElemento key={elemento.id} elemento={elemento}>
+                <AcaoDoCartao
+                  type="button"
+                  onClick={() => setModal({ elemento })}
+                  aria-label={`Editar ${elemento.nome}`}
+                >
+                  <Icon nome="Edit" />
+                </AcaoDoCartao>
+                <AcaoDoCartao
+                  type="button"
+                  destrutiva
+                  onClick={() => acoes.remover(elemento.id)}
+                  aria-label={`Excluir ${elemento.nome}`}
+                >
+                  <Icon nome="Delete" />
+                </AcaoDoCartao>
+              </CartaoDeElemento>
             ))}
           </ul>
         </>
