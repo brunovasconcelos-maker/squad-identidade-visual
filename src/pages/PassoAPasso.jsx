@@ -60,8 +60,34 @@ function temConteudoDoPasso(slug, estado) {
 function telasDaFotografia(fotografia, acoes) {
   const indiceDaAba = CATEGORIAS.findIndex((c) => c.id === fotografia.aba)
   const noResumo = fotografia.tela === 'resumo'
+  const naUltimaCategoria = indiceDaAba === CATEGORIAS.length - 1
 
   return {
+    /**
+     * O atalho da barra inferior, ou null quando não há.
+     *
+     * Só na tela de seleção e fora da última categoria: no 3D o "Continuar" já
+     * leva ao resumo (ou ao fim do passo, sem foto nenhuma), então um atalho
+     * ali seria o mesmo botão duas vezes.
+     *
+     * O rótulo olha o total do passo inteiro, e não a categoria aberta: quem já
+     * escolheu numa categoria anterior tem o que ver no resumo, mesmo com esta
+     * vazia. Sem foto nenhuma não há resumo para mostrar, e o atalho sai do
+     * passo direto.
+     */
+    atalho() {
+      if (noResumo || naUltimaCategoria) return null
+
+      return totalDeFotos(fotografia.selecoes) === 0
+        ? { rotulo: 'Pular essa sessão', saiDoPasso: true }
+        : { rotulo: 'Pular para o final', saiDoPasso: false }
+    },
+
+    /** Salta as categorias que faltam e vai direto ao resumo. */
+    irParaOResumo() {
+      acoes.irParaTela('resumo')
+    },
+
     /** true quando não há mais tela interna pela frente. */
     avancar() {
       if (noResumo) return true
@@ -247,6 +273,18 @@ function FluxoCompleto() {
   // resumo — que estaria vazio de qualquer forma.
   const pular = () => proximoPasso()
 
+  /*
+   * O atalho da Fotografia. Sem foto nenhuma ele sai do passo, como se as seis
+   * categorias tivessem sido percorridas sem escolher nada — a barra de
+   * progresso anda. Com alguma foto ele vai ao resumo, que ainda é o mesmo
+   * passo, então o progresso fica onde está.
+   */
+  const atalhoDaFotografia = fotos?.atalho() ?? null
+  const usarAtalho = () => {
+    if (atalhoDaFotografia.saiDoPasso) proximoPasso()
+    else fotos.irParaOResumo()
+  }
+
   // Enquanto lê o que já foi salvo, e enquanto grava no fim, a tela de espera
   // ocupa o lugar do fluxo.
   if (carregando) return <Carregando mensagens={['Abrindo seu manual...']} />
@@ -269,6 +307,9 @@ function FluxoCompleto() {
         total={total}
         temConteudo={temConteudo}
         mostrarPular={mostrarPular}
+        atalho={
+          atalhoDaFotografia && { rotulo: atalhoDaFotografia.rotulo, onClick: usarAtalho }
+        }
         onVoltar={voltar}
         onPular={pular}
         onContinuar={avancar}
