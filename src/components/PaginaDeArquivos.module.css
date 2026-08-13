@@ -244,12 +244,20 @@
   background-color: var(--cor-baixo-contraste);
 }
 
-/* Duas metades da mesma logo, separadas por um vão. */
+/* Duas metades da mesma logo, separadas por um vão.
+ *
+ * A largura tem que ser a da moldura, e não a do conteúdo: o `max-width: 62%`
+ * das metades se mede pelo pai, e um pai de largura automática só tem largura
+ * depois de medir os filhos. Com um SVG sem `width`/`height` — só com
+ * `viewBox`, que é export comum — a conta fecha em zero e o exemplo aparece
+ * vazio. As demais molduras não passam por isso porque a imagem é filha direta
+ * delas, que já têm largura definida. */
 .partida {
   display: flex;
   flex-direction: column;
   gap: var(--espaco-8);
   align-items: center;
+  width: 100%;
 }
 
 /* Sem teto menor que o das outras molduras: cada metade já mostra só metade
