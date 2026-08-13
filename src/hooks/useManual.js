@@ -34,6 +34,9 @@ export default function useManual() {
         lido.elementos.forEach((elemento) => {
           if (elemento.arquivo?.url) urls.current.add(elemento.arquivo.url)
         })
+        lido.variacoesDaLogo.forEach((variacao) => {
+          if (variacao.arquivo?.url) urls.current.add(variacao.arquivo.url)
+        })
       }
 
       setManual(lido)

@@ -1,0 +1,185 @@
+/*
+ * Modal de variação — nodes 6049:999 e 6049:1048 do Figma.
+ *
+ * 532px de conteúdo com 24px de recuo dão as 580px do painel, e os blocos ficam
+ * a 40px uns dos outros: cabeçalho, os dois campos, a moldura e o rodapé.
+ */
+.fundo {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--espaco-24);
+  background: var(--cor-scrim);
+}
+
+.painel {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 580px;
+  max-width: 100%;
+  max-height: 100%;
+  padding: var(--espaco-24);
+  overflow-y: auto;
+  border-radius: var(--raio-card);
+  background: var(--cor-fundo);
+}
+
+.cabecalho {
+  display: flex;
+  gap: var(--espaco-12);
+  align-items: center;
+}
+
+.titulo {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: var(--texto-destaque);
+  font-weight: var(--peso-semibold);
+  line-height: var(--altura-linha);
+  letter-spacing: var(--espacamento-letras);
+}
+
+.fechar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: var(--raio-pilula);
+  background: transparent;
+  color: var(--cor-texto);
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.fechar:hover {
+  background: var(--cor-superficie);
+}
+
+/* Campos */
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-16);
+}
+
+.linhaCampo {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  padding: var(--espaco-16) 0;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.entrada {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--cor-texto);
+  font-family: inherit;
+  font-size: var(--texto-secao);
+  font-weight: var(--peso-medio);
+  line-height: normal;
+  letter-spacing: -0.4px;
+}
+
+.entrada:focus {
+  outline: none;
+}
+
+/* Vazio, o rótulo fica no cinza secundário do Figma — é o que o node mostra no
+   estado Default, e não o cinza mais claro dos campos desabilitados. */
+.entrada::placeholder {
+  color: var(--cor-texto-secundario);
+}
+
+.lapis {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--cor-icone);
+  cursor: pointer;
+}
+
+.linhaDica {
+  display: flex;
+  gap: var(--espaco-16);
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.dica,
+.contagem {
+  margin: 0;
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-micro);
+  font-weight: var(--peso-regular);
+  line-height: var(--altura-linha);
+  letter-spacing: -0.08px;
+}
+
+.contagem {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Rodapé */
+.rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.voltar,
+.continuar {
+  display: inline-flex;
+  gap: var(--espaco-8);
+  align-items: center;
+  height: 40px;
+  padding: var(--espaco-12) var(--espaco-16);
+  border: none;
+  border-radius: var(--raio-pilula);
+  font-family: inherit;
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+  cursor: pointer;
+}
+
+.voltar {
+  background: transparent;
+  color: var(--cor-texto);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color var(--transicao-padrao);
+}
+
+.voltar:hover {
+  text-decoration-color: currentColor;
+}
+
+.continuar {
+  background: var(--cor-marca);
+  color: var(--cor-texto-invertido);
+  transition: opacity var(--transicao-padrao);
+}
+
+.continuar:disabled {
+  background: var(--cor-fundo-desabilitado);
+  color: var(--cor-texto-desabilitado);
+  cursor: default;
+}

@@ -107,7 +107,13 @@ function ConteudoDoPasso({ slug, fluxo }) {
 
   switch (slug) {
     case 'logo':
-      return <PassoLogo {...props} />
+      return (
+        <PassoLogo
+          {...props}
+          variacoes={fluxo.variacoesDaLogo}
+          acoes={fluxo.acoesDasVariacoes}
+        />
+      )
     case 'icone':
       return <PassoIcone {...props} />
     case 'paleta-de-cores':

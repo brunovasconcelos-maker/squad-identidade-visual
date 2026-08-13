@@ -1,0 +1,93 @@
+/*
+ * Cartão de uma variação da logo — node 6049:963 do Figma: 808px de largura,
+ * 12px de recuo com 32px à direita, 40px entre a prévia e os textos, 32px entre
+ * os dois textos e 24px entre o lápis e a lixeira.
+ */
+.cartao {
+  display: flex;
+  gap: var(--espaco-16);
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--espaco-12);
+  padding-right: 32px;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-caixa);
+}
+
+.grupo {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  min-width: 0;
+}
+
+/* A logo do Figma ocupa 54 das 64px da prévia; os 12px de recuo padrão da
+   Miniatura a deixariam bem menor. O seletor alcança a imagem de dentro, que é
+   o que evita duplicar a Miniatura só por causa da folga. */
+.previa img {
+  padding: 6px;
+}
+
+.textos {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  min-width: 0;
+}
+
+.nome,
+.regras {
+  overflow: hidden;
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-semibold);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nome {
+  flex: none;
+  color: var(--cor-texto);
+}
+
+/* As regras cedem primeiro: com pouco espaço é o nome que precisa sobreviver. */
+.regras {
+  min-width: 0;
+  color: var(--cor-texto-secundario);
+}
+
+.acoes {
+  display: flex;
+  flex: none;
+  gap: var(--espaco-24);
+  align-items: center;
+}
+
+/* Celular: os 40px e os 32px do desenho de 808px não cabem numa coluna de
+   343px, e os dois textos saíam em reticências. Empilhados, cada um fica com a
+   largura do cartão. */
+@media (max-width: 767px) {
+  .cartao {
+    padding-right: var(--espaco-16);
+  }
+
+  .grupo {
+    gap: var(--espaco-16);
+  }
+
+  .textos {
+    flex-direction: column;
+    gap: var(--espaco-4);
+    align-items: flex-start;
+    max-width: 100%;
+  }
+
+  /* Empilhados, os dois viram itens de uma coluna e voltam a ter a largura do
+     próprio texto — sem o teto, a regra de uso passava por cima do lápis e da
+     lixeira em vez de cortar em reticências. */
+  .nome,
+  .regras {
+    max-width: 100%;
+  }
+}
