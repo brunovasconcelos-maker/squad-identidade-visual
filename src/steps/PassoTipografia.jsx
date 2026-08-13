@@ -1,6 +1,9 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import Icon from '../components/Icon.jsx'
+import ModalFontePropria from '../components/ModalFontePropria.jsx'
 import useFonteDoGoogle from '../hooks/useFonteDoGoogle.js'
+import useFontePropria from '../hooks/useFontePropria.js'
+import { ehFontePropria } from '../lib/fontesProprias.js'
 import {
   buscarFamilias,
   criarFonte,
@@ -24,6 +27,9 @@ const ROTULO_VAZIO = 'Selecionar a font da sua marca'
  */
 export default function PassoTipografia({ tipografia, acoes }) {
   const { primaria, secundarias } = tipografia
+  // Qual card está enviando a própria fonte: 'primaria', o id de uma vaga
+  // secundária, ou null com o modal fechado.
+  const [enviandoPara, setEnviandoPara] = useState(null)
 
   // O "Adicionar" some ao chegar em três secundárias e fica desabilitado
   // enquanto uma vaga ainda espera escolha — sem isso dá para empilhar vários
@@ -42,7 +48,7 @@ export default function PassoTipografia({ tipografia, acoes }) {
           </button>
         </div>
 
-        <BotaoMinhaFont />
+        <BotaoMinhaFont onClick={() => setEnviandoPara('primaria')} />
       </div>
 
       <div className={s.cartaoPrincipal}>
@@ -81,11 +87,21 @@ export default function PassoTipografia({ tipografia, acoes }) {
                 alvo={vaga.id}
                 fonte={vaga.fonte}
                 acoes={acoes}
-                comBotaoDeUpload
+                onEnviarFonte={() => setEnviandoPara(vaga.id)}
               />
             </div>
           ))}
         </div>
+      )}
+
+      {enviandoPara && (
+        <ModalFontePropria
+          onSalvar={(fonte) => {
+            acoes.definirFonte(enviandoPara, fonte)
+            setEnviandoPara(null)
+          }}
+          onFechar={() => setEnviandoPara(null)}
+        />
       )}
     </div>
   )
@@ -96,17 +112,21 @@ export default function PassoTipografia({ tipografia, acoes }) {
  * busca com o nome atual preenchido; a lixeira chama `removerFonte`, que na
  * primária esvazia o card e na secundária tira o card da lista.
  */
-function CartaoDeFonte({ alvo, fonte, acoes, comBotaoDeUpload = false }) {
+function CartaoDeFonte({ alvo, fonte, acoes, onEnviarFonte = null }) {
   const [buscando, setBuscando] = useState(false)
 
-  // Recarrega sozinho quando um peso é marcado ou desmarcado: a URL muda junto.
-  useFonteDoGoogle(urlDoCss2(fonte))
+  // Uma das duas carrega, nunca as duas: a do Google vem de um <link>, a
+  // enviada vem dos próprios bytes. Recarrega sozinho quando um peso é marcado
+  // ou desmarcado, porque a URL muda junto.
+  const propria = ehFontePropria(fonte)
+  useFonteDoGoogle(propria ? null : urlDoCss2(fonte))
+  useFontePropria(fonte)
 
   if (buscando) {
     return (
       <BuscaDeFonte
         inicial={fonte?.familia ?? ''}
-        comBotaoDeUpload={comBotaoDeUpload}
+        onEnviarFonte={onEnviarFonte}
         onEscolher={(familia) => {
           acoes.definirFonte(alvo, criarFonte(familia))
           setBuscando(false)
@@ -126,7 +146,7 @@ function CartaoDeFonte({ alvo, fonte, acoes, comBotaoDeUpload = false }) {
           </span>
           <Icon nome="Search" />
         </button>
-        {comBotaoDeUpload && <BotaoMinhaFont />}
+        {onEnviarFonte && <BotaoMinhaFont onClick={onEnviarFonte} />}
       </div>
     )
   }
@@ -191,10 +211,10 @@ function CartaoDeFonte({ alvo, fonte, acoes, comBotaoDeUpload = false }) {
   )
 }
 
-/** O upload de fonte própria, que ainda não faz nada. Visível e desabilitado. */
-function BotaoMinhaFont() {
+/** Abre o envio de fonte própria, a alternativa à busca no Google Fonts. */
+function BotaoMinhaFont({ onClick }) {
   return (
-    <button type="button" className={s.botaoContorno} disabled>
+    <button type="button" className={s.botaoContorno} onClick={onClick}>
       Adicionar minha font
       <Icon nome="File-Upload" />
     </button>
@@ -202,7 +222,7 @@ function BotaoMinhaFont() {
 }
 
 /** Campo de busca no lugar do rótulo, com a lista de resultados logo abaixo. */
-function BuscaDeFonte({ inicial, comBotaoDeUpload, onEscolher, onCancelar }) {
+function BuscaDeFonte({ inicial, onEnviarFonte, onEscolher, onCancelar }) {
   const [texto, setTexto] = useState(inicial)
   const [ativo, setAtivo] = useState(0)
   const campo = useRef(null)
@@ -266,7 +286,7 @@ function BuscaDeFonte({ inicial, comBotaoDeUpload, onEscolher, onCancelar }) {
             entre o campo e o par, não entre os dois. */}
         <span className={s.acoesDaBusca}>
           <Icon nome="Search" />
-          {comBotaoDeUpload && <BotaoMinhaFont />}
+          {onEnviarFonte && <BotaoMinhaFont onClick={onEnviarFonte} />}
         </span>
       </div>
 
