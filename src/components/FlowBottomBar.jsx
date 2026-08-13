@@ -16,6 +16,7 @@ export default function FlowBottomBar({
   mostrarProgresso = true,
   rotulo,
   ocupado = false,
+  atalho = null,
   onVoltar,
   onPular,
   onContinuar,
@@ -39,6 +40,16 @@ export default function FlowBottomBar({
           {mostrarPular && (
             <button type="button" className={s.pular} onClick={onPular}>
               {ultimoPasso ? 'Não tenho, pular e finalizar' : 'Não tenho, pular'}
+            </button>
+          )}
+
+          {/* Atalho de um passo com telas internas — hoje só a Fotografia, que
+              o usa para sair das categorias antes da última. Vem pronto de
+              fora, com rótulo e ação, porque quem sabe o que ele faz é o passo.
+              Mesmo estilo de link do "Não tenho, pular". */}
+          {atalho && (
+            <button type="button" className={s.pular} onClick={atalho.onClick}>
+              {atalho.rotulo}
             </button>
           )}
 
