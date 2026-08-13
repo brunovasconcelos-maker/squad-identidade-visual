@@ -4,6 +4,7 @@ import Carregando, { DURACAO_TOTAL } from '../components/Carregando.jsx'
 import FalhaAoSalvar from '../components/FalhaAoSalvar.jsx'
 import FlowTopBar from '../components/FlowTopBar.jsx'
 import FlowBottomBar from '../components/FlowBottomBar.jsx'
+import PerguntaAoTom from '../components/PerguntaAoTom.jsx'
 import PassoLogo from '../steps/PassoLogo.jsx'
 import PassoIcone from '../steps/PassoIcone.jsx'
 import PassoPaleta from '../steps/PassoPaleta.jsx'
@@ -146,6 +147,11 @@ function AreaDoPasso({ slug, fluxo }) {
           <ConteudoDoPasso slug={slug} fluxo={fluxo} />
         </div>
       </div>
+
+      {/* O ajudante mora aqui porque esta área é a única coisa que os dois
+          modos do fluxo têm em comum — e é o que o mantém fora da Home e das
+          páginas de leitura. Ele se posiciona sozinho, preso ao canto. */}
+      <PerguntaAoTom tema={slug} />
     </main>
   )
 }

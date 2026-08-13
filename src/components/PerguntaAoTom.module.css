@@ -1,0 +1,288 @@
+/*
+ * Pergunte ao Tom — nodes 6218:6458, 6218:6510 e 6218:6570 do Figma.
+ *
+ * O canto ancora os dois: o painel em cima e o Tom embaixo. O Tom fica a 26px
+ * da direita e 27px acima da barra de 80px do fluxo; o painel recua 14px a
+ * mais, para bater com os 40px de margem da página.
+ */
+.canto {
+  position: fixed;
+  right: 26px;
+  bottom: 107px;
+  /* Acima do conteúdo do passo, abaixo dos modais (que ficam no 10): um modal
+     aberto tem que cobrir o Tom, e não o contrário. */
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  align-items: flex-end;
+}
+
+/* --- Tom, parado e no hover --- */
+
+.gatilho {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.tom {
+  display: block;
+  flex: none;
+  width: 92px;
+  height: 98px;
+  object-fit: contain;
+  /* Gira pelo pé, como o Tom do banner da Home. */
+  transform-origin: center bottom;
+}
+
+.balancando {
+  animation: balancar 500ms ease-in-out;
+}
+
+/* Mesma balançada nos dois lugares que o Tom aparece. Os `@keyframes` ficam em
+   cada módulo de propósito: os CSS Modules dão escopo de arquivo a eles, e nem
+   `animation: :global(balancar)` nem `animation-name: :global(balancar)`
+   compilam neste toolchain — a alternativa seria uma classe global, contra a
+   regra de um módulo por componente. A definição é a mesma nos dois. */
+@keyframes balancar {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(-6deg);
+  }
+  40% {
+    transform: rotate(5deg);
+  }
+  60% {
+    transform: rotate(-3deg);
+  }
+  80% {
+    transform: rotate(2deg);
+  }
+}
+
+/* A pílula preta do hover. Fica sempre no HTML — é ela que dá nome ao botão
+   para quem não vê a ilustração —, mas só aparece com o mouse ou o foco.
+ *
+ * Fora do fluxo, e não ao lado do Tom no flex: no fluxo ela esticava o botão
+ * uns 150px para a esquerda mesmo invisível, e essa faixa transparente cobria o
+ * canto direito do conteúdo do passo — o "Adicionar variações" da Logo, por
+ * exemplo, deixava de receber clique. Absoluta, o botão tem só a largura do
+ * Tom. Os 8px do Figma viram a distância entre a pílula e a ilustração. */
+.rotulo {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + var(--espaco-8));
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: var(--espaco-12) var(--espaco-16);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-marca);
+  color: var(--cor-texto-invertido);
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(-50%) translateX(var(--espaco-8));
+  /* Não rouba o hover do botão nem o clique do que estiver embaixo. */
+  pointer-events: none;
+  transition:
+    opacity var(--transicao-padrao),
+    transform var(--transicao-padrao);
+}
+
+.gatilho:hover .rotulo,
+.gatilho:focus-visible .rotulo {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* Com o painel aberto o rótulo não volta nem no hover: quem se apresenta é o
+   painel, e a pílula ficaria por cima dele. */
+.rotuloOculto,
+.gatilho:hover .rotuloOculto,
+.gatilho:focus-visible .rotuloOculto {
+  opacity: 0;
+  transform: translateY(-50%) translateX(var(--espaco-8));
+}
+
+/* --- Painel --- */
+
+.painel {
+  display: flex;
+  flex-direction: column;
+  /* 14px a mais que o Tom: o painel para na margem de 40px da página. */
+  margin-right: 14px;
+  width: 331px;
+  max-width: 100%;
+  height: 452px;
+  /* Numa janela baixa o painel encolhe em vez de sair pelo topo. */
+  max-height: calc(100vh - 200px);
+  padding: 15px 17px 17px 15px;
+  overflow: hidden;
+  border: 1px solid var(--cor-superficie);
+  border-radius: var(--raio-moldura);
+  background: var(--cor-fundo);
+  box-shadow: var(--sombra-flutuante);
+}
+
+.cabecalho {
+  display: flex;
+  gap: var(--espaco-8);
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.saudacao {
+  margin: 0;
+  max-width: 198px;
+  color: var(--cor-texto);
+  font-size: var(--texto-secao);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+}
+
+.fechar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: var(--raio-pilula);
+  background: transparent;
+  color: var(--cor-texto);
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.fechar:hover {
+  background: var(--cor-superficie);
+}
+
+/* O espaço reservado para a conversa: hoje é só o vão que empurra as sugestões
+   e o campo para o pé do painel. */
+.conversa {
+  flex: 1;
+  min-height: 0;
+}
+
+/* --- Sugestões --- */
+
+.sugestoes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-12);
+  align-items: flex-start;
+  margin: 0 0 var(--espaco-12);
+  padding: 0;
+  list-style: none;
+  /* Cada pílula tem a largura do próprio texto, como no Figma; a mais longa
+     que a coluna é a que corta. */
+  max-width: 100%;
+}
+
+.sugestao {
+  display: inline-flex;
+  gap: var(--espaco-12);
+  align-items: center;
+  max-width: 100%;
+  height: 48px;
+  padding: var(--espaco-8) var(--espaco-16);
+  border: 1px solid var(--cor-marca);
+  border-radius: 28px;
+  background: var(--cor-chat);
+  color: var(--cor-texto);
+  font-family: inherit;
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-regular);
+  line-height: 20px;
+  letter-spacing: var(--espacamento-letras-secao);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.sugestao:hover {
+  background: var(--cor-chat-hover);
+}
+
+/* --- Campo --- */
+
+.campo {
+  display: flex;
+  flex: none;
+  gap: 40px;
+  align-items: center;
+  height: 48px;
+  padding: var(--espaco-8) var(--espaco-16);
+  border-radius: 28px;
+  background: var(--cor-chat);
+}
+
+.entrada {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--cor-texto);
+  font-family: inherit;
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-regular);
+  line-height: 20px;
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
+.entrada:focus {
+  outline: none;
+}
+
+.entrada::placeholder {
+  color: var(--cor-texto-secundario);
+}
+
+.enviar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-marca);
+  color: var(--cor-texto-invertido);
+  cursor: pointer;
+}
+
+/* Celular: o painel encolhe com a tela e o canto acompanha a margem menor. */
+@media (max-width: 767px) {
+  .canto {
+    right: var(--grid-margem, 16px);
+    bottom: 96px;
+  }
+
+  .painel {
+    margin-right: 0;
+    width: calc(100vw - 2 * var(--grid-margem, 16px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .balancando {
+    animation: none;
+  }
+}
