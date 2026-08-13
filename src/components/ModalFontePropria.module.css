@@ -1,0 +1,278 @@
+/*
+ * Modal de fonte própria. A casca é a mesma dos outros modais do fluxo
+ * (ModalElemento, ModalVariacao); o que muda é o miolo: a moldura de upload na
+ * primeira tela e a lista de pesos na segunda.
+ */
+.fundo {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--espaco-24);
+  background: var(--cor-scrim);
+}
+
+.painel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-24);
+  width: 580px;
+  max-width: 100%;
+  max-height: 100%;
+  padding: var(--espaco-24);
+  overflow-y: auto;
+  border-radius: var(--raio-card);
+  background: var(--cor-fundo);
+}
+
+.cabecalho {
+  display: flex;
+  gap: var(--espaco-12);
+  align-items: center;
+}
+
+.titulo {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: var(--texto-destaque);
+  font-weight: var(--peso-semibold);
+  line-height: var(--altura-linha);
+  letter-spacing: var(--espacamento-letras);
+}
+
+.fechar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: var(--raio-pilula);
+  background: transparent;
+  color: var(--cor-texto);
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+
+.fechar:hover {
+  background: var(--cor-superficie);
+}
+
+/* --- Tela 1: upload --- */
+
+.moldura {
+  display: flex;
+  height: 169px;
+  border: 1px dashed var(--cor-borda-upload);
+  border-radius: var(--raio-caixa);
+  background: var(--cor-superficie);
+  transition: border-color var(--transicao-padrao);
+}
+
+.arrastando {
+  border-color: var(--cor-texto);
+}
+
+.alvo {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--espaco-16);
+  align-items: center;
+  justify-content: center;
+  padding: var(--espaco-16);
+  border: none;
+  border-radius: var(--raio-caixa);
+  background: transparent;
+  color: var(--cor-texto-auxiliar);
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.alvo:disabled {
+  cursor: default;
+}
+
+.instrucao {
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-regular);
+  line-height: 20px;
+  letter-spacing: var(--espacamento-letras-secao);
+  text-align: center;
+}
+
+.input {
+  display: none;
+}
+
+.erro {
+  margin: 0;
+  color: var(--cor-destrutiva);
+  font-size: var(--texto-botao);
+  line-height: var(--altura-linha);
+}
+
+/* --- Tela 2: conferência --- */
+
+.campoFamilia,
+.pesos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-12);
+}
+
+.rotuloDoCampo {
+  margin: 0;
+  color: var(--cor-texto);
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-medio);
+  line-height: 1;
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
+.entrada {
+  padding: var(--espaco-12) var(--espaco-16);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-caixa);
+  background: transparent;
+  color: var(--cor-texto);
+  font-family: inherit;
+  font-size: var(--texto-corpo);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+  letter-spacing: var(--espacamento-letras-secao);
+}
+
+.entrada:focus {
+  outline: 1px solid var(--cor-texto);
+}
+
+.listaDePesos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-12);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Mesma linha dos pesos do Google Fonts: o marcador à esquerda e o rótulo do
+   peso à direita. */
+.peso {
+  display: flex;
+  gap: var(--espaco-16);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.marcador {
+  display: flex;
+  gap: var(--espaco-12);
+  align-items: center;
+  min-width: 0;
+  color: var(--cor-texto);
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+  cursor: pointer;
+}
+
+/* O checkbox real fica escondido, e quem aparece é o ícone — igual ao passo. */
+.caixaNativa {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.nomeDoArquivo {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rotuloDoPeso {
+  flex: none;
+  color: var(--cor-texto-secundario);
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+}
+
+.entradaDoPeso {
+  flex: none;
+  width: 160px;
+  padding: var(--espaco-8) var(--espaco-12);
+  font-size: var(--texto-botao);
+}
+
+.aviso {
+  margin: 0;
+  color: var(--cor-texto-auxiliar);
+  font-size: var(--texto-micro);
+  line-height: var(--altura-linha);
+}
+
+/* --- Rodapé --- */
+
+.rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.voltar,
+.continuar {
+  display: inline-flex;
+  gap: var(--espaco-8);
+  align-items: center;
+  height: 40px;
+  padding: var(--espaco-12) var(--espaco-16);
+  border: none;
+  border-radius: var(--raio-pilula);
+  font-family: inherit;
+  font-size: var(--texto-botao);
+  font-weight: var(--peso-medio);
+  line-height: var(--altura-linha);
+  cursor: pointer;
+}
+
+.voltar {
+  background: transparent;
+  color: var(--cor-texto);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color var(--transicao-padrao);
+}
+
+.voltar:hover {
+  text-decoration-color: currentColor;
+}
+
+.continuar {
+  background: var(--cor-marca);
+  color: var(--cor-texto-invertido);
+}
+
+.continuar:disabled {
+  background: var(--cor-fundo-desabilitado);
+  color: var(--cor-texto-desabilitado);
+  cursor: default;
+}
+
+@media (max-width: 767px) {
+  .peso {
+    flex-wrap: wrap;
+    gap: var(--espaco-8);
+  }
+
+  .entradaDoPeso {
+    width: 100%;
+  }
+}

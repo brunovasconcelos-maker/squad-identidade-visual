@@ -1,6 +1,8 @@
 import PaginaDoTema from '../components/PaginaDoTema.jsx'
 import useFonteDoGoogle from '../hooks/useFonteDoGoogle.js'
+import useFontePropria from '../hooks/useFontePropria.js'
 import useManual from '../hooks/useManual.js'
+import { ehFontePropria } from '../lib/fontesProprias.js'
 import {
   estiloDaPrevia,
   familiaCss,
@@ -55,7 +57,9 @@ export default function Tipografia() {
 function Bloco({ rotulo, fonte }) {
   // Um <link> por fonte, com os pesos marcados dela. O hook conta os usos, então
   // duas fontes iguais não duplicam o <link>.
-  useFonteDoGoogle(urlDoCss2(fonte))
+  // A enviada carrega dos próprios bytes; a do Google, do embed. Nunca as duas.
+  useFonteDoGoogle(ehFontePropria(fonte) ? null : urlDoCss2(fonte))
+  useFontePropria(fonte)
 
   if (!fonte) return null
 
