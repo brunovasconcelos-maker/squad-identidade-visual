@@ -65,3 +65,13 @@
 .adicionar:hover {
   background: var(--cor-superficie);
 }
+
+/* Os cartões começam 40px abaixo da linha do título, como no node 6049:963. */
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-16);
+  margin: 40px 0 0;
+  padding: 0;
+  list-style: none;
+}

@@ -19,6 +19,10 @@ function arquivoValido(arquivo) {
  * `fundo` define o fundo da prévia depois de preenchida:
  * 'padrao' (cinza), 'branco' (branco com borda cinza, para a versão preta) ou
  * 'preto' (para a versão branca aparecer).
+ *
+ * Sem `titulo` some o cabeçalho inteiro — e com ele o lápis e a lixeira. É como
+ * a moldura aparece dentro do modal de variação, onde quem nomeia é o campo de
+ * cima e trocar o arquivo é clicar na própria moldura.
  */
 export default function UploadArquivo({
   titulo,
@@ -34,6 +38,8 @@ export default function UploadArquivo({
   const [previaFalhou, setPreviaFalhou] = useState(false)
 
   const preenchido = Boolean(logo)
+  // Sem cabeçalho não há título para nomear a moldura no leitor de tela.
+  const rotulo = titulo ?? 'o arquivo'
 
   // Cada arquivo novo merece uma chance de aparecer.
   useEffect(() => {
@@ -71,35 +77,37 @@ export default function UploadArquivo({
 
   return (
     <section className={s.secao}>
-      <div className={s.cabecalho}>
-        <h2 className={s.titulo}>{titulo}</h2>
+      {titulo && (
+        <div className={s.cabecalho}>
+          <h2 className={s.titulo}>{titulo}</h2>
 
-        {preenchido && (
-          <div className={s.acoes}>
-            <button
-              type="button"
-              className={s.botaoIcone}
-              onClick={abrirSeletor}
-              aria-label={`Trocar ${titulo}`}
-            >
-              <Icon nome="Edit" />
-            </button>
-            {/* Esvazia só esta moldura; as outras duas seguem como estão. */}
-            <button
-              type="button"
-              className={`${s.botaoIcone} ${s.destrutiva}`}
-              onClick={() => {
-                setErro(null)
-                setPreviaFalhou(false)
-                onRemover()
-              }}
-              aria-label={`Excluir ${titulo}`}
-            >
-              <Icon nome="Delete" />
-            </button>
-          </div>
-        )}
-      </div>
+          {preenchido && (
+            <div className={s.acoes}>
+              <button
+                type="button"
+                className={s.botaoIcone}
+                onClick={abrirSeletor}
+                aria-label={`Trocar ${titulo}`}
+              >
+                <Icon nome="Edit" />
+              </button>
+              {/* Esvazia só esta moldura; as outras duas seguem como estão. */}
+              <button
+                type="button"
+                className={`${s.botaoIcone} ${s.destrutiva}`}
+                onClick={() => {
+                  setErro(null)
+                  setPreviaFalhou(false)
+                  onRemover()
+                }}
+                aria-label={`Excluir ${titulo}`}
+              >
+                <Icon nome="Delete" />
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
       <div
         className={classesCaixa}
@@ -115,7 +123,7 @@ export default function UploadArquivo({
           type="button"
           className={preenchido ? `${s.alvo} ${s.alvoPreenchido}` : s.alvo}
           onClick={abrirSeletor}
-          aria-label={preenchido ? `Trocar ${titulo}` : `Enviar ${titulo}`}
+          aria-label={preenchido ? `Trocar ${rotulo}` : `Enviar ${rotulo}`}
         >
           {preenchido && previaFalhou ? (
             // Sem isso o browser desenharia o ícone de imagem quebrada aqui.

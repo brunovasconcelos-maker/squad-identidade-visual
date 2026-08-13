@@ -59,6 +59,7 @@ function criarCor({ nome, hex }) {
  *     fotografia: { selecoes, tela },
  *     personalidade: { [eixo]: 1..5 },  // só os eixos escolhidos
  *     elementos: [ { id, nome, arquivo } ],
+ *     variacoesDaLogo: [ { id, nome, regras, arquivo } ],
  *   }
  *
  * Nada é gravado durante o fluxo: a escrita acontece uma vez só, no
@@ -77,6 +78,8 @@ export default function useFluxo({ recomecarFotografia = false } = {}) {
   // Nasce vazia: eixo sem escolha não tem entrada aqui.
   const [personalidade, setPersonalidade] = useState({})
   const [elementos, setElementos] = useState([])
+  // Variações da logo: uma lista sem teto, como a paleta e os tons de voz.
+  const [variacoesDaLogo, setVariacoesDaLogo] = useState([])
   // Enquanto lê o que já estava salvo, para não mostrar um fluxo vazio e
   // depois preencher na cara da pessoa.
   const [carregando, setCarregando] = useState(true)
@@ -314,6 +317,53 @@ export default function useFluxo({ recomecarFotografia = false } = {}) {
     [registrarArquivo],
   )
 
+  /*
+   * Variações da logo. O modal devolve nome, regras e — só quando a pessoa
+   * escolheu um arquivo lá dentro — o arquivo novo; sem ele a variação
+   * continua com o que já tinha.
+   */
+  const adicionarVariacaoDaLogo = useCallback(
+    async (nome, regras, arquivo) => {
+      const registro = await registrarArquivo(arquivo)
+      setVariacoesDaLogo((atual) => [
+        ...atual,
+        { id: crypto.randomUUID(), nome, regras, arquivo: registro },
+      ])
+    },
+    [registrarArquivo],
+  )
+
+  const atualizarVariacaoDaLogo = useCallback(
+    async (id, nome, regras, arquivo) => {
+      const registro = arquivo ? await registrarArquivo(arquivo) : null
+
+      setVariacoesDaLogo((atual) =>
+        atual.map((variacao) => {
+          if (variacao.id !== id) return variacao
+          if (!registro) return { ...variacao, nome, regras }
+
+          if (variacao.arquivo?.url) {
+            URL.revokeObjectURL(variacao.arquivo.url)
+            urls.current.delete(variacao.arquivo.url)
+          }
+          return { ...variacao, nome, regras, arquivo: registro }
+        }),
+      )
+    },
+    [registrarArquivo],
+  )
+
+  const removerVariacaoDaLogo = useCallback((id) => {
+    setVariacoesDaLogo((atual) => {
+      const saindo = atual.find((variacao) => variacao.id === id)
+      if (saindo?.arquivo?.url) {
+        URL.revokeObjectURL(saindo.arquivo.url)
+        urls.current.delete(saindo.arquivo.url)
+      }
+      return atual.filter((variacao) => variacao.id !== id)
+    })
+  }, [])
+
   const removerElemento = useCallback((id) => {
     setElementos((atual) => {
       const saindo = atual.find((elemento) => elemento.id === id)
@@ -343,6 +393,9 @@ export default function useFluxo({ recomecarFotografia = false } = {}) {
         manual.elementos.forEach((elemento) => {
           if (elemento.arquivo?.url) urls.current.add(elemento.arquivo.url)
         })
+        manual.variacoesDaLogo.forEach((variacao) => {
+          if (variacao.arquivo?.url) urls.current.add(variacao.arquivo.url)
+        })
 
         setUploads(manual.uploads)
         setPaleta(manual.paleta)
@@ -359,6 +412,7 @@ export default function useFluxo({ recomecarFotografia = false } = {}) {
         )
         setPersonalidade(manual.personalidade)
         setElementos(manual.elementos)
+        setVariacoesDaLogo(manual.variacoesDaLogo)
       })
       .catch(() => {
         // Sem o que foi salvo o fluxo ainda funciona: começa vazio.
@@ -375,8 +429,26 @@ export default function useFluxo({ recomecarFotografia = false } = {}) {
   }, [recomecarFotografia])
 
   const estadoDoFluxo = useCallback(
-    () => ({ uploads, paleta, tipografia, tomDeVoz, fotografia, personalidade, elementos }),
-    [uploads, paleta, tipografia, tomDeVoz, fotografia, personalidade, elementos],
+    () => ({
+      uploads,
+      paleta,
+      tipografia,
+      tomDeVoz,
+      fotografia,
+      personalidade,
+      elementos,
+      variacoesDaLogo,
+    }),
+    [
+      uploads,
+      paleta,
+      tipografia,
+      tomDeVoz,
+      fotografia,
+      personalidade,
+      elementos,
+      variacoesDaLogo,
+    ],
   )
 
   // A escrita do fluxo completo, na finalização: grava tudo de uma vez.
@@ -416,6 +488,12 @@ export default function useFluxo({ recomecarFotografia = false } = {}) {
     uploads,
     salvarUpload,
     removerUpload,
+    variacoesDaLogo,
+    acoesDasVariacoes: {
+      adicionar: adicionarVariacaoDaLogo,
+      atualizar: atualizarVariacaoDaLogo,
+      remover: removerVariacaoDaLogo,
+    },
     paleta,
     acoesDaPaleta: {
       adicionar: adicionarCor,

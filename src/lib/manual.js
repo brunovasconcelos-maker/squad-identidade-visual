@@ -78,6 +78,12 @@ export function paraArmazenamento(fluxo) {
       nome: elemento.nome,
       arquivo: semUrl(elemento.arquivo),
     })),
+    variacoesDaLogo: fluxo.variacoesDaLogo.map((variacao) => ({
+      id: variacao.id,
+      nome: variacao.nome,
+      regras: variacao.regras,
+      arquivo: semUrl(variacao.arquivo),
+    })),
   }
 }
 
@@ -99,14 +105,18 @@ export function fatiaDoTema(fluxo, slug, salvo) {
 
   switch (slug) {
     case 'logo':
-    case 'icone':
-      return {
-        uploads: {
-          ...completo.uploads,
-          ...(salvo?.uploads ?? {}),
-          [slug]: completo.uploads[slug],
-        },
+    case 'icone': {
+      const uploads = {
+        ...completo.uploads,
+        ...(salvo?.uploads ?? {}),
+        [slug]: completo.uploads[slug],
       }
+      // As variações são da logo, e só dela: editando o Ícone avulso elas
+      // ficam como estavam no disco.
+      return slug === 'logo'
+        ? { uploads, variacoesDaLogo: completo.variacoesDaLogo }
+        : { uploads }
+    }
     case 'paleta-de-cores':
       return { paleta: completo.paleta }
     case 'tipografia':
@@ -148,6 +158,10 @@ export function deArmazenamento(manual) {
     elementos: (manual.elementos ?? []).map((elemento) => ({
       ...elemento,
       arquivo: comUrl(elemento.arquivo),
+    })),
+    variacoesDaLogo: (manual.variacoesDaLogo ?? []).map((variacao) => ({
+      ...variacao,
+      arquivo: comUrl(variacao.arquivo),
     })),
   }
 }
