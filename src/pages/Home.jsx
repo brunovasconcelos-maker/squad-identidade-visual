@@ -41,7 +41,8 @@ export default function Home() {
       </div>
 
       <div className={s.faixaLarga}>
-        <Banner percentual={percentual} proximo={proximo} />
+        {/* Completo, o botão do banner reinicia — a mesma função do menu. */}
+        <Banner percentual={percentual} proximo={proximo} onReiniciar={confirmarReinicio} />
       </div>
 
       <div className={s.grade}>

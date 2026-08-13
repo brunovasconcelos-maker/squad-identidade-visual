@@ -7,8 +7,12 @@ import s from './Banner.module.css'
  * O texto e o botão acompanham o quanto do manual já foi preenchido: nada
  * começado, algo pela metade (aí o botão retoma no primeiro tema incompleto)
  * ou tudo pronto.
+ *
+ * Completo, o botão reinicia o manual — a mesma ação do "Reiniciar manual da
+ * marca" do menu de opções, confirmação inclusive, porque quem a implementa é
+ * a Home e os dois chamam a mesma função.
  */
-export default function Banner({ percentual = 0, proximo = null }) {
+export default function Banner({ percentual = 0, proximo = null, onReiniciar }) {
   const navigate = useNavigate()
   // Passar o mouse (ou dar foco pelo teclado) no botão balança o Tom.
   const [balancando, setBalancando] = useState(false)
@@ -25,10 +29,12 @@ export default function Banner({ percentual = 0, proximo = null }) {
       ? 'Você preencheu 100% do seu Manual de Identidade Visual'
       : `Você preencheu ${percentual}% do seu Manual de Identidade Visual`
 
-  const rotulo = !comecado ? 'Começar' : 'Continuar'
+  const rotulo = !comecado ? 'Começar' : completo ? 'Reiniciar' : 'Continuar'
 
   // Retoma no primeiro tema que falta; sem nenhum, abre o fluxo do início.
   const destino = proximo ? `/passo-a-passo?passo=${proximo.passo}` : '/passo-a-passo'
+
+  const aoClicar = completo ? onReiniciar : () => navigate(destino)
 
   return (
     <div className={s.banner}>
@@ -45,32 +51,17 @@ export default function Banner({ percentual = 0, proximo = null }) {
         <p className={s.texto}>{mensagem}</p>
       </div>
 
-      {/* Com o manual completo o botão vira o Download. Ainda não baixa nada:
-          entra só o visual, e o comportamento vem depois. */}
-      {completo ? (
-        <button
-          type="button"
-          className={s.botao}
-          onMouseEnter={ativar}
-          onMouseLeave={desativar}
-          onFocus={ativar}
-          onBlur={desativar}
-        >
-          Download
-        </button>
-      ) : (
-        <button
-          type="button"
-          className={s.botao}
-          onClick={() => navigate(destino)}
-          onMouseEnter={ativar}
-          onMouseLeave={desativar}
-          onFocus={ativar}
-          onBlur={desativar}
-        >
-          {rotulo}
-        </button>
-      )}
+      <button
+        type="button"
+        className={s.botao}
+        onClick={aoClicar}
+        onMouseEnter={ativar}
+        onMouseLeave={desativar}
+        onFocus={ativar}
+        onBlur={desativar}
+      >
+        {rotulo}
+      </button>
     </div>
   )
 }
